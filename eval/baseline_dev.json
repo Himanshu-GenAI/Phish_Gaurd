@@ -1,0 +1,366 @@
+{
+  "split": "dev",
+  "mode": "rules",
+  "evaluatedCount": 70,
+  "primary": {
+    "tp": 0,
+    "fp": 1,
+    "tn": 34,
+    "fn": 35,
+    "prec": {
+      "value": 0,
+      "ciLower": 0,
+      "ciUpper": 79.3
+    },
+    "rec": {
+      "value": 0,
+      "ciLower": 0,
+      "ciUpper": 9.9
+    },
+    "spec": {
+      "value": 97.1,
+      "ciLower": 85.5,
+      "ciUpper": 99.5
+    },
+    "acc": {
+      "value": 48.6,
+      "ciLower": 37.2,
+      "ciUpper": 60
+    },
+    "f1": 0
+  },
+  "secondary": {
+    "tp": 7,
+    "fp": 1,
+    "tn": 34,
+    "fn": 28,
+    "prec": {
+      "value": 87.5,
+      "ciLower": 52.9,
+      "ciUpper": 97.8
+    },
+    "rec": {
+      "value": 20,
+      "ciLower": 10,
+      "ciUpper": 35.9
+    },
+    "spec": {
+      "value": 97.1,
+      "ciLower": 85.5,
+      "ciUpper": 99.5
+    },
+    "acc": {
+      "value": 58.6,
+      "ciLower": 46.9,
+      "ciUpper": 69.4
+    },
+    "f1": 0.3256
+  },
+  "rocAuc": 0.6624,
+  "falsePositives": [
+    {
+      "id": "dev-042",
+      "trust": 48,
+      "risk": 52,
+      "flags": [
+        "fee",
+        "authority",
+        "secrecy",
+        "corporate-email"
+      ]
+    }
+  ],
+  "falseNegatives": [
+    {
+      "id": "dev-001",
+      "type": "digital_arrest",
+      "trust": 65,
+      "risk": 35,
+      "flags": [
+        "authority",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-002",
+      "type": "digital_arrest",
+      "trust": 65,
+      "risk": 35,
+      "flags": [
+        "authority",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-003",
+      "type": "digital_arrest",
+      "trust": 85,
+      "risk": 15,
+      "flags": [
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-004",
+      "type": "digital_arrest",
+      "trust": 50,
+      "risk": 50,
+      "flags": [
+        "authority",
+        "kyc-threat",
+        "secrecy"
+      ]
+    },
+    {
+      "id": "dev-005",
+      "type": "fake_job",
+      "trust": 75,
+      "risk": 25,
+      "flags": [
+        "fee"
+      ]
+    },
+    {
+      "id": "dev-006",
+      "type": "fake_job",
+      "trust": 75,
+      "risk": 25,
+      "flags": [
+        "fee"
+      ]
+    },
+    {
+      "id": "dev-007",
+      "type": "fake_job",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-008",
+      "type": "fake_job",
+      "trust": 85,
+      "risk": 15,
+      "flags": [
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-009",
+      "type": "task_prepayment",
+      "trust": 70,
+      "risk": 30,
+      "flags": [
+        "urgency",
+        "guaranteed"
+      ]
+    },
+    {
+      "id": "dev-010",
+      "type": "task_prepayment",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-011",
+      "type": "task_prepayment",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-012",
+      "type": "investment",
+      "trust": 65,
+      "risk": 35,
+      "flags": [
+        "pay-upi",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-013",
+      "type": "investment",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-014",
+      "type": "investment",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-015",
+      "type": "kyc_utility_courier",
+      "trust": 85,
+      "risk": 15,
+      "flags": [
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-016",
+      "type": "kyc_utility_courier",
+      "trust": 82,
+      "risk": 18,
+      "flags": [
+        "kyc-threat"
+      ]
+    },
+    {
+      "id": "dev-017",
+      "type": "kyc_utility_courier",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-018",
+      "type": "upi_collect",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-019",
+      "type": "upi_collect",
+      "trust": 85,
+      "risk": 15,
+      "flags": [
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-020",
+      "type": "upi_collect",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-021",
+      "type": "loan_app",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-022",
+      "type": "loan_app",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-023",
+      "type": "loan_app",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-024",
+      "type": "voice_clone_emergency",
+      "trust": 50,
+      "risk": 50,
+      "flags": [
+        "pay-upi",
+        "transfer-demand",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-025",
+      "type": "voice_clone_emergency",
+      "trust": 85,
+      "risk": 15,
+      "flags": [
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-026",
+      "type": "voice_clone_emergency",
+      "trust": 85,
+      "risk": 15,
+      "flags": [
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-027",
+      "type": "voice_clone_emergency",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-028",
+      "type": "fake_customer_care",
+      "trust": 90,
+      "risk": 10,
+      "flags": [
+        "urgency",
+        "corporate-email"
+      ]
+    },
+    {
+      "id": "dev-029",
+      "type": "fake_customer_care",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-030",
+      "type": "fake_customer_care",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-031",
+      "type": "fake_customer_care",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-032",
+      "type": "phishing_apk",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-033",
+      "type": "phishing_apk",
+      "trust": 80,
+      "risk": 20,
+      "flags": [
+        "authority"
+      ]
+    },
+    {
+      "id": "dev-034",
+      "type": "phishing_apk",
+      "trust": 97,
+      "risk": 3,
+      "flags": []
+    },
+    {
+      "id": "dev-035",
+      "type": "digital_arrest",
+      "trust": 68,
+      "risk": 32,
+      "flags": [
+        "authority",
+        "secrecy"
+      ]
+    }
+  ]
+}
