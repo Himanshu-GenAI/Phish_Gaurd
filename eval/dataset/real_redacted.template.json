@@ -1,0 +1,112 @@
+[
+  {
+    "id": "real-001",
+    "text": "",
+    "label": "scam",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real spam example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-002",
+    "text": "",
+    "label": "scam",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real spam example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-003",
+    "text": "",
+    "label": "scam",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real spam example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-004",
+    "text": "",
+    "label": "scam",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real spam example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-005",
+    "text": "",
+    "label": "scam",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real spam example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-006",
+    "text": "",
+    "label": "genuine",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real genuine example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-007",
+    "text": "",
+    "label": "genuine",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real genuine example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-008",
+    "text": "",
+    "label": "genuine",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real genuine example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-009",
+    "text": "",
+    "label": "genuine",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real genuine example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  },
+  {
+    "id": "real-010",
+    "text": "",
+    "label": "genuine",
+    "scam_type": "none",
+    "language": "en",
+    "difficulty": "hard",
+    "source": "real_redacted",
+    "channel": "sms",
+    "notes": "Real genuine example added by project owner. Redact real phone numbers, names, account numbers, and URLs."
+  }
+]
