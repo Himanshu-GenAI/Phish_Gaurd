@@ -66,7 +66,7 @@ export function fillOwnerSlots(options?: {
 
   // Read test.json
   const testRaw = readFileSync(testJsonPath, "utf-8");
-  const testItems: any[] = JSON.parse(testRaw);
+  const testItems: Record<string, unknown>[] = JSON.parse(testRaw);
 
   const updatedIds: string[] = [];
   let filledCount = 0;
@@ -123,8 +123,9 @@ if (process.argv[1]?.endsWith("fill-owner-slots.ts")) {
     console.log(` Total items in test.json: ${result.totalTestItems}`);
     console.log(` [PRIVACY GUARANTEE] Item texts were processed and verified without printing.`);
     console.log(`======================================================================\n`);
-  } catch (err: any) {
-    console.error(`\n${err.message}\n`);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`\n${message}\n`);
     process.exit(1);
   }
 }

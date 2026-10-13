@@ -11,12 +11,12 @@ export function sealTestSplit(options?: {
   const shaPath = options?.shaPath ?? resolve(ROOT, "eval/dataset/test.sha256");
 
   const raw = readFileSync(testJsonPath, "utf-8");
-  const items: any[] = JSON.parse(raw);
+  const items: Record<string, unknown>[] = JSON.parse(raw);
 
   const emptySlots: string[] = [];
   for (const item of items) {
     if (!item.text || typeof item.text !== "string" || item.text.trim().length === 0) {
-      emptySlots.push(item.id);
+      emptySlots.push(String(item.id));
     }
   }
 
@@ -47,8 +47,9 @@ if (process.argv[1]?.endsWith("seal.ts")) {
     console.log(` SHA-256 Checksum:   ${res.sha256}`);
     console.log(` Written To:         ${res.shaPath}`);
     console.log(`======================================================================\n`);
-  } catch (err: any) {
-    console.error(`\n${err.message}\n`);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`\n${message}\n`);
     process.exit(1);
   }
 }

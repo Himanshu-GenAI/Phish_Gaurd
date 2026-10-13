@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { writeFileSync, unlinkSync, existsSync, mkdirSync, rmSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync, rmSync } from "fs";
 import { resolve } from "path";
 import { fillOwnerSlots } from "../eval/fill-owner-slots";
 import { sealTestSplit } from "../eval/seal";
