@@ -30,3 +30,11 @@ This document logs architectural fragilities, lexicon pattern gaps, and defense-
 ### 4. Very-Short Speech Boundary in No-Speech Guard
 - **Current Architecture:** Transcripts with fewer than 5 Unicode letters/marks ($[\p{L}\p{M}] < 5$) trigger `noSpeech: true`, returning null score and an informational message.
 - **Observed Limitation:** Monosyllabic genuine voice notes (e.g., "Hi", "And", "No", "Bye", "Haan") contain fewer than 5 characters and are treated as silence/non-speech. While this is an intentional safety guard to prevent acting on audio foundation model background noise hallucinations, genuine short confirmations cannot be scored via audio without additional context.
+
+---
+
+### 5. Dev-Only Dependency Advisory: `braces` via `eslint-config-next`
+- **Advisory:** GHSA-vfj7-8cjw-p6xm (stack-exhaustion DoS in `braces` via `micromatch` -> `fast-glob` -> `@next/eslint-plugin-next` -> `eslint-config-next`).
+- **Scope:** Dev-tooling only; zero impact on production runtime (`npm audit --omit=dev` reports 0 vulnerabilities).
+- **Status:** Not shipped in production bundle. An automated fix via `npm audit fix --force` would trigger a breaking downgrade of `eslint-config-next` to v14.2.35. Retained in current dev tooling and scheduled to revisit after hackathon submission when upstream Next.js updates its transitive lint dependencies.
+
