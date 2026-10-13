@@ -78,6 +78,8 @@ export interface GeminiResult {
   transcript: string;
 }
 
+export const PROMPT_VERSION = "1.0.0";
+
 export class GeminiServiceError extends Error {
   constructor(public status: number, message: string) {
     super(message);
@@ -85,7 +87,7 @@ export class GeminiServiceError extends Error {
   }
 }
 
-function isValidGeminiResult(data: unknown): data is GeminiResult {
+export function isValidGeminiResult(data: unknown): data is GeminiResult {
   if (!data || typeof data !== "object") return false;
   const d = data as Record<string, unknown>;
   return (
@@ -242,13 +244,46 @@ export async function analyzeAudioWithGemini(
 }
 
 export function geminiSignalsToHits(
-  signals: GeminiResult["ai_signals"]
+  signals: unknown
 ): RuleHit[] {
-  return signals.map((s) => ({
-    id: s.id,
-    label: s.label,
-    category: "ai",
-    weight: Number(s.weight),
-    evidence: s.evidence.length > 80 ? s.evidence.slice(0, 80) + "…" : s.evidence,
-  }));
+  if (!Array.isArray(signals)) return [];
+  const hits: RuleHit[] = [];
+
+  for (const s of signals) {
+    if (!s || typeof s !== "object") continue;
+    const item = s as Record<string, unknown>;
+
+    // Must have non-empty string label
+    if (typeof item.label !== "string" || !item.label.trim()) continue;
+
+    // Must have non-empty string evidence
+    if (typeof item.evidence !== "string" || !item.evidence.trim()) continue;
+
+    // Must have finite numeric weight (drop strings, NaN, Infinity)
+    if (typeof item.weight !== "number" || !Number.isFinite(item.weight) || Number.isNaN(item.weight)) {
+      continue;
+    }
+
+    // Drop non-positive / negative weights (e.g. prompt-injection -25 cannot reduce risk)
+    if (item.weight <= 0) continue;
+
+    // Clamp weight to [0, 25]
+    const clampedWeight = Math.min(25, item.weight);
+
+    const id = typeof item.id === "string" && item.id.trim() ? item.id.trim() : "ai_signal";
+    const evidence = item.evidence.length > 80 ? item.evidence.slice(0, 80) + "…" : item.evidence;
+
+    hits.push({
+      id,
+      label: item.label.trim(),
+      category: "ai",
+      weight: clampedWeight,
+      evidence,
+    });
+
+    // Contract: keep at most 8 signals
+    if (hits.length === 8) break;
+  }
+
+  return hits;
 }
