@@ -40,3 +40,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+voice_data/
+
+# eval cache
+eval/cache/*
+!eval/cache/.gitkeep
