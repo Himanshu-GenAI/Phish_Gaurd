@@ -1,0 +1,590 @@
+{
+  "split": "dev",
+  "mode": "rules",
+  "tunedDate": "2026-10-14",
+  "evaluatedCount": 70,
+  "metrics": {
+    "recall50": "3/35 (8.6%)",
+    "recall75": "14/35 (40.0%)",
+    "fpCount": "0/35",
+    "rocAuc": 0.8073
+  },
+  "sampleScores": {
+    "🕵️ Digital arrest": 20,
+    "💼 Fake internship": 13,
+    "📈 Investment group": 25,
+    "✅ Genuine offer": 97
+  },
+  "timingMs": 0.182,
+  "evaluated": [
+    {
+      "id": "dev-001",
+      "label": "scam",
+      "risk": 50,
+      "trust": 50,
+      "flags": [
+        "authority",
+        "transfer-demand",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-002",
+      "label": "scam",
+      "risk": 60,
+      "trust": 40,
+      "flags": [
+        "fee",
+        "authority",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-003",
+      "label": "scam",
+      "risk": 15,
+      "trust": 85,
+      "flags": [
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-004",
+      "label": "scam",
+      "risk": 38,
+      "trust": 62,
+      "flags": [
+        "authority",
+        "kyc-threat"
+      ]
+    },
+    {
+      "id": "dev-005",
+      "label": "scam",
+      "risk": 25,
+      "trust": 75,
+      "flags": [
+        "fee"
+      ]
+    },
+    {
+      "id": "dev-006",
+      "label": "scam",
+      "risk": 25,
+      "trust": 75,
+      "flags": [
+        "fee"
+      ]
+    },
+    {
+      "id": "dev-007",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-008",
+      "label": "scam",
+      "risk": 15,
+      "trust": 85,
+      "flags": [
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-009",
+      "label": "scam",
+      "risk": 45,
+      "trust": 55,
+      "flags": [
+        "transfer-demand",
+        "urgency",
+        "guaranteed"
+      ]
+    },
+    {
+      "id": "dev-010",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-011",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-012",
+      "label": "scam",
+      "risk": 65,
+      "trust": 35,
+      "flags": [
+        "pay-upi",
+        "transfer-demand",
+        "urgency",
+        "guaranteed"
+      ]
+    },
+    {
+      "id": "dev-013",
+      "label": "scam",
+      "risk": 30,
+      "trust": 70,
+      "flags": [
+        "transfer-demand",
+        "guaranteed"
+      ]
+    },
+    {
+      "id": "dev-014",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-015",
+      "label": "scam",
+      "risk": 33,
+      "trust": 67,
+      "flags": [
+        "kyc-threat",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-016",
+      "label": "scam",
+      "risk": 33,
+      "trust": 67,
+      "flags": [
+        "kyc-threat",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-017",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-018",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-019",
+      "label": "scam",
+      "risk": 60,
+      "trust": 40,
+      "flags": [
+        "otp",
+        "pay-upi",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-020",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-021",
+      "label": "scam",
+      "risk": 20,
+      "trust": 80,
+      "flags": [
+        "apk"
+      ]
+    },
+    {
+      "id": "dev-022",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-023",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-024",
+      "label": "scam",
+      "risk": 50,
+      "trust": 50,
+      "flags": [
+        "pay-upi",
+        "transfer-demand",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-025",
+      "label": "scam",
+      "risk": 30,
+      "trust": 70,
+      "flags": [
+        "transfer-demand",
+        "urgency"
+      ]
+    },
+    {
+      "id": "dev-026",
+      "label": "scam",
+      "risk": 27,
+      "trust": 73,
+      "flags": [
+        "urgency",
+        "secrecy"
+      ]
+    },
+    {
+      "id": "dev-027",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-028",
+      "label": "scam",
+      "risk": 10,
+      "trust": 90,
+      "flags": [
+        "urgency",
+        "corporate-email"
+      ]
+    },
+    {
+      "id": "dev-029",
+      "label": "scam",
+      "risk": 25,
+      "trust": 75,
+      "flags": [
+        "remote-app"
+      ]
+    },
+    {
+      "id": "dev-030",
+      "label": "scam",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-031",
+      "label": "scam",
+      "risk": 25,
+      "trust": 75,
+      "flags": [
+        "remote-app"
+      ]
+    },
+    {
+      "id": "dev-032",
+      "label": "scam",
+      "risk": 38,
+      "trust": 62,
+      "flags": [
+        "apk",
+        "kyc-threat"
+      ]
+    },
+    {
+      "id": "dev-033",
+      "label": "scam",
+      "risk": 20,
+      "trust": 80,
+      "flags": [
+        "authority"
+      ]
+    },
+    {
+      "id": "dev-034",
+      "label": "scam",
+      "risk": 20,
+      "trust": 80,
+      "flags": [
+        "apk"
+      ]
+    },
+    {
+      "id": "dev-035",
+      "label": "scam",
+      "risk": 32,
+      "trust": 68,
+      "flags": [
+        "authority",
+        "secrecy"
+      ]
+    },
+    {
+      "id": "dev-036",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-037",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-038",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-039",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-040",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-041",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-042",
+      "label": "genuine",
+      "risk": 20,
+      "trust": 80,
+      "flags": [
+        "fee",
+        "corporate-email"
+      ]
+    },
+    {
+      "id": "dev-043",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-044",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-045",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-046",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-047",
+      "label": "genuine",
+      "risk": 20,
+      "trust": 80,
+      "flags": [
+        "authority"
+      ]
+    },
+    {
+      "id": "dev-048",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-049",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-050",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-051",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-052",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-053",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-054",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-055",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-056",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-057",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-058",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-059",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-060",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-061",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-062",
+      "label": "genuine",
+      "risk": 20,
+      "trust": 80,
+      "flags": [
+        "authority"
+      ]
+    },
+    {
+      "id": "dev-063",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-064",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-065",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-066",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-067",
+      "label": "genuine",
+      "risk": 25,
+      "trust": 75,
+      "flags": [
+        "fee"
+      ]
+    },
+    {
+      "id": "dev-068",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-069",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    },
+    {
+      "id": "dev-070",
+      "label": "genuine",
+      "risk": 3,
+      "trust": 97,
+      "flags": []
+    }
+  ]
+}

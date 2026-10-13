@@ -64,3 +64,9 @@ Adversarial prompt-injection test items (messages embedding override instruction
 - In `--mode rules`, prompt-injection resilience is reported as `N/A (rules do not read instructions)` because deterministic regex rules match literal character patterns and do not execute semantic instructions.
 - In `--mode full`, each adversarial item is evaluated individually to verify whether the model was tricked into suppressing scam signals or outputting negative weights, reporting whether the verdict was flipped or remained resilient.
 
+---
+
+## 6. Assistant-Overlap & Generalization Caveat
+
+Dev and test items were written by the same assistant; dev-tuned vocabulary may overlap with test vocabulary, so test results are likely optimistic and real-world performance is expected to be lower.
+
