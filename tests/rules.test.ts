@@ -97,6 +97,66 @@ describe("Rule Engine (lib/rules)", () => {
         const hits = runRules("OTP batao");
         expect(hits.some((h) => h.id === "otp")).toBe(true);
       });
+
+      // ── KNOWN GAPS DOCUMENTATION TESTS (Item 3) ────────────────
+      describe("Documented Over-Suppression Gaps (Not Desired Behavior)", () => {
+        it("documents over-suppression: 'Do not delay, pay the registration fee now' suppresses fee", () => {
+          const hits = runRules("Do not delay, pay the registration fee now");
+          // 'Do not' within 40 chars before 'registration fee' causes over-suppression (Known Gap)
+          expect(hits.some((h) => h.id === "fee")).toBe(false);
+        });
+
+        it("documents over-suppression: 'No questions asked, share your OTP' suppresses otp", () => {
+          const hits = runRules("No questions asked, share your OTP");
+          // 'No' within 40 chars before 'share your OTP' causes over-suppression (Known Gap)
+          expect(hits.some((h) => h.id === "otp")).toBe(false);
+        });
+
+        it("documents over-suppression: 'Never miss this, download the APK now' suppresses apk", () => {
+          const hits = runRules("Never miss this, download the APK now");
+          // 'Never' within 40 chars before 'APK' causes over-suppression (Known Gap)
+          expect(hits.some((h) => h.id === "apk")).toBe(false);
+        });
+      });
+
+      describe("True Negation Suppression (Desired Behavior)", () => {
+        it("correctly suppresses true negation: 'Never share your OTP with anyone'", () => {
+          const hits = runRules("Never share your OTP with anyone");
+          expect(hits.some((h) => h.id === "otp")).toBe(false);
+        });
+
+        it("correctly suppresses true negation: 'No registration fee is collected'", () => {
+          const hits = runRules("No registration fee is collected");
+          expect(hits.some((h) => h.id === "fee")).toBe(false);
+        });
+
+        it("correctly suppresses true negation: 'Do not download any APK file'", () => {
+          const hits = runRules("Do not download any APK file");
+          expect(hits.some((h) => h.id === "apk")).toBe(false);
+        });
+      });
+    });
+
+    describe("transfer-demand Bounded Amount Quantifier Tests", () => {
+      it("hits transfer-demand on 'Rs 15000 transfer karo'", () => {
+        const hits = runRules("Rs 15000 transfer karo");
+        expect(hits.some((h) => h.id === "transfer-demand")).toBe(true);
+      });
+
+      it("hits transfer-demand on '1,50,000 turant bhej do'", () => {
+        const hits = runRules("1,50,000 turant bhej do");
+        expect(hits.some((h) => h.id === "transfer-demand")).toBe(true);
+      });
+
+      it("hits transfer-demand on '5000 jama karo'", () => {
+        const hits = runRules("5000 jama karo");
+        expect(hits.some((h) => h.id === "transfer-demand")).toBe(true);
+      });
+
+      it("does not hit transfer-demand on '1234 bhai'", () => {
+        const hits = runRules("1234 bhai");
+        expect(hits.some((h) => h.id === "transfer-demand")).toBe(false);
+      });
     });
   });
 

@@ -13,6 +13,8 @@ This log records every vocabulary and rule enhancement made during Phase 5 tunin
 
 > ⚠️ **Note on Granular Edits vs. Logical Changes:** While tuning was organized into 10 logical family changes, the true count of granular pattern edits across `lib/rules/lexicon.ts` and `lib/rules/engine.ts` is **31 edits** (3 engine architecture modifications + 28 regex pattern modifications/additions). Thus, the 12-change limit was respected at the high-level family level, but exceeded in terms of individual pattern edits.
 
+> 🛡️ **Post-Freeze ReDoS Safety Fix (Not Tuning):** In `lib/rules/lexicon.ts`, pattern `transfer-demand-1` quantifier `\d[\d,]{3,}` was bounded to `\d[\d,]{3,12}` to eliminate catastrophic backtracking on repeating digit/comma sequences (reducing adversarial time on `digits` generator at 5,000 characters from 55.6 ms to <0.5 ms). This fix strictly maintains identical regex semantics for all currency amounts up to 12 digits, produces zero metric changes on `dev.json` (recall 3/35 and 14/35, FP 0/35, AUC 0.8073, demo samples 20, 13, 25, 97), and is classified purely as an operational security hardening fix rather than vocabulary tuning.
+
 ---
 
 ## Change Log Table

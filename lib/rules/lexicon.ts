@@ -35,7 +35,7 @@ export const RULES: Rule[] = [
     weight: 15,
     patterns: [
       /(transfer|send|deposit)\s*(₹|rs\.?\s?)\s?\d[\d,]*/i,
-      /(₹|rs\.?\s?)?\s?\b\d[\d,]{3,}\b\s*(turant\s*)?(bhejo|bhej\s*d[oe]|jama\s*karo|transfer\s*kar(o|wa\s*do))\b/i,
+      /(₹|rs\.?\s?)?\s?\b\d[\d,]{3,12}\b\s*(turant\s*)?(bhejo|bhej\s*d[oe]|jama\s*karo|transfer\s*kar(o|wa\s*do))\b/i,
       /pais[ae]\s*(bhejo|bhej\s*d[oe]|jama\s*karo|transfer\s*karo)/i,
       /(?:abhi\s+)?fund\s*transfer\s*kar(o|ein|iye)\b/i,
     ],

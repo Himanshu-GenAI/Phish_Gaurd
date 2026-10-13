@@ -38,3 +38,13 @@ This document logs architectural fragilities, lexicon pattern gaps, and defense-
 - **Scope:** Dev-tooling only; zero impact on production runtime (`npm audit --omit=dev` reports 0 vulnerabilities).
 - **Status:** Not shipped in production bundle. An automated fix via `npm audit fix --force` would trigger a breaking downgrade of `eslint-config-next` to v14.2.35. Retained in current dev tooling and scheduled to revisit after hackathon submission when upstream Next.js updates its transitive lint dependencies.
 
+---
+
+### 6. Bounded Negation Over-Suppression Gaps
+- **Architecture:** `NEGATION_BEFORE` (including bare 'no', 'not', 'never', 'mat') suppresses `otp`, `fee`, and `apk` rule matches when any such token appears within 40 characters preceding the match in the same sentence/clause.
+- **Observed Gap:** While this successfully suppresses genuine security warnings (*"Never share your OTP with anyone"*, *"No registration fee is collected"*, *"Do not download any APK file"*), it also inadvertently suppresses coercive scam phrasing where a negative token appears in an imperative preamble within the same 40-character clause:
+  1. *"Do not delay, pay the registration fee now"* → `"Do not"` within 40 chars suppresses `fee`.
+  2. *"No questions asked, share your OTP"* → `"No"` within 40 chars suppresses `otp`.
+  3. *"Never miss this, download the APK now"* → `"Never"` within 40 chars suppresses `apk`.
+- **Status & Policy:** In adherence to the evaluation freeze, the negation guard is retained without post-freeze architectural modification. The behavior is documented with formal unit tests in `tests/rules.test.ts` and noted in README Limitations.
+
