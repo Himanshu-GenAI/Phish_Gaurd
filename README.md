@@ -103,10 +103,10 @@ Trust = 100 − Risk
 |---|---|---|
 | **1. Rule Engine (18 rules)** | Fees, UPI handles, authority impersonation, urgency, Hinglish keywords | Deterministic, explainable, instant — the backbone |
 | **2. Live Checks (RDAP)** | Domain registration age | Catches fresh scam infrastructure the rules can't see |
-| **3. Gemini (structured JSON)** | Tone, coercion, vagueness, channel mismatch | Catches semantic tricks rules can't — with a strict schema, no hallucinated free text |
+| **3. Gemini (structured JSON)** | Tone, coercion, vagueness, channel mismatch | Evaluates semantic coercion, tone, and context with a strict schema (empirical contribution pending live measurement) |
 | **🎙️ v2: Voice-note analysis** | Upload audio file (WAV verified; MP3 and OGG/OPUS expected to work, pending live verification; FLAC/AIFF untested) | In-memory multimodal speech-to-text forensics via Gemini `inline_data` |
 
-**Why hybrid beats a pure LLM:** rules guarantee *consistency and explainability*, the LLM adds *semantic understanding*, live checks catch *fresh infrastructure* — and **every single point deduction is shown to the user with evidence**. No black box.
+**Why a hybrid design:** deterministic rules provide instant, reproducible baseline explainability; foundation models add semantic understanding for evasive text; and live infrastructure checks detect newly registered domains — fusing deductions with traceable evidence rather than relying solely on a single mechanism.
 
 ### Sample rules (of 18)
 
@@ -214,14 +214,18 @@ npm run dev                   # → http://localhost:3000
 
 ## 🧪 Judge's 90-Second Demo
 
+> ⚠️ **Evaluation Caveat:** The four sample texts below were authored during initial rule construction to test specific pattern triggers. They reflect idealized textbook examples and are **not representative** of the variety and evasiveness of real-world Indian messaging scams. For rigorous benchmark numbers on a held-out dataset, see [Measured Limitations](#️-limitations) and [eval/baseline_dev.json](eval/baseline_dev.json).
+
 ### Empirical Sample Scores (Measured)
 
 | Sample | Rules Only (Degraded Mode) | With AI (Live) | Risk Band | Notes |
 |---|---|---|---|---|
 | **Digital arrest** | **20 / 100** | Pending re-measure | 🔴 Scam | 5 matching rules (risk 80: authority, kyc-threat, transfer, urgency, secrecy). |
-| **Fake internship** | **13 / 100** | Pending re-measure | 🔴 Scam | Rules risk 87. AI signals push risk to 100 clamp (Trust 0) when active. |
+| **Fake internship** | **13 / 100** | Pending re-measure | 🔴 Scam | Rules risk 87. AI-layer contribution not yet measured. |
 | **Investment group** | **25 / 100** | Pending re-measure | 🟠 High risk* | Rules risk 75. *\*Sits right at the boundary of the High Risk band (Trust 25).* |
 | **Genuine offer** | **97 / 100** | Pending re-measure | 🟢 Safe | Legitimacy signals reduce risk to floor of 3 (Trust 97). Mock-verified with AI; live AI pending re-measure. |
+
+> *Note on Sample Scores:* These four sample scores were produced against early development test samples. They demonstrate individual rule mechanics but do not represent performance on evasive in-the-wild messages.
 
 1. **Digital arrest** (Hinglish pressure tactics):
    > "This is Inspector Rajesh Verma, Cyber Cell Mumbai… to avoid digital arrest, transfer ₹2,40,000 to the RBI verification account within 30 minutes. Do not share this with anyone."
@@ -292,6 +296,12 @@ npm run dev                   # → http://localhost:3000
 
 ## ⚠️ Limitations
 
+- **Measured Empirical Baseline Limitations:** On the blind development evaluation split (`eval/dataset/dev.json`, n = 70, evaluated via `eval/run.ts`, data recorded in [`eval/baseline_dev.json`](eval/baseline_dev.json)):
+  - **Rules-only Recall at Trust < 50 (primary warning boundary, at the pre-specified threshold, before tuning):** 0 / 35 (0.0%, 95% CI: [0.0%, 9.9%]) ([eval/baseline_dev.json](eval/baseline_dev.json)).
+  - **Rules-only Recall at Trust < 75 (secondary screening boundary, before tuning):** 7 / 35 (20.0%, 95% CI: [10.0%, 35.9%]) ([eval/baseline_dev.json](eval/baseline_dev.json)).
+  - **False Positives (before tuning):** 1 / 35 (2.9%, specificity 97.1%, 95% CI: [85.5%, 99.5%]) ([eval/baseline_dev.json](eval/baseline_dev.json)).
+  - **Threshold-Free Discrimination (ROC AUC on Risk Score, before tuning):** 0.6624 ([eval/baseline_dev.json](eval/baseline_dev.json)).
+  *Note on Demo Samples:* The four sample texts in the 90-second demo were authored during initial rule construction to test specific pattern triggers. They reflect idealized textbook examples and are **not representative** of the variety and evasiveness of real-world Indian messaging scams.
 - **Adversarial & Evasive Text:** Novel scam phrasing or heavily obfuscated characters may evade regex keywords and rely solely on the LLM layer.
 - **API Rate Limits & Quotas:** The free Gemini tier enforces a quota of ~20 requests per day per project/model (and 5 requests/minute). Under high traffic, text requests gracefully degrade to rules-only mode, and voice requests report service busy. For a public demo or sustained testing, active billing or a spare API key is required.
 - **Audio Verification & Transcription Status:** WAV is currently the only live-verified audio format. MP3 and OGG/OPUS are expected to work, pending live verification (AAC has been removed; FLAC and AIFF are untested). Romanized-Hinglish transcription prompt instructions and the `speech_detected` gating are mock-verified only, pending live quota verification.
