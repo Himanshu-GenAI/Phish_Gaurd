@@ -8,15 +8,12 @@ export const RULES: Rule[] = [
     category: "payment",
     weight: 25,
     patterns: [
-      /(?<!\bno\s)registration\s*fee/i,
-      /(?<!\bno\s)processing\s*fee/i,
-      /security\s*deposit/i,
-      /membership\s*fee/i,
+      /(?<!\bno\s)(registration|processing|membership|kyc|joining)\s*(fees?|charges?|amount)/i,
+      /(courier|dispatch|kit|uniform|training|verification)\s*(fees?|charges?|deposit)/i,
+      /(refundable\s+)?security\s*(deposit|charges?|amount)/i,
       /token\s*amount/i,
-      /kyc\s*fee/i,
       /fee\s*(bharna|bharo|do)\b/i,
       /advance\s*paisa/i,
-      /(?<!\bno\s)joining\s*(fee|amount)/i,
     ],
   },
   {
@@ -27,6 +24,8 @@ export const RULES: Rule[] = [
     patterns: [
       /\b[\w.-]+@(upi|ybl|oksbi|okaxis|paytm|ibl|axl|okhdfcbank|icici)\b/i,
       /\bpay\b.{0,30}(via|to|on)\s*(upi|gpay|phonepe|paytm)\b/i,
+      /(qr\s*code|qr)\s*(scan\s*karo|scan\s*karke|bhejo)/i,
+      /scan\s*(this\s*)?qr(\s*code)?.{0,30}(receive|payment|paise|money|upi|phonepe|gpay|paytm|karo)/i,
     ],
   },
   {
@@ -36,7 +35,9 @@ export const RULES: Rule[] = [
     weight: 15,
     patterns: [
       /(transfer|send|deposit)\s*(₹|rs\.?\s?)\s?\d[\d,]*/i,
-      /paise\s*bhejo/i,
+      /(₹|rs\.?\s?)?\s?\b\d[\d,]{3,}\b\s*(turant\s*)?(bhejo|bhej\s*d[oe]|jama\s*karo|transfer\s*kar(o|wa\s*do))\b/i,
+      /pais[ae]\s*(bhejo|bhej\s*d[oe]|jama\s*karo|transfer\s*karo)/i,
+      /(?:abhi\s+)?fund\s*transfer\s*kar(o|ein|iye)\b/i,
     ],
   },
 
@@ -47,7 +48,8 @@ export const RULES: Rule[] = [
     category: "credential",
     weight: 25,
     patterns: [
-      /(share|send|confirm|enter|give|tell)\s*(your\s*)?(otp|pin|cvv|password|mpin)/i,
+      /(share|send|confirm|enter|give|tell)\s*(your\s*)?((secret|login|upi|atm)\s*){0,2}(otp|pin|cvv|password|mpin)/i,
+      /(upi\s*|atm\s*)?(pin|otp|cvv|mpin)\s*(dalo|enter\s*karo|batao|share\s*karo)\b/i,
       /otp\s*batao/i,
     ],
   },
@@ -61,7 +63,9 @@ export const RULES: Rule[] = [
       /teamviewer/i,
       /rustdesk/i,
       /quick\s*support/i,
-      /screen\s*share/i,
+      /remote\s*(assist|support|access|control|diagnostic)/i,
+      /screen\s*(share|sharing|verification)/i,
+      /(diagnostic|screen)\s*sharing\s*session/i,
     ],
   },
 
@@ -75,7 +79,7 @@ export const RULES: Rule[] = [
       /\bCBI\b/,
       /\bNCB\b/,
       /enforcement\s*directorate/i,
-      /income\s*tax/i,
+      /(income\s*tax\s*(department|officer|notice|raid|refund|rebate|summons|demand|dossier|penalty|e-filing)|tax\s*evasion)/i,
       /\bcustoms\b/i,
       /cyber\s*(cell|crime\s*branch)/i,
       /digital\s*arrest/i,
@@ -92,8 +96,8 @@ export const RULES: Rule[] = [
     weight: 18,
     patterns: [
       /kyc\s*(expire|suspend|update|verify|pending)/i,
-      /electricity\s*(cut|disconnect)/i,
-      /account\s*(blocked|suspended|frozen|closed)/i,
+      /(electricity|power\s*supply|bijli|meter)[^\n.!?]{0,60}(cut|disconnect(ed)?|kaat\s*d[ie]|band)\b/i,
+      /(account|services?|netbanking)\s*(blocked|suspended|frozen|freeze|closed|deactivated)/i,
       /parcel.{0,60}seized/i,
       /\b(drugs|mdma|cocaine|heroin|contraband)\b/i,
       /\bcustoms\b.{0,30}(seized|parcel|package)/i,
@@ -113,10 +117,11 @@ export const RULES: Rule[] = [
       /\b(immediately|urgent|asap)\b/i,
       /(offer|slot|deal)\s*expires?/i,
       /only\s*\d+\s*slots?\s*left/i,
-      /aaj\s*hi/i,
+      /aaj\s*(hi|raat)?\b/i,
       /jaldi\s*karo/i,
       /\bturant\b/i,
       /closes?\s*today/i,
+      /\babhi\s*(login|karo|update|verify|bhejo|transfer)\b/i,
     ],
   },
   {
@@ -127,7 +132,10 @@ export const RULES: Rule[] = [
     patterns: [
       /do\s*not\s*(share|tell)\s*(this\s*)?(with\s*)?anyone/i,
       /don'?t\s*share\s*with\s*your\s*family/i,
-      /\bconfidential\b/i,
+      /(keep|maintain)\s+(this\s+)?confidential/i,
+      /(strictly?\s+)?confidential\s+(investigation|dossier|notice|order)/i,
+      /(strict\s+)?communication\s+silence/i,
+      /(call|phone|baat)\s*mat\s*karna\b/i,
       /kisi\s*ko\s*mat\s*batana/i,
     ],
   },
@@ -139,11 +147,12 @@ export const RULES: Rule[] = [
     category: "investment",
     weight: 15,
     patterns: [
-      /guaranteed\s*(profit|returns?)/i,
+      /(guaranteed|pakka)\s*(profit|returns?|fayda|munafa)/i,
       /100\s*%\s*(profit|safe|returns?)/i,
+      /\bzero\s*risk\b/i,
       /double\s*your\s*money/i,
-      /daily\s*(income|earning|profit)\s*(₹|rs\.?\s?)\s?\d/i,
-      /(crypto|forex)\s*(signals?|tips?)/i,
+      /daily\s*(\d+%\s*)?(income|earning|profit|returns?)/i,
+      /(crypto|forex|stock|share\s*market)\s*(signals?|tips?)/i,
     ],
   },
 
@@ -196,6 +205,7 @@ export const RULES: Rule[] = [
     weight: 20,
     patterns: [
       /\.apk\b/i,
+      /\bapk\b/i,
       /download\s*the\s*app\s*from\s*the\s*link/i,
       /not\s*available\s*on\s*play\s*store/i,
     ],
@@ -224,7 +234,7 @@ export const RULES: Rule[] = [
     category: "legitimacy",
     weight: -8,
     patterns: [
-      /no\s*(registration|joining|processing)\s*fee/i,
+      /no\s*(registration|joining|processing)\s*(fee|fees|charges?)/i,
       /free\s*to\s*(apply|join)/i,
       /koi\s*fee\s*nahi/i,
     ],

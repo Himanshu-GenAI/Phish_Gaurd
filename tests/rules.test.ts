@@ -66,6 +66,38 @@ describe("Rule Engine (lib/rules)", () => {
       const hits = runRules(text);
       expect(hits.some((h) => h.id === "corporate-email")).toBe(true);
     });
+
+    describe("Bounded Negation Guard (otp and fee)", () => {
+      it("does not hit otp on 'do not share your OTP'", () => {
+        const hits = runRules("do not share your OTP");
+        expect(hits.some((h) => h.id === "otp")).toBe(false);
+      });
+
+      it("hits otp on 'share your OTP now'", () => {
+        const hits = runRules("share your OTP now");
+        expect(hits.some((h) => h.id === "otp")).toBe(true);
+      });
+
+      it("does not hit fee on 'we never charge any registration fee'", () => {
+        const hits = runRules("we never charge any registration fee");
+        expect(hits.some((h) => h.id === "fee")).toBe(false);
+      });
+
+      it("hits fee on 'pay the registration fee'", () => {
+        const hits = runRules("pay the registration fee");
+        expect(hits.some((h) => h.id === "fee")).toBe(true);
+      });
+
+      it("does not hit otp on 'OTP kisi se share mat karna'", () => {
+        const hits = runRules("OTP kisi se share mat karna");
+        expect(hits.some((h) => h.id === "otp")).toBe(false);
+      });
+
+      it("hits otp on 'OTP batao'", () => {
+        const hits = runRules("OTP batao");
+        expect(hits.some((h) => h.id === "otp")).toBe(true);
+      });
+    });
   });
 
   describe("Scoring & Determinism", () => {
