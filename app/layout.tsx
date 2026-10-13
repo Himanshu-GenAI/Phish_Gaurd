@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "ScamShield AI — Explainable Scam Detection",
   description:
-    "Paste any suspicious message and get an explainable Trust Score with red flags, scam classification, and safety steps. Privacy-first — nothing stored.",
+    "Paste any suspicious message and get an explainable Trust Score with red flags, scam classification, and safety steps. Privacy-first — not persisted by the app.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

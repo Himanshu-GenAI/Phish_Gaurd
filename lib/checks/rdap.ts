@@ -12,12 +12,16 @@ export async function checkDomain(
   try {
     const domain = new URL(url).hostname;
     const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 5000);
-    const res = await fetch(`https://rdap.org/domain/${domain}`, {
-      signal: ctrl.signal,
-      headers: { accept: "application/rdap+json" },
-    });
-    clearTimeout(t);
+    const t = setTimeout(() => ctrl.abort(), 6000);
+    let res: Response;
+    try {
+      res = await fetch(`https://rdap.org/domain/${domain}`, {
+        signal: ctrl.signal,
+        headers: { accept: "application/rdap+json" },
+      });
+    } finally {
+      clearTimeout(t);
+    }
     if (!res.ok) return null;
 
     const data = await res.json();

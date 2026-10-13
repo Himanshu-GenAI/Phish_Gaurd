@@ -1,9 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runRules, ruleRisk } from "@/lib/rules/engine";
 import { extractUrls, extractUpiHandles, extractAmounts } from "@/lib/checks/entities";
-import { checkDomain } from "@/lib/checks/rdap";
-import { analyzeWithGemini, analyzeAudioWithGemini, geminiSignalsToHits } from "@/lib/ai/gemini";
+import { checkDomain, DomainCheck } from "@/lib/checks/rdap";
+import {
+  analyzeWithGemini,
+  analyzeAudioWithGemini,
+  geminiSignalsToHits,
+  GeminiResult,
+  GeminiServiceError,
+} from "@/lib/ai/gemini";
 import type { RuleHit } from "@/lib/rules/types";
+
+// Maximum duration for Vercel serverless function: 30 seconds provides
+// ample headroom for parallel 10s Gemini and 6s RDAP timeouts plus serialization.
+export const maxDuration = 30;
+
+const MAX_TEXT_LENGTH = 5000;
+const MAX_RAW_AUDIO_BYTES = 3 * 1024 * 1024; // 3 MB limit
+
+const ALLOWED_AUDIO_MIMES = new Set([
+  "audio/wav",
+  "audio/wave",
+  "audio/x-wav",
+  "audio/mp3",
+  "audio/mpeg",
+  "audio/ogg",
+  "audio/opus",
+  "audio/aiff",
+  "audio/x-aiff",
+  "audio/flac",
+  "audio/x-flac",
+]);
 
 function clamp(val: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, val));
@@ -17,121 +44,161 @@ function getBand(trust: number): string {
 }
 
 export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const text: string | undefined = body?.text;
-    const audio: string | undefined = body?.audio;
-    const mimeType: string | undefined = body?.mimeType;
+  const startTime = performance.now();
 
-    // Empty body (no text AND no audio) → 400
-    if (!audio && (!text || !text.trim())) {
-      return NextResponse.json({ error: "Nothing to analyze" }, { status: 400 });
+  // 1. Parse body in its own try/catch (400 for malformed JSON)
+  let body: Record<string, unknown>;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid JSON in request body" },
+      { status: 400 }
+    );
+  }
+
+  const rawText = typeof body?.text === "string" ? body.text : undefined;
+  const rawAudio = typeof body?.audio === "string" ? body.audio : undefined;
+  const rawMime = typeof body?.mimeType === "string" ? body.mimeType : undefined;
+
+  // Reject when neither audio nor text is provided
+  if (!rawAudio && (!rawText || !rawText.trim())) {
+    return NextResponse.json({ error: "Nothing to analyze" }, { status: 400 });
+  }
+
+  // ── Audio branch ──────────────────────────────────────────
+  if (rawAudio) {
+    const audioMime = (rawMime || "audio/ogg").toLowerCase().trim();
+    if (!ALLOWED_AUDIO_MIMES.has(audioMime)) {
+      return NextResponse.json(
+        {
+          error:
+            "Unsupported audio format. WAV is verified; MP3 and OGG/OPUS are expected to work, pending live verification (FLAC and AIFF untested).",
+        },
+        { status: 400 }
+      );
     }
 
-    if (audio) {
-      // ── Audio branch ──────────────────────────────────────────
-      let cleanBase64 = audio;
-      if (cleanBase64.includes("base64,")) {
-        cleanBase64 = cleanBase64.split("base64,")[1];
-      }
-      const mime = mimeType || "audio/ogg";
+    // Map .opus / audio/opus to audio/ogg for Gemini REST API
+    const targetMime = audioMime === "audio/opus" ? "audio/ogg" : audioMime;
 
-      // a. Call analyzeAudioWithGemini. If null → 502
-      const ai = await analyzeAudioWithGemini(cleanBase64, mime);
-      if (!ai) {
+    let cleanBase64 = rawAudio;
+    if (cleanBase64.includes("base64,")) {
+      cleanBase64 = cleanBase64.split("base64,")[1];
+    }
+    cleanBase64 = cleanBase64.trim();
+
+    let audioBuffer: Buffer;
+    try {
+      audioBuffer = Buffer.from(cleanBase64, "base64");
+      if (audioBuffer.length === 0) {
         return NextResponse.json(
-          { error: "Audio analysis failed. Try pasting the text instead." },
-          { status: 502 }
+          { error: "Audio payload is empty or invalid base64" },
+          { status: 400 }
         );
       }
-
-      const transcript = ai.transcript || "";
-
-      // b. Run the EXISTING rule engine on the returned transcript
-      const ruleHits = runRules(transcript);
-
-      // c. Extract URLs from the transcript and run existing RDAP checks (max 3, parallel)
-      const urls = extractUrls(transcript).slice(0, 3);
-      const upi = extractUpiHandles(transcript);
-      const amounts = extractAmounts(transcript);
-
-      const domainResults = (
-        await Promise.all(urls.map((u) => checkDomain(u)))
-      ).filter((d) => d !== null);
-
-      // d. Fuse scores exactly like the text path
-      const aiHits: RuleHit[] = geminiSignalsToHits(ai.ai_signals);
-
-      const domainFlags: RuleHit[] = domainResults
-        .filter((d) => d.weight > 0)
-        .map((d) => ({
-          id: "domain_age",
-          label: d.note,
-          category: "live",
-          weight: d.weight,
-          evidence: d.domain,
-        }));
-
-      const domainWeight = domainResults.reduce((s, d) => s + d.weight, 0);
-      const aiWeight = aiHits.reduce((s, h) => s + h.weight, 0);
-      const raw = ruleRisk(ruleHits) + domainWeight + aiWeight;
-      const risk = clamp(raw, 3, 100);
-      const trust = 100 - risk;
-      const band = getBand(trust);
-
-      const flags = [...ruleHits, ...aiHits, ...domainFlags].sort(
-        (a, b) => Math.abs(b.weight) - Math.abs(a.weight)
+    } catch {
+      return NextResponse.json(
+        { error: "Failed to decode audio base64 payload" },
+        { status: 400 }
       );
+    }
 
-      const scam_type = ai.scam_type ?? "unknown";
-      const verdict = ai.verdict ?? "Analysis complete.";
-      const next_steps = ai.next_steps ?? [
-        "Verify the sender through official channels before acting.",
-        "Never pay any fee to receive a job, prize, or refund.",
-        "Report scams: call 1930 or visit cybercrime.gov.in",
-      ];
-      const family_note = ai.family_note ?? "";
+    if (audioBuffer.length > MAX_RAW_AUDIO_BYTES) {
+      return NextResponse.json(
+        {
+          error:
+            "Audio file exceeds 3 MB limit (Vercel payload constraint). Please upload a smaller file.",
+        },
+        { status: 413 }
+      );
+    }
 
-      // e. Response = same shape as text path + one new field: "transcript"
+    let aiResult: GeminiResult | null = null;
+    try {
+      aiResult = await analyzeAudioWithGemini(cleanBase64, targetMime);
+    } catch (err) {
+      if (err instanceof GeminiServiceError && (err.status === 429 || err.status === 503)) {
+        console.warn(`[analyze:audio] Voice service busy (${err.status})`);
+        return NextResponse.json(
+          { error: "The voice service is busy or at its limit. Please try again later." },
+          { status: 503 }
+        );
+      }
+      console.warn("[analyze:audio] Audio analysis error");
+    }
+
+    if (!aiResult) {
+      return NextResponse.json(
+        { error: "Audio analysis failed. Try pasting the text instead." },
+        { status: 502 }
+      );
+    }
+
+    const transcript = (aiResult.transcript || "").trim();
+
+    // Speech guard: triggers only when speech_detected is false OR transcript has fewer than 5 Unicode letters
+    const lettersCount = (transcript.match(/\p{L}/gu) || []).length;
+    if (aiResult.speech_detected === false || transcript.length === 0 || lettersCount < 5) {
       return NextResponse.json({
-        trust,
-        band,
-        scam_type,
-        flags,
-        verdict,
-        next_steps,
-        family_note,
-        transcript,
-        entities: { upi, amounts },
+        noSpeech: true,
+        message: "No intelligible speech detected in the audio file.",
+        transcript: "",
+        trust: null,
+        band: null,
+        scam_type: "none",
+        flags: [],
+        verdict: "No intelligible speech detected in the audio file.",
+        next_steps: [],
+        family_note: "",
+        degraded: [],
+        entities: { upi: [], amounts: [] },
+        breakdown: {
+          rules: 0,
+          rdap: 0,
+          ai: 0,
+          raw_risk: 0,
+          risk: 0,
+          degraded: [],
+        },
       });
     }
 
-    // ── Text branch (audio is absent) ─────────────────────────
-    const messageText = text as string;
+    const degraded: string[] = [];
 
-    // ── Layer 1: Rule engine ──────────────────────────────────
-    const ruleHits = runRules(messageText);
+    // Cap the audio transcript at 5,000 characters for analysis (rules, entity extraction, RDAP)
+    // so regex matching execution time remains strictly bounded, while keeping full transcript for display.
+    const textForAnalysis = transcript.slice(0, 5000);
 
-    // ── Entity extraction ─────────────────────────────────────
-    const urls = extractUrls(messageText).slice(0, 3);
-    const upi = extractUpiHandles(messageText);
-    const amounts = extractAmounts(messageText);
+    // Run rules engine on capped transcribed audio
+    let ruleHits: RuleHit[] = [];
+    try {
+      ruleHits = runRules(textForAnalysis);
+    } catch {
+      ruleHits = [];
+    }
 
-    // ── Layer 2: RDAP domain-age checks (parallel) ────────────
-    const domainResults = (
-      await Promise.all(urls.map((u) => checkDomain(u)))
-    ).filter((d) => d !== null);
+    const urls = extractUrls(textForAnalysis).slice(0, 3);
+    const upi = extractUpiHandles(textForAnalysis);
+    const amounts = extractAmounts(textForAnalysis);
 
-    // ── Layer 3: Gemini AI analysis ───────────────────────────
-    const ai = await analyzeWithGemini(
-      messageText,
-      ruleHits.map((h) => h.label)
-    );
+    // RDAP domain checks with degradation tracking
+    let domainResults: DomainCheck[] = [];
+    try {
+      const rdapSettled = await Promise.allSettled(urls.map((u) => checkDomain(u)));
+      domainResults = rdapSettled
+        .filter((r): r is PromiseFulfilledResult<DomainCheck | null> => r.status === "fulfilled")
+        .map((r) => r.value)
+        .filter((d): d is DomainCheck => d !== null);
 
-    // ── Fuse AI signals into RuleHit[] ────────────────────────
-    const aiHits: RuleHit[] = ai ? geminiSignalsToHits(ai.ai_signals) : [];
+      if (urls.length > 0 && rdapSettled.some((r) => r.status === "rejected")) {
+        degraded.push("domain-check");
+      }
+    } catch {
+      degraded.push("domain-check");
+    }
 
-    // ── Domain flags (only those with weight > 0) ─────────────
+    const aiHits: RuleHit[] = geminiSignalsToHits(aiResult.ai_signals);
     const domainFlags: RuleHit[] = domainResults
       .filter((d) => d.weight > 0)
       .map((d) => ({
@@ -142,7 +209,6 @@ export async function POST(req: NextRequest) {
         evidence: d.domain,
       }));
 
-    // ── Score fusion ──────────────────────────────────────────
     const domainWeight = domainResults.reduce((s, d) => s + d.weight, 0);
     const aiWeight = aiHits.reduce((s, h) => s + h.weight, 0);
     const raw = ruleRisk(ruleHits) + domainWeight + aiWeight;
@@ -150,34 +216,147 @@ export async function POST(req: NextRequest) {
     const trust = 100 - risk;
     const band = getBand(trust);
 
-    // ── Merge & sort all flags by |weight| descending ─────────
     const flags = [...ruleHits, ...aiHits, ...domainFlags].sort(
       (a, b) => Math.abs(b.weight) - Math.abs(a.weight)
     );
 
-    // ── Scam type + verdict + next_steps + family_note ────────
-    const scam_type = ai?.scam_type ?? "unknown";
-    const verdict =
-      ai?.verdict ?? "Rule-based analysis only (AI layer unavailable).";
-    const next_steps = ai?.next_steps ?? [
-      "Verify the sender through official channels before acting.",
-      "Never pay any fee to receive a job, prize, or refund.",
-      "Report scams: call 1930 or visit cybercrime.gov.in",
-    ];
-    const family_note = ai?.family_note ?? "";
+    const elapsed = Math.round(performance.now() - startTime);
+    console.log(`[analyze:audio] 200 OK | duration: ${elapsed}ms | flags: ${flags.length}`);
 
     return NextResponse.json({
       trust,
       band,
-      scam_type,
+      scam_type: aiResult.scam_type ?? "unknown",
       flags,
-      verdict,
-      next_steps,
-      family_note,
-      transcript: "",
+      verdict: aiResult.verdict ?? "Analysis complete.",
+      next_steps: aiResult.next_steps ?? [
+        "Verify the sender through official channels before acting.",
+        "Never pay any fee to receive a job, prize, or refund.",
+        "Report scams: call 1930 or visit cybercrime.gov.in",
+      ],
+      family_note: aiResult.family_note ?? "",
+      transcript,
+      degraded,
       entities: { upi, amounts },
+      breakdown: {
+        rules: ruleRisk(ruleHits),
+        rdap: domainWeight,
+        ai: aiWeight,
+        raw_risk: raw,
+        risk,
+        degraded,
+      },
     });
-  } catch {
-    return NextResponse.json({ error: "Analysis failed" }, { status: 500 });
   }
+
+  // ── Text branch ───────────────────────────────────────────
+  const text = (rawText || "").trim();
+  if (!text) {
+    return NextResponse.json({ error: "Nothing to analyze" }, { status: 400 });
+  }
+
+  if (text.length > MAX_TEXT_LENGTH) {
+    return NextResponse.json(
+      {
+        error: `Message exceeds the ${MAX_TEXT_LENGTH.toLocaleString()} character limit. Please shorten your message.`,
+      },
+      { status: 400 }
+    );
+  }
+
+  // Layer 1: Rule engine (deterministic, never throws)
+  let ruleHits: RuleHit[] = [];
+  try {
+    ruleHits = runRules(text);
+  } catch {
+    ruleHits = [];
+  }
+
+  const urls = extractUrls(text).slice(0, 3);
+  const upi = extractUpiHandles(text);
+  const amounts = extractAmounts(text);
+
+  const degraded: string[] = [];
+
+  // Parallel Layer 2 (RDAP) and Layer 3 (Gemini) via Promise.allSettled
+  const [rdapSettled, geminiSettled] = await Promise.allSettled([
+    Promise.all(urls.map((u) => checkDomain(u))),
+    analyzeWithGemini(
+      text,
+      ruleHits.map((h) => h.label)
+    ),
+  ]);
+
+  let domainResults: DomainCheck[] = [];
+  if (rdapSettled.status === "fulfilled") {
+    domainResults = rdapSettled.value.filter((d): d is DomainCheck => d !== null);
+  } else {
+    degraded.push("domain-check");
+  }
+
+  let ai: GeminiResult | null = null;
+  if (geminiSettled.status === "fulfilled" && geminiSettled.value !== null) {
+    ai = geminiSettled.value;
+  } else {
+    degraded.push("ai-analysis");
+  }
+
+  const aiHits: RuleHit[] = ai ? geminiSignalsToHits(ai.ai_signals) : [];
+
+  const domainFlags: RuleHit[] = domainResults
+    .filter((d) => d.weight > 0)
+    .map((d) => ({
+      id: "domain_age",
+      label: d.note,
+      category: "live",
+      weight: d.weight,
+      evidence: d.domain,
+    }));
+
+  const domainWeight = domainResults.reduce((s, d) => s + d.weight, 0);
+  const aiWeight = aiHits.reduce((s, h) => s + h.weight, 0);
+  const raw = ruleRisk(ruleHits) + domainWeight + aiWeight;
+  const risk = clamp(raw, 3, 100);
+  const trust = 100 - risk;
+  const band = getBand(trust);
+
+  const flags = [...ruleHits, ...aiHits, ...domainFlags].sort(
+    (a, b) => Math.abs(b.weight) - Math.abs(a.weight)
+  );
+
+  const scam_type = ai?.scam_type ?? "unknown";
+  const verdict =
+    ai?.verdict ?? "Rule-based analysis only (AI layer unavailable).";
+  const next_steps = ai?.next_steps ?? [
+    "Verify the sender through official channels before acting.",
+    "Never pay any fee to receive a job, prize, or refund.",
+    "Report scams: call 1930 or visit cybercrime.gov.in",
+  ];
+  const family_note = ai?.family_note ?? "";
+
+  const elapsed = Math.round(performance.now() - startTime);
+  console.log(
+    `[analyze:text] 200 OK | duration: ${elapsed}ms | degraded: [${degraded.join(", ")}]`
+  );
+
+  return NextResponse.json({
+    trust,
+    band,
+    scam_type,
+    flags,
+    verdict,
+    next_steps,
+    family_note,
+    transcript: "",
+    degraded,
+    entities: { upi, amounts },
+    breakdown: {
+      rules: ruleRisk(ruleHits),
+      rdap: domainWeight,
+      ai: aiWeight,
+      raw_risk: raw,
+      risk,
+      degraded,
+    },
+  });
 }

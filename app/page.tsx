@@ -10,15 +10,26 @@ import TranscriptCard from "@/components/TranscriptCard";
 import type { RuleHit } from "@/lib/rules/types";
 
 interface AnalysisResult {
-  trust: number;
-  band: string;
+  trust: number | null;
+  band: string | null;
   scam_type: string;
   flags: RuleHit[];
   verdict: string;
   next_steps: string[];
   family_note: string;
   transcript?: string;
+  degraded?: string[];
+  noSpeech?: boolean;
+  message?: string;
   entities: { upi: string[]; amounts: string[] };
+  breakdown?: {
+    rules: number;
+    rdap: number;
+    ai: number;
+    raw_risk: number;
+    risk: number;
+    degraded: string[];
+  };
 }
 
 const BAND_LABELS: Record<string, string> = {
@@ -51,38 +62,39 @@ export default function Home() {
     setError(null);
     if (!file) return;
 
-    // Validate type
+    // Validate type matching supported formats: WAV is verified; MP3 and OGG/OPUS are expected to work, pending live verification; AIFF and FLAC untested
     const validTypes = [
       "audio/ogg",
       "audio/oga",
+      "audio/opus",
       "audio/mp3",
       "audio/mpeg",
       "audio/wav",
       "audio/wave",
       "audio/x-wav",
-      "audio/m4a",
-      "audio/mp4",
-      "audio/aac",
-      "audio/webm",
+      "audio/aiff",
+      "audio/x-aiff",
       "audio/flac",
+      "audio/x-flac",
     ];
     const ext = file.name.split(".").pop()?.toLowerCase();
-    const validExts = ["ogg", "oga", "mp3", "wav", "m4a", "aac", "webm", "flac"];
+    const validExts = ["ogg", "oga", "opus", "mp3", "wav", "aiff", "flac"];
 
     if (
-      !file.type.startsWith("audio/") &&
       !validTypes.includes(file.type) &&
       (!ext || !validExts.includes(ext))
     ) {
-      setError("Please upload a valid audio file (.ogg, .mp3, .wav, .m4a).");
+      setError(
+        "Please upload a supported audio format: WAV is verified; MP3 and OGG/OPUS are expected to work, pending live verification (AIFF and FLAC untested)."
+      );
       return;
     }
 
-    // Validate size: 15 MB limit
-    const maxBytes = 15 * 1024 * 1024;
+    // Validate size: 3 MB limit (Vercel payload constraint)
+    const maxBytes = 3 * 1024 * 1024;
     if (file.size > maxBytes) {
       setError(
-        `File is too large (${(file.size / (1024 * 1024)).toFixed(1)} MB). Maximum audio file size is 15 MB.`
+        `File is too large (${(file.size / (1024 * 1024)).toFixed(1)} MB). Maximum audio file size is 3 MB (Vercel serverless request limit is ~4.5 MB, and base64 encoding adds ~33%).`
       );
       return;
     }
@@ -184,7 +196,7 @@ export default function Home() {
             Paste any suspicious message. Get an explainable Trust Score.
           </p>
           <span className="inline-flex items-center gap-1.5 text-xs text-slate-500 bg-slate-900 border border-slate-800 rounded-full px-3 py-1">
-            Explainable AI · Privacy-first · Nothing stored
+            Explainable AI · Privacy-first · Not persisted by the app
           </span>
         </header>
 
@@ -247,13 +259,14 @@ export default function Home() {
                   id="message-input"
                   ref={textareaRef}
                   rows={7}
+                  maxLength={5000}
                   placeholder="Paste the WhatsApp forward, job offer, email, or SMS here…"
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-sm text-slate-100 placeholder:text-slate-500 resize-none focus:outline-none focus:border-violet-500 transition-colors"
                 />
                 <span className="absolute bottom-3 right-3 text-xs text-slate-600">
-                  {text.length}
+                  {text.length.toLocaleString()} / 5,000
                 </span>
               </div>
             </>
@@ -263,7 +276,7 @@ export default function Home() {
                 id="voice-file-input"
                 ref={fileInputRef}
                 type="file"
-                accept="audio/*,.ogg,.oga,.mp3,.wav,.m4a"
+                accept="audio/*,.ogg,.oga,.opus,.mp3,.wav,.aiff,.flac"
                 className="sr-only"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
@@ -279,7 +292,7 @@ export default function Home() {
                     <span>🎙️</span> Choose audio file
                   </label>
                   <p className="text-xs text-slate-400 mt-3 max-w-sm leading-relaxed">
-                    Forward the WhatsApp voice note to yourself, save it, upload here (.ogg, .mp3, .wav, .m4a — max 15 MB)
+                    Forward the WhatsApp voice note to yourself, save it, upload here (WAV verified; MP3 and OGG/OPUS expected to work, pending live verification — max 3 MB; AIFF/FLAC untested)
                   </p>
                 </>
               ) : (
@@ -399,16 +412,55 @@ export default function Home() {
               <TranscriptCard transcript={result.transcript} />
             )}
 
-            {/* Verdict card */}
-            <div
-              className="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col sm:flex-row items-center gap-5 opacity-0 animate-fade-in-up"
-            >
-              <ScoreGauge trust={result.trust} band={result.band} />
+            {/* Degradation notice */}
+            {result.degraded && result.degraded.length > 0 && (
+              <div
+                role="status"
+                aria-live="polite"
+                className="rounded-2xl bg-amber-950/40 border border-amber-800/60 p-4 text-xs text-amber-300 flex items-start gap-2.5 opacity-0 animate-fade-in-up"
+              >
+                <span className="text-base leading-none">⚠️</span>
+                <div>
+                  <p className="font-semibold text-amber-200">
+                    Partial Analysis (Degraded Mode)
+                  </p>
+                  <p className="text-amber-300/90 mt-0.5">
+                    Some verification layers were temporarily unavailable (
+                    {result.degraded
+                      .map((d) => (d === "ai-analysis" ? "AI Semantic Forensics" : "RDAP Domain Age Check"))
+                      .join(", ")}
+                    ). Deterministic rule engine checks remain fully active.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {result.noSpeech ? (
+              <div
+                role="status"
+                aria-live="polite"
+                className="rounded-2xl bg-slate-900 border border-slate-800 p-8 flex flex-col items-center text-center gap-3 animate-fade-in-up"
+              >
+                <span className="text-4xl">🔇</span>
+                <h3 className="text-lg font-semibold text-slate-200">
+                  No Speech Detected
+                </h3>
+                <p className="text-sm text-slate-400 max-w-md">
+                  {result.message || "No intelligible speech detected in the audio file."}
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* Verdict card */}
+                <div
+                  className="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col sm:flex-row items-center gap-5 opacity-0 animate-fade-in-up"
+                >
+              <ScoreGauge trust={result.trust ?? 0} band={result.band ?? "CRITICAL"} />
               <div className="flex-1 text-center sm:text-left">
                 <p
-                  className={`text-2xl font-bold ${BAND_COLORS[result.band] ?? "text-red-500"}`}
+                  className={`text-2xl font-bold ${result.band ? BAND_COLORS[result.band] ?? "text-red-500" : "text-red-500"}`}
                 >
-                  {BAND_LABELS[result.band] ?? result.band}
+                  {result.band ? BAND_LABELS[result.band] ?? result.band : ""}
                 </p>
                 <p className="text-sm text-slate-400 mt-1">
                   Detected type:{" "}
@@ -489,7 +541,7 @@ export default function Home() {
               <button
                 onClick={() => {
                   const report = [
-                    `ScamShield Trust Score: ${result.trust}/100 (${BAND_LABELS[result.band]})`,
+                    `ScamShield Trust Score: ${result.trust ?? "N/A"}/100 (${result.band ? BAND_LABELS[result.band] ?? result.band : "N/A"})`,
                     `Type: ${result.scam_type.replace(/_/g, " ")}`,
                     ...(result.transcript
                       ? ["", `Transcript: "${result.transcript}"`]
@@ -530,6 +582,8 @@ export default function Home() {
                 </a>
               )}
             </div>
+              </>
+            )}
           </div>
         )}
 
