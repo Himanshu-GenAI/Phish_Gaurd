@@ -110,7 +110,12 @@ describe("Evaluation Harness Core Algorithms (eval/run.ts)", () => {
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
       await expect(
-        runEvaluation({ split: "test", mode: "rules", final: true })
+        runEvaluation({
+          split: "test",
+          mode: "rules",
+          final: true,
+          shaPath: "eval/dataset/nonexistent-test.sha256",
+        })
       ).rejects.toThrow("process.exit called with 1");
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(

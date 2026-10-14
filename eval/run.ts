@@ -74,11 +74,12 @@ export async function runEvaluation(options: {
   final?: boolean;
   live?: boolean;
   cacheDir?: string;
+  shaPath?: string;
 }) {
   const ROOT = resolve(process.cwd());
   const devPath = resolve(ROOT, "eval/dataset/dev.json");
   const testPath = resolve(ROOT, "eval/dataset/test.json");
-  const shaPath = resolve(ROOT, "eval/dataset/test.sha256");
+  const shaPath = options.shaPath ?? resolve(ROOT, "eval/dataset/test.sha256");
   const cacheDirectory = options.cacheDir ?? resolve(ROOT, "eval/cache");
 
   // Gatekeeping on test split
