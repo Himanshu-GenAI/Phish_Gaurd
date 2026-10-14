@@ -87,3 +87,7 @@ A set of 30 invented everyday messages (15 Hinglish, 15 English) covering routin
      - `urgency` (weight 15, evidence: `"immediately"`)
    - **Cause:** Authentic billing and rent collection demands containing `"transfer Rs [amount]"` alongside urgent temporal adverbs (`"immediately"`) accumulate dual rule hits.
 
+#### Stress-Test Nature & Architectural Interpretation:
+- **Not a General False-Positive Rate:** This smoke test was deliberately seeded with trigger words (`turant`, `abhi`, `jaldi`, `daily`, `power`, `meter`, `fund`, `transfer`, `pin code`, `QR`, `charges`, `deposit`, `remote`, `support`, `share`, `confidential`, `guaranteed`) to probe edge-case boundaries; it represents an adversarial stress test, not a real-world false-positive rate.
+- **Near-Scam Linguistic Overlap:** The three flagged messages (*"5000 turant bhej de"*, *"remote assist invite immediately"*, *"transfer Rs 15000 rent immediately"*) employ coercive linguistic structures that keyword rules alone cannot distinguish from scam lures without semantic or pragmatic context.
+- **Single-Word Triggers:** Intentional single-word triggers (`turant`, `immediately`, `customs`, `warrant`, `lottery`) legitimately contribute risk points on their own, meaning benign messages containing these words start with a baseline risk penalty.
