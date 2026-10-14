@@ -1,0 +1,2 @@
+eval/dataset/*.json text eol=lf
+eval/dataset/test.sha256 text eol=lf
