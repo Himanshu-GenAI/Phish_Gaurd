@@ -15,6 +15,8 @@ This log records every vocabulary and rule enhancement made during Phase 5 tunin
 
 > 🛡️ **Post-Freeze ReDoS Safety Fix (Not Tuning):** In `lib/rules/lexicon.ts`, pattern `transfer-demand-1` quantifier `\d[\d,]{3,}` was bounded to `\d[\d,]{3,12}` to eliminate catastrophic backtracking on repeating digit/comma sequences (reducing adversarial time on `digits` generator at 5,000 characters from 55.6 ms to <0.5 ms). This fix strictly maintains identical regex semantics for all currency amounts up to 12 digits, produces zero metric changes on `dev.json` (recall 3/35 and 14/35, FP 0/35, AUC 0.8073, demo samples 20, 13, 25, 97), and is classified purely as an operational security hardening fix rather than vocabulary tuning.
 
+> 🩹 **Post-Freeze Defect Correction (Not Tuning):** In `lib/rules/lexicon.ts`, the urgency pattern `/aaj\s*(hi|raat)?\b/i` was corrected to `/\baaj\s+(hi|raat)\b/i`. The original pattern inadvertently matched the bare colloquial Hindi word *"aaj"* ("today") due to the optional quantifier `?`, causing false-positive urgency deductions (-15 points) on benign everyday messages (e.g. *"Beta, aaj dinner mein paneer banaya hai"*). Requiring the modifier `"hi"` or `"raat"` eliminates this over-triggering defect while preserving dev-set metrics identically (recall 3/35 and 14/35, FP 0/35, ROC AUC 0.8073, demo samples 20, 13, 25, 97). This is recorded as a defect introduced during tuning and corrected prior to the held-out test split evaluation.
+
 ---
 
 ## Change Log Table

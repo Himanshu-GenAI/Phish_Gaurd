@@ -117,7 +117,7 @@ export const RULES: Rule[] = [
       /\b(immediately|urgent|asap)\b/i,
       /(offer|slot|deal)\s*expires?/i,
       /only\s*\d+\s*slots?\s*left/i,
-      /aaj\s*(hi|raat)?\b/i,
+      /\baaj\s+(hi|raat)\b/i,
       /jaldi\s*karo/i,
       /\bturant\b/i,
       /closes?\s*today/i,

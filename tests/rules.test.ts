@@ -158,6 +158,33 @@ describe("Rule Engine (lib/rules)", () => {
         expect(hits.some((h) => h.id === "transfer-demand")).toBe(false);
       });
     });
+
+    describe("urgency aaj Mandatory Modifiers Tests", () => {
+      it("hits urgency on 'aaj hi bhejo'", () => {
+        const hits = runRules("aaj hi bhejo");
+        expect(hits.some((h) => h.id === "urgency")).toBe(true);
+      });
+
+      it("hits urgency on 'aaj raat band'", () => {
+        const hits = runRules("aaj raat band");
+        expect(hits.some((h) => h.id === "urgency")).toBe(true);
+      });
+
+      it("does not hit urgency on 'Beta, aaj dinner mein paneer banaya hai'", () => {
+        const hits = runRules("Beta, aaj dinner mein paneer banaya hai");
+        expect(hits.some((h) => h.id === "urgency")).toBe(false);
+      });
+
+      it("does not hit urgency on 'aaj maasi aane wali hai'", () => {
+        const hits = runRules("aaj maasi aane wali hai");
+        expect(hits.some((h) => h.id === "urgency")).toBe(false);
+      });
+
+      it("does not hit urgency on 'kaaj khatam hua'", () => {
+        const hits = runRules("kaaj khatam hua");
+        expect(hits.some((h) => h.id === "urgency")).toBe(false);
+      });
+    });
   });
 
   describe("Scoring & Determinism", () => {
