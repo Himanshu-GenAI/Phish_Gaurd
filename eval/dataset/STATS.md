@@ -9,7 +9,7 @@
 | Label | Dev Split (n=70) | Test Split Populated (n=40) | Test Owner Slots (n=10) | Test Total (n=50) | Overall Dataset (n=120) |
 |---|---|---|---|---|---|
 | **Scam** | 35 (50.0%) | 25 (62.5%) | 0 | 25 (50.0%) | 60 (50.0%) |
-| **Genuine** | 35 (50.0%) | 15 (37.5%) | 10 (100.0%) | 25 (50.0%) | 60 (50.0%) |
+| **Genuine** | 35 (50.0%) | 25 (37.5%) | 10 (100.0%) | 25 (50.0%) | 60 (50.0%) |
 | **Total** | 70 | 40 | 10 | 50 | 120 |
 
 ---
@@ -28,7 +28,7 @@
 | `voice_clone_emergency` | 4 | 2 | 6 |
 | `fake_customer_care` | 4 | 2 | 6 |
 | `phishing_apk` | 3 | 4 | 7 |
-| **Genuine (`none`)** | 35 | 15 (+10 owner slots) | 60 |
+| **Genuine (`none`)** | 35 | 25 (+10 owner slots) | 60 |
 
 ---
 
@@ -36,9 +36,9 @@
 
 | Language | Dev Split (n=70) | Test Split Populated (n=40) | Target (Dev) |
 |---|---|---|---|
-| **English (`en`)** | 28 (40.0%) | 24 (60.0%) | 28 (40.0%) |
-| **Hinglish (`hinglish`)** | 23 (32.9%) | 6 (15.0%) | 23 (32.9%) |
-| **Mixed Code-Switching (`mixed`)** | 19 (27.1%) | 10 (25.0%) | 19 (27.1%) |
+| **English (`en`)** | 28 (40.0%) | 26 (65.0%) | 28 (40.0%) |
+| **Hinglish (`hinglish`)** | 23 (32.9%) | 12 (30.0%) | 23 (32.9%) |
+| **Mixed Code-Switching (`mixed`)** | 19 (27.1%) | 12 (30.0%) | 19 (27.1%) |
 
 ---
 
@@ -48,8 +48,8 @@
 |---|---|---|
 | **Scam — Easy** | 18 | 11 |
 | **Scam — Hard (Evasive / Keyword-Free)** | 17 | 14 |
-| **Genuine — Easy** | 11 | 9 |
-| **Genuine — Hard (Hard Negative)** | 24 | 6 |
+| **Genuine — Easy** | 11 | 10 |
+| **Genuine — Hard (Hard Negative)** | 24 | 15 |
 
 ---
 
@@ -57,9 +57,9 @@
 
 | Channel | Dev Split (n=70) | Test Split Populated (n=40) |
 |---|---|---|
-| `sms` | 29 | 18 |
-| `whatsapp` | 26 | 15 |
-| `email` | 12 | 5 |
+| `sms` | 29 | 21 |
+| `whatsapp` | 26 | 21 |
+| `email` | 12 | 6 |
 | `call_transcript` | 3 | 2 |
 
 ---
@@ -76,16 +76,16 @@
 | Metric | Dev Split | Test Split Populated | Total Across Splits |
 |---|---|---|---|
 | **Hard Scams (Evasive)** | 17 / 35 (48.6%) | 14 / 25 (56.0%) | 31 / 60 |
-| **Hard Negatives (Genuine)** | 24 / 35 (**68.6%**) | 6 / 15 (**40.0%**) | 30 / 50 (Target: $\ge 28$) |
+| **Hard Negatives (Genuine)** | 24 / 35 (**68.6%**) | 15 / 25 (**60.0%**) | 39 / 50 (Target: $\ge 28$) |
 
 ### ⚠️ Distribution Divergence Warning & Owner Slot Recommendation
 
-> **Warning:** Dev genuine hard-negative share (68.6%) and test populated genuine hard-negative share (40.0%) currently differ by **28.6 percentage points**, exceeding the 15 percentage-point parity threshold.
+> **Warning:** Dev genuine hard-negative share (68.6%) and test populated genuine hard-negative share (60.0%) currently differ by **8.6 percentage points**, exceeding the 15 percentage-point parity threshold.
 >
 > **Remediation via 10 Owner Slots (`test-USER-01` to `10`):**
 > - **Total genuine test items:** 15 (currently populated) + 10 (owner slots) = 25 genuine items.
 > - **Parity target:** Dev genuine hard-negative share is 24 / 35 = 68.6%. To satisfy the $\le 15$ percentage-point parity threshold, test genuine hard-negative share must be $\ge 53.6\%$ (since $68.57\% - 15.00\% = 53.57\%$, rounded to 53.6%).
 > - **Required hard negatives:** $\lceil 25 \times 0.5357 \rceil = 14$ hard negatives minimum in test.
-> - **Current status:** The populated test split already provides **6** hard negatives.
+> - **Current status:** The populated test split already provides **15** hard negatives.
 > - **Owner slot quota:** The project owner must supply **at least 8 hard negatives out of their 10 inbox slots** ($14 - 6 = 8$).
 > - **Resulting distribution:** Providing 8 hard negatives yields $14 / 25 = 56.0\%$ hard negatives (a gap of $12.6$ percentage points, within the 15 pp threshold). Providing 9 yields $15 / 25 = 60.0\%$ (gap of $8.6$ pp).
