@@ -48,3 +48,42 @@ This document logs architectural fragilities, lexicon pattern gaps, and defense-
   3. *"Never miss this, download the APK now"* → `"Never"` within 40 chars suppresses `apk`.
 - **Status & Policy:** In adherence to the evaluation freeze, the negation guard is retained without post-freeze architectural modification. The behavior is documented with formal unit tests in `tests/rules.test.ts` and noted in README Limitations.
 
+---
+
+### 7. Everyday-Language False-Positive Smoke Test
+
+A set of 30 invented everyday messages (15 Hinglish, 15 English) covering routine scenarios (splitting expenses, medical appointments, society dues, deliveries, tech support, family logistics) was evaluated with `analyzeText` to probe false-positive boundary behavior on everyday vocabulary.
+
+#### Aggregate Results:
+- **Total Messages Evaluated:** 30
+- **Messages Scoring $\ge 75$ Trust (Pass / Safe):** 27 / 30 (90.0%)
+  - 25 messages scored pristine **Trust 97** (Risk 3, zero rules fired).
+  - 1 message scored **Trust 85** (`H-09`: *"turant"* fired `urgency`).
+  - 1 message scored **Trust 80** (`H-10`: *"QR code scan karke"* fired `pay-upi`).
+- **Messages Scoring Below 75 Trust:** 3 / 30 (10.0%)
+
+#### Details of Messages Scoring Below 75 Trust:
+1. **`H-01` (Hinglish, Friends splitting trip expense)**
+   - **Text:** *"Bhai trip ka pending 5000 turant bhej de Google Pay par, hisaab clear karna hai."*
+   - **Score:** Trust **70** (Risk: 30)
+   - **Fired Rules:**
+     - `transfer-demand` (weight 15, evidence: `" 5000 turant bhej de"`)
+     - `urgency` (weight 15, evidence: `"turant"`)
+   - **Cause:** Informal vernacular reimbursement demand combining a raw currency number with `"turant bhej de"` co-occurs with the standalone urgency keyword.
+
+2. **`E-05` (English, IT helpdesk remote assist request)**
+   - **Text:** *"Please accept the remote assist invite immediately so IT support can fix your screen."*
+   - **Score:** Trust **60** (Risk: 40)
+   - **Fired Rules:**
+     - `remote-app` (weight 25, evidence: `"remote assist"`)
+     - `urgency` (weight 15, evidence: `"immediately"`)
+   - **Cause:** Authentic corporate IT support requests requesting screen sharing under time pressure legitimately trigger both remote access and urgency signals.
+
+3. **`E-12` (English, Landlord monthly rent reminder)**
+   - **Text:** *"Dear tenant, please transfer Rs 15000 rent immediately into my account as the month has ended."*
+   - **Score:** Trust **70** (Risk: 30)
+   - **Fired Rules:**
+     - `transfer-demand` (weight 15, evidence: `"transfer Rs 15000"`)
+     - `urgency` (weight 15, evidence: `"immediately"`)
+   - **Cause:** Authentic billing and rent collection demands containing `"transfer Rs [amount]"` alongside urgent temporal adverbs (`"immediately"`) accumulate dual rule hits.
+
