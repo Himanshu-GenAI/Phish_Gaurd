@@ -441,112 +441,112 @@
   },
   {
     "id": "test-USER-01",
-    "text": "",
+    "text": "Namaste, main Mumbai Cyber Cell ka Inspector Rajesh Verma bol raha hoon. Aapke Aadhaar number se illegal money laundering case mein involvement mili hai, case number CC-2024-8891. Aapki immediate arrest ho sakti hai, lekin Supreme Court ke naye guidelines ke hisaab se hum aapko verification ka mauka de rahe hain. Digital arrest se bachne ke liye 30 minute ke andar ₹2,40,000 RBI verification account mein transfer karein: rbi-verify@icici. Ye confidential investigation hai — na bank ko batana, na family ko, warna arrest warrant issue ho jayegi.",
     "label": "genuine",
     "scam_type": "none",
-    "language": "en",
+    "language": "hinglish",
     "difficulty": "hard",
-    "source": "real_redacted",
-    "channel": "sms",
-    "notes": "to be written by the project owner"
+    "source": "synthetic",
+    "channel": "whatsapp",
+    "notes": "Digital arrest — authority + urgency + secrecy + payment. Expect Trust <25. Rules: impersonation, urgency, secrecy + AI coercion layer."
   },
   {
     "id": "test-USER-02",
-    "text": "",
+    "text": "CONGRATULATIONS! Aap Amazon ke WFH part-time job ke liye select ho gaye hain. Daily income ₹3,000-5,000, no interview, no resume. Aaj hi ₹499 registration fee UPI se pay karein: amazon-hr@ybl. Sirf 2 slots left, offer aaj raat tak valid hai. HR ko sirf Telegram par contact karein: @amazon_wfh_hr_bot.",
     "label": "genuine",
     "scam_type": "none",
-    "language": "en",
+    "language": "hinglish",
     "difficulty": "hard",
-    "source": "real_redacted",
+    "source": "synthetic",
     "channel": "sms",
-    "notes": "to be written by the project owner"
+    "notes": "Fake internship — fee + personal UPI + salary mismatch + Telegram-only HR + urgency + brand impersonation. Expect Trust <20."
   },
   {
     "id": "test-USER-03",
-    "text": "",
+    "text": "🎉 Welcome to PixelEarn! Aapka Task 1 complete ho gaya — ₹150 wallet mein credited ✅. अब next level: Premium Task — ₹2,000 deposit karke VIP room unlock karein aur ₹3,200 instant return paayein. ऑफर आज रात 11 बजे तक वैध है. Payment UPI: pixelearn@okaxis. ध्यान दें: deposit ke bina withdrawal block rahega.",
     "label": "genuine",
     "scam_type": "none",
-    "language": "en",
+    "language": "mixed",
     "difficulty": "hard",
-    "source": "real_redacted",
-    "channel": "sms",
-    "notes": "to be written by the project owner"
+    "source": "synthetic",
+    "channel": "whatsapp",
+    "notes": "Task/prepayment scam — small real payout first, then deposit demand + urgency. Expect <25. Tests the 'genuine first payout' trap."
   },
   {
     "id": "test-USER-04",
-    "text": "",
+    "text": "🔥 NSE Certified Trading Channel 🔥 Aaj ka call: BUY HINDALCO @640, target 680. कल के members ने 42% profit बुक किया. Guaranteed daily returns 10-15%, principal 100% safe. Joining fee ₹5,000 UPI: traderking@ybl. Withdrawal par sirf 12% advance tax lagta hai. Group ke screenshots kisi ko share na karein — market manipulation case ho sakta hai.",
     "label": "genuine",
     "scam_type": "none",
-    "language": "en",
+    "language": "mixed",
     "difficulty": "hard",
-    "source": "real_redacted",
-    "channel": "sms",
-    "notes": "to be written by the project owner"
+    "source": "synthetic",
+    "channel": "whatsapp",
+    "notes": "Investment group — guaranteed returns + joining fee + withdrawal tax + secrecy. Expect <20."
   },
   {
     "id": "test-USER-05",
-    "text": "",
+    "text": "BSES ALERT: Aapke bijli connection ka bill ₹2,847 pending hai. Connection aaj raat 9 baje DISCONNECT kar diya jayega. Turant payment karein: bses-billpay.online/pay | Helpline: 84209-XXXXX. Ye final reminder hai, payment confirm hone ke baad connection restore hoga.",
     "label": "genuine",
     "scam_type": "none",
-    "language": "en",
+    "language": "hinglish",
     "difficulty": "hard",
-    "source": "real_redacted",
+    "source": "synthetic",
     "channel": "sms",
-    "notes": "to be written by the project owner"
+    "notes": "Utility disconnection scam — deadline + lookalike domain + fake helpline. Expect red/orange. Key test for RDAP layer (fresh domain)."
   },
   {
     "id": "test-USER-06",
-    "text": "",
+    "text": "Aapne LoanKart app se ₹8,000 liya tha aur 1 month se repay nahi kiya hai. Aapke phone ke contacts, gallery photos aur Aadhaar copy humare paas hain. 1 ghante mein ₹15,000 (late fee ke saath) clear karein — WhatsApp par aayi UPI collect request accept karein. Report karne ki koshish ki toh aapki photos sab contacts ko bhej denge.",
     "label": "genuine",
     "scam_type": "none",
-    "language": "en",
+    "language": "hinglish",
     "difficulty": "hard",
-    "source": "real_redacted",
-    "channel": "sms",
-    "notes": "to be written by the project owner"
+    "source": "synthetic",
+    "channel": "whatsapp",
+    "notes": "Loan-app extortion — contact/gallery threat + UPI collect + intimidation. Expect <25. Tests UPI collect rule (PIN/collect = fraud)."
   },
   {
     "id": "test-USER-07",
-    "text": "",
+    "text": "Papa main Rhea bol rahi hoon. Mera accident ho gaya hai, hospital mein admit ho gayi hoon, operation ke liye ₹65,000 deposit abhi chahiye warna treatment rok denge. Phone nurse ke paas hai isliye message kar rahi hoon, voice weak hai. Paise citycare@ybl par bhej do. Mummy ko mat batana, wo tension ho jayegi. Main baad mein call karungi.",
     "label": "genuine",
     "scam_type": "none",
-    "language": "en",
+    "language": "hinglish",
     "difficulty": "hard",
-    "source": "real_redacted",
-    "channel": "sms",
-    "notes": "to be written by the project owner"
+    "source": "synthetic",
+    "channel": "whatsapp",
+    "notes": "AI voice-clone emergency (text variant) — family + medical urgency + unusual payment + secrecy + excuse for no call. Hard: no authority/fee keywords; AI layer must catch it. Expect orange/red."
   },
   {
     "id": "test-USER-08",
-    "text": "",
+    "text": "Subject: Action Required — Laptop Shipment for Your Infosys Onboarding. Dear Candidate, Congratulations on your offer (offer letter attached). Per HR policy, a one-time refundable shipment insurance of ₹2,499 is required before we dispatch your company laptop. Pay to vendor UPI: infosys-logistics@ybl. The amount is credited back with your first salary. Reply on this thread with the payment screenshot within 48 hours, after which the offer stands withdrawn.",
     "label": "genuine",
     "scam_type": "none",
     "language": "en",
     "difficulty": "hard",
-    "source": "real_redacted",
-    "channel": "sms",
-    "notes": "to be written by the project owner"
+    "source": "synthetic",
+    "channel": "email",
+    "notes": "Corporate phishing — professional tone, brand impersonation, refundable-fee trick, personal UPI, mild urgency. Hard: legitimacy signals up front. Expect orange/red."
   },
   {
     "id": "test-USER-09",
-    "text": "",
+    "text": "Your SBI OTP is 482913 for a debit of Rs. 2,000 on card xx4832. DO NOT share this OTP with anyone. If this was not initiated by you, call 1800-XXX-XXXX immediately.",
     "label": "genuine",
     "scam_type": "none",
     "language": "en",
     "difficulty": "hard",
-    "source": "real_redacted",
+    "source": "synthetic",
     "channel": "sms",
-    "notes": "to be written by the project owner"
+    "notes": "GENUINE bank OTP — hard negative. Naive regex on 'OTP'/'do not share' would false-positive; must stay green (75+). Key FP probe for the OTP rule."
   },
   {
     "id": "test-USER-10",
-    "text": "",
+    "text": "Beta Sunday ko lunch ke liye time se aa jaana, mummy ne palak paneer banaya hai. Aate waqt market se dahi le aana. Sunday ko traffic bahut hota hai, isliye thoda jaldi nikalna.",
     "label": "genuine",
     "scam_type": "none",
-    "language": "en",
-    "difficulty": "hard",
-    "source": "real_redacted",
-    "channel": "sms",
-    "notes": "to be written by the project owner"
+    "language": "hinglish",
+    "difficulty": "easy",
+    "source": "synthetic",
+    "channel": "whatsapp",
+    "notes": "GENUINE family message — control sample; must stay green (80+). FP probe for urgency/keyword rules."
   }
 ]
