@@ -6,52 +6,137 @@
 **Total Items Evaluated**: 50 (25 Scam / 25 Genuine, including 10 Owner Slots)  
 **Mode**: Pure Rules Engine (`lib/rules/engine.ts`, deterministic, zero LLM calls)  
 
+---
+
 ## 1. Metric Comparison Across Splits
 
 | Metric | Baseline dev (frozen) | Tuned dev (frozen) | Sealed test (held-out) |
 | :--- | :--- | :--- | :--- |
-| **Recall @ Trust < 50** | 0/35 (0.0%) | 3/35 (8.6%) | 0/25 (0%) |
-| **Recall @ Trust < 75** | 7/35 (20.0%) | 14/35 (40.0%) | 9/25 (36%) |
-| **False-positive rate** | 1/35 (2.9%) | 0/35 (0.0%) | 3/25 (12.0%) |
-| **ROC AUC** | 0.6624 | 0.8073 | 0.6704 |
-| **Latency p50 / p95** | 0.14 ms / 0.18 ms | 0.18 ms / 0.22 ms | 0.05 ms / 1.35 ms |
+| **Recall @ Trust < 50** | 0/35 (0.0%) [0.0%, 9.9%] | 3/35 (8.6%) [2.2%, 22.8%] | **0/25 (0.0%) [0.0%, 13.3%]** |
+| **Recall @ Trust < 75** | 7/35 (20.0%) [10.0%, 35.9%] | 14/35 (40.0%) [25.7%, 56.4%] | **9/25 (36.0%) [20.2%, 55.5%]** |
+| **False-positive rate @ Trust < 50** | 1/35 (2.9%) [0.5%, 14.5%] | 0/35 (0.0%) [0.0%, 9.9%] | **3/25 (12.0%) [4.2%, 30.0%]** |
+| **False-positive rate @ Trust < 75** | 1/35 (2.9%) [0.5%, 14.5%] | 0/35 (0.0%) [0.0%, 9.9%] | **4/25 (16.0%) [6.4%, 34.7%]** |
+| **Precision @ Trust < 50** | 0.0% (0/1) [0.0%, 79.3%] | 100.0% (3/3) [43.8%, 100.0%] | **0.0% (0/3) [0.0%, 56.2%]** |
+| **Precision @ Trust < 75** | 87.5% (7/8) [52.9%, 97.8%] | 100.0% (14/14) [78.5%, 100.0%] | **69.2% (9/13) [42.4%, 87.3%]** |
+| **Specificity @ Trust < 50** | 97.1% (34/35) [85.5%, 99.5%] | 100.0% (35/35) [90.1%, 100.0%] | **88.0% (22/25) [70.0%, 95.8%]** |
+| **Specificity @ Trust < 75** | 97.1% (34/35) [85.5%, 99.5%] | 100.0% (35/35) [90.1%, 100.0%] | **84.0% (21/25) [65.3%, 93.6%]** |
+| **Accuracy @ Trust < 50** | 48.6% (34/70) [37.2%, 60.0%] | 54.3% (38/70) [42.6%, 65.5%] | **44.0% (22/50) [31.2%, 57.7%]** |
+| **Accuracy @ Trust < 75** | 58.6% (41/70) [46.9%, 69.4%] | 70.0% (49/70) [58.5%, 79.5%] | **60.0% (30/50) [46.2%, 72.4%]** |
+| **ROC AUC** | 0.6624 | 0.8073 | **0.6704** |
+| **Latency p50 / p95** | 0.14 ms / 0.18 ms | 0.18 ms / 0.22 ms | **0.05 ms / 1.35 ms** |
 
-## 2. Test Error Breakdown (Zero-Leakage)
+*All brackets indicate Wilson 95% score confidence intervals.*
 
-### False Positives (Genuine messages flagged as scam at Trust < 50, n=3)
+---
 
-| ID | True Label | Pred Trust | Pred Band | Fired Rules |
+## 2. Dev-to-Test Gap Analysis
+
+AUC fell from 0.8073 on tuned dev to 0.6704 on test, close to the untuned baseline of 0.6624, which indicates that the tuning overfit dev vocabulary; recall differences at n=25 have overlapping intervals:
+- Recall @ Trust < 50: tuned dev 8.6% [2.2%, 22.8%] vs test 0.0% [0.0%, 13.3%] (intervals overlap).
+- Recall @ Trust < 75: tuned dev 40.0% [25.7%, 56.4%] vs test 36.0% [20.2%, 55.5%] (intervals overlap).
+
+---
+
+## 3. Subgroup Breakdowns on Sealed Test Split
+
+### Breakdown by Scam Type
+| Category | Scams (Rec <50) | Scams (Rec <75) | Genuine (FP <50) | Genuine (FP <75) |
 | :--- | :--- | :--- | :--- | :--- |
-| `test-USER-01` | `genuine` | 48 | `high_risk` | `pay-upi, authority, secrecy` |
-| `test-USER-02` | `genuine` | 25 | `high_risk` | `fee, pay-upi, urgency, guaranteed` |
-| `test-USER-04` | `genuine` | 40 | `high_risk` | `fee, pay-upi, guaranteed` |
+| digital_arrest | 0/2 (0.0%) | 1/2 (50.0%) | N/A | N/A |
+| fake_job | 0/3 (0.0%) | 2/3 (66.7%) | N/A | N/A |
+| task_prepayment | 0/2 (0.0%) | 0/2 (0.0%) | N/A | N/A |
+| investment | 0/2 (0.0%) | 1/2 (50.0%) | N/A | N/A |
+| kyc_utility_courier | 0/3 (0.0%) | 2/3 (66.7%) | N/A | N/A |
+| upi_collect | 0/2 (0.0%) | 0/2 (0.0%) | N/A | N/A |
+| loan_app | 0/3 (0.0%) | 1/3 (33.3%) | N/A | N/A |
+| voice_clone_emergency | 0/2 (0.0%) | 2/2 (100.0%) | N/A | N/A |
+| fake_customer_care | 0/2 (0.0%) | 0/2 (0.0%) | N/A | N/A |
+| phishing_apk | 0/4 (0.0%) | 0/4 (0.0%) | N/A | N/A |
+| none | N/A | N/A | 3/25 (12.0%) | 4/25 (16.0%) |
 
-### False Negatives (Scams missed as genuine at Trust < 50, n=25)
+### Breakdown by Language
+| Category | Scams (Rec <50) | Scams (Rec <75) | Genuine (FP <50) | Genuine (FP <75) |
+| :--- | :--- | :--- | :--- | :--- |
+| en | 0/15 (0.0%) | 4/15 (26.7%) | 0/11 (0.0%) | 1/11 (9.1%) |
+| hinglish | 0/3 (0.0%) | 2/3 (66.7%) | 2/9 (22.2%) | 2/9 (22.2%) |
+| mixed | 0/7 (0.0%) | 3/7 (42.9%) | 1/5 (20.0%) | 1/5 (20.0%) |
 
-| ID | Scam Type | True Label | Pred Trust | Pred Band | Fired Rules |
+### Breakdown by Difficulty
+| Category | Scams (Rec <50) | Scams (Rec <75) | Genuine (FP <50) | Genuine (FP <75) |
+| :--- | :--- | :--- | :--- | :--- |
+| easy | 0/11 (0.0%) | 5/11 (45.5%) | 0/10 (0.0%) | 0/10 (0.0%) |
+| hard | 0/14 (0.0%) | 4/14 (28.6%) | 3/15 (20.0%) | 4/15 (26.7%) |
+
+### Breakdown by Channel
+| Category | Scams (Rec <50) | Scams (Rec <75) | Genuine (FP <50) | Genuine (FP <75) |
+| :--- | :--- | :--- | :--- | :--- |
+| whatsapp | 0/12 (0.0%) | 4/12 (33.3%) | 2/9 (22.2%) | 2/9 (22.2%) |
+| call_transcript | 0/2 (0.0%) | 1/2 (50.0%) | N/A | N/A |
+| sms | 0/9 (0.0%) | 4/9 (44.4%) | 1/12 (8.3%) | 1/12 (8.3%) |
+| email | 0/2 (0.0%) | 0/2 (0.0%) | 0/4 (0.0%) | 1/4 (25.0%) |
+
+### Breakdown by Keyword-Free (Scams)
+| Category | Scams (Rec <50) | Scams (Rec <75) | Genuine (FP <50) | Genuine (FP <75) |
+| :--- | :--- | :--- | :--- | :--- |
+| keyword_free: false | 0/25 (0.0%) | 9/25 (36.0%) | N/A | N/A |
+| genuine | N/A | N/A | 3/25 (12.0%) | 4/25 (16.0%) |
+
+---
+
+## 4. Error Analysis & Diagnostics (ID, Rule IDs, and Cause Category Only)
+
+### False Positives @ Trust < 50 (n=3)
+Genuine messages flagged as scam (Trust < 50):
+
+| ID | True Label | Pred Trust | Pred Band | Fired Rule IDs | Cause Category |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `test-001` | `digital_arrest` | `scam` | 80 | `safe` | `authority` |
-| `test-002` | `digital_arrest` | `scam` | 67 | `suspicious` | `kyc-threat, urgency` |
-| `test-003` | `fake_job` | `scam` | 55 | `suspicious` | `fee, pay-upi` |
-| `test-004` | `fake_job` | `scam` | 97 | `safe` | `none` |
-| `test-005` | `fake_job` | `scam` | 73 | `suspicious` | `channel-mismatch, too-good-job` |
-| `test-006` | `task_prepayment` | `scam` | 97 | `safe` | `none` |
-| `test-007` | `task_prepayment` | `scam` | 97 | `safe` | `none` |
-| `test-008` | `investment` | `scam` | 65 | `suspicious` | `pay-upi, guaranteed` |
-| `test-009` | `investment` | `scam` | 97 | `safe` | `none` |
-| `test-010` | `kyc_utility_courier` | `scam` | 67 | `suspicious` | `kyc-threat, urgency` |
-| `test-011` | `kyc_utility_courier` | `scam` | 62 | `suspicious` | `authority, kyc-threat` |
-| `test-012` | `upi_collect` | `scam` | 80 | `safe` | `pay-upi` |
-| `test-013` | `upi_collect` | `scam` | 97 | `safe` | `none` |
-| `test-014` | `loan_app` | `scam` | 65 | `suspicious` | `apk, urgency` |
-| `test-015` | `loan_app` | `scam` | 85 | `safe` | `urgency` |
-| `test-016` | `voice_clone_emergency` | `scam` | 65 | `suspicious` | `pay-upi, urgency` |
-| `test-017` | `voice_clone_emergency` | `scam` | 73 | `suspicious` | `urgency, secrecy` |
-| `test-018` | `fake_customer_care` | `scam` | 97 | `safe` | `none` |
-| `test-019` | `fake_customer_care` | `scam` | 75 | `safe` | `remote-app` |
-| `test-020` | `phishing_apk` | `scam` | 85 | `safe` | `urgency` |
-| `test-021` | `phishing_apk` | `scam` | 85 | `safe` | `urgency` |
-| `test-022` | `phishing_apk` | `scam` | 80 | `safe` | `authority` |
-| `test-023` | `phishing_apk` | `scam` | 80 | `safe` | `apk` |
-| `test-024` | `kyc_utility_courier` | `scam` | 97 | `safe` | `none` |
-| `test-025` | `loan_app` | `scam` | 85 | `safe` | `urgency` |
+| `test-USER-01` | `genuine` | 48 | `high_risk` | `pay-upi, authority, secrecy` | Multiple high-weight rule confluence (`pay-upi` + `authority` + `secrecy`) |
+| `test-USER-02` | `genuine` | 25 | `high_risk` | `fee, pay-upi, urgency, guaranteed` | 4-rule pattern match (`fee` + `pay-upi` + `urgency` + `guaranteed`) |
+| `test-USER-04` | `genuine` | 40 | `high_risk` | `fee, pay-upi, guaranteed` | 3-rule pattern match (`fee` + `pay-upi` + `guaranteed`) |
+
+### Genuine Items Flagged Below 75 Trust (n=4)
+Genuine messages flagged with caution/suspicious or high-risk:
+
+| ID | True Label | Pred Trust | Pred Band | Fired Rule IDs | Cause Category |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `test-USER-01` | `genuine` | 48 | `high_risk` | `pay-upi, authority, secrecy` | Fired 3 rules (risk 52) |
+| `test-USER-02` | `genuine` | 25 | `high_risk` | `fee, pay-upi, urgency, guaranteed` | Fired 4 rules (risk 75) |
+| `test-USER-04` | `genuine` | 40 | `high_risk` | `fee, pay-upi, guaranteed` | Fired 3 rules (risk 60) |
+| `test-USER-08` | `genuine` | 71 | `suspicious` | `pay-upi, urgency, formal-process` | Fired `pay-upi` (+20) + `urgency` (+15) with `formal-process` (-6) (net risk 29) |
+
+### Single-Rule Scams (n=9)
+Scams firing exactly one rule (insufficient risk accumulation for Trust < 50):
+
+| ID | Scam Type | Pred Trust | Pred Band | Single Fired Rule ID | Weight |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `test-001` | `digital_arrest` | 80 | `safe` | `authority` | 20 |
+| `test-012` | `upi_collect` | 80 | `safe` | `pay-upi` | 20 |
+| `test-015` | `loan_app` | 85 | `safe` | `urgency` | 15 |
+| `test-019` | `fake_customer_care` | 75 | `safe` | `remote-app` | 25 |
+| `test-020` | `phishing_apk` | 85 | `safe` | `urgency` | 15 |
+| `test-021` | `phishing_apk` | 85 | `safe` | `urgency` | 15 |
+| `test-022` | `phishing_apk` | 80 | `safe` | `authority` | 20 |
+| `test-023` | `phishing_apk` | 80 | `safe` | `apk` | 20 |
+| `test-025` | `loan_app` | 85 | `safe` | `urgency` | 15 |
+
+### Zero-Rule Scams (n=7)
+Scams firing zero rules (Trust = 97, completely undetected by pure regex):
+- `test-004` (fake_job)
+- `test-006` (task_prepayment)
+- `test-007` (task_prepayment)
+- `test-009` (investment)
+- `test-013` (upi_collect)
+- `test-018` (fake_customer_care)
+- `test-024` (kyc_utility_courier)
+
+### Multi-Rule Scams (n=9)
+Scams firing 2 or more rules (all 9 detected at Trust < 75, but none reached Trust < 50):
+- `test-002` (digital_arrest): Trust 67, rules: `kyc-threat, urgency`
+- `test-003` (fake_job): Trust 55, rules: `fee, pay-upi`
+- `test-005` (fake_job): Trust 73, rules: `channel-mismatch, too-good-job`
+- `test-008` (investment): Trust 65, rules: `pay-upi, guaranteed`
+- `test-010` (kyc_utility_courier): Trust 67, rules: `kyc-threat, urgency`
+- `test-011` (kyc_utility_courier): Trust 62, rules: `authority, kyc-threat`
+- `test-014` (loan_app): Trust 65, rules: `apk, urgency`
+- `test-016` (voice_clone_emergency): Trust 65, rules: `pay-upi, urgency`
+- `test-017` (voice_clone_emergency): Trust 73, rules: `urgency, secrecy`

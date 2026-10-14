@@ -12,7 +12,76 @@
     "latencyMs": {
       "p50": 0.049,
       "p95": 1.353
-    }
+    },
+    "fpRate50": {
+      "value": 12,
+      "ciLower": 4.2,
+      "ciUpper": 30
+    },
+    "fpRate75": {
+      "value": 16,
+      "ciLower": 6.4,
+      "ciUpper": 34.7
+    },
+    "singleRuleScams": [
+      "test-001",
+      "test-012",
+      "test-015",
+      "test-019",
+      "test-020",
+      "test-021",
+      "test-022",
+      "test-023",
+      "test-025"
+    ],
+    "zeroRuleScams": [
+      "test-004",
+      "test-006",
+      "test-007",
+      "test-009",
+      "test-013",
+      "test-018",
+      "test-024"
+    ],
+    "genuineBelow75": [
+      {
+        "id": "test-USER-01",
+        "trust": 48,
+        "flags": [
+          "pay-upi",
+          "authority",
+          "secrecy"
+        ]
+      },
+      {
+        "id": "test-USER-02",
+        "trust": 25,
+        "flags": [
+          "fee",
+          "pay-upi",
+          "urgency",
+          "guaranteed"
+        ]
+      },
+      {
+        "id": "test-USER-04",
+        "trust": 40,
+        "flags": [
+          "fee",
+          "pay-upi",
+          "guaranteed"
+        ]
+      },
+      {
+        "id": "test-USER-08",
+        "trust": 71,
+        "flags": [
+          "pay-upi",
+          "urgency",
+          "formal-process"
+        ]
+      }
+    ]
   },
   "primary": {
     "tp": 0,
