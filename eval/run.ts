@@ -1,4 +1,4 @@
-import { readFileSync, existsSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
 import { resolve } from "path";
 import { createHash } from "crypto";
 import { analyzeText } from "../lib/analyze/pipeline";
@@ -131,6 +131,8 @@ export async function runEvaluation(options: {
     item: DatasetItem;
     risk: number;
     trust: number;
+    band: string;
+    durationMs: number;
     flags: string[];
     predPrimary: "scam" | "genuine"; // Trust < 50
     predSecondary: "scam" | "genuine"; // Trust < 75
@@ -147,7 +149,10 @@ export async function runEvaluation(options: {
 
   for (const item of items) {
     if (options.mode === "rules") {
+      const t0 = performance.now();
       const res = analyzeText(item.text);
+      const t1 = performance.now();
+      const durationMs = Number((t1 - t0).toFixed(4));
       const isScamPredPrimary = res.trust < 50 ? "scam" : "genuine";
       const isScamPredSecondary = res.trust < 75 ? "scam" : "genuine";
 
@@ -163,6 +168,8 @@ export async function runEvaluation(options: {
         item,
         risk: res.risk,
         trust: res.trust,
+        band: res.band,
+        durationMs,
         flags: res.flags.map((f) => f.id),
         predPrimary: isScamPredPrimary,
         predSecondary: isScamPredSecondary,
@@ -333,6 +340,13 @@ export async function runEvaluation(options: {
   }
   console.log(`\n  Never-firing rules in this split (${neverFiring.length}): ${neverFiring.join(", ") || "none"}\n`);
 
+  // ── Latency Profile ─────────────────────────────────────────
+  const durations = results.map((r) => r.durationMs).filter((d) => typeof d === "number").sort((a, b) => a - b);
+  const p50Latency = durations.length > 0 ? durations[Math.floor(durations.length * 0.5)] : 0;
+  const p95Latency = durations.length > 0 ? durations[Math.floor(durations.length * 0.95)] : 0;
+  console.log(`--- LATENCY PROFILE ---`);
+  console.log(`  p50: ${p50Latency.toFixed(3)} ms | p95: ${p95Latency.toFixed(3)} ms\n`);
+
   // ── Error Analysis (False Positives & False Negatives) ───────
   const falsePositives = results.filter((r) => r.item.label === "genuine" && r.predPrimary === "scam");
   const falseNegatives = results.filter((r) => r.item.label === "scam" && r.predPrimary === "genuine");
@@ -342,17 +356,135 @@ export async function runEvaluation(options: {
     console.log("  None! (Zero False Positives at Trust < 50)");
   } else {
     for (const fp of falsePositives) {
-      console.log(`\n  [${fp.item.id}] Trust: ${fp.trust} (Risk: ${fp.risk}) | Flags: [${fp.flags.join(", ")}]`);
-      console.log(`  Text: "${fp.item.text}"`);
+      console.log(`\n  [${fp.item.id}] True: ${fp.item.label} | Pred Score: ${fp.trust} (Risk: ${fp.risk}) | Band: ${fp.band} | Rules: [${fp.flags.join(", ") || "none"}]`);
+      if (options.split !== "test") {
+        console.log(`  Text: "${fp.item.text}"`);
+      }
     }
   }
 
   console.log(`\n--- Error Analysis: False Negatives (Scams missed as genuine, n=${falseNegatives.length}) ---`);
   for (const fn of falseNegatives) {
-    console.log(`\n  [${fn.item.id}] Type: ${fn.item.scam_type} | Trust: ${fn.trust} (Risk: ${fn.risk}) | Flags: [${fn.flags.join(", ") || "none"}]`);
-    console.log(`  Text: "${fn.item.text}"`);
+    console.log(`\n  [${fn.item.id}] Type: ${fn.item.scam_type} | True: ${fn.item.label} | Pred Score: ${fn.trust} (Risk: ${fn.risk}) | Band: ${fn.band} | Rules: [${fn.flags.join(", ") || "none"}]`);
+    if (options.split !== "test") {
+      console.log(`  Text: "${fn.item.text}"`);
+    }
   }
   console.log("\n======================================================================\n");
+
+  if (options.split === "test") {
+    mkdirSync(resolve(ROOT, "eval/results"), { recursive: true });
+    const jsonPath = resolve(ROOT, "eval/results/test-rules-2026-10-14.json");
+    const mdPath = resolve(ROOT, "eval/results/test-rules-2026-10-14.md");
+
+    const totalScams = items.filter((i) => i.label === "scam").length;
+    const totalGenuine = items.filter((i) => i.label === "genuine").length;
+    const testSha = readFileSync(shaPath, "utf-8").trim().split(/\s+/)[0];
+
+    const jsonContent = {
+      split: "test",
+      mode: options.mode,
+      evalDate: "2026-10-14",
+      testSha256: testSha,
+      evaluatedCount: items.length,
+      metrics: {
+        recall50: `${primary.tp}/${totalScams} (${primary.rec.value}%)`,
+        recall75: `${secondary.tp}/${totalScams} (${secondary.rec.value}%)`,
+        fpCount: `${primary.fp}/${totalGenuine} (${(100 - primary.spec.value).toFixed(1)}%)`,
+        rocAuc,
+        latencyMs: {
+          p50: Number(p50Latency.toFixed(3)),
+          p95: Number(p95Latency.toFixed(3)),
+        },
+      },
+      primary,
+      secondary,
+      falsePositives: falsePositives.map((fp) => ({
+        id: fp.item.id,
+        trueLabel: fp.item.label,
+        trust: fp.trust,
+        risk: fp.risk,
+        band: fp.band,
+        flags: fp.flags,
+      })),
+      falseNegatives: falseNegatives.map((fn) => ({
+        id: fn.item.id,
+        scamType: fn.item.scam_type,
+        trueLabel: fn.item.label,
+        trust: fn.trust,
+        risk: fn.risk,
+        band: fn.band,
+        flags: fn.flags,
+      })),
+      evaluated: results.map((r) => ({
+        id: r.item.id,
+        label: r.item.label,
+        scam_type: r.item.scam_type,
+        trust: r.trust,
+        risk: r.risk,
+        band: r.band,
+        flags: r.flags,
+        predPrimary: r.predPrimary,
+        predSecondary: r.predSecondary,
+      })),
+    };
+
+    writeFileSync(jsonPath, JSON.stringify(jsonContent, null, 2) + "\n", "utf-8");
+
+    const mdLines = [
+      "# ScamShield AI — Locked Held-Out Test Evaluation (Rules-Only)",
+      "",
+      `**Evaluation Date**: 2026-10-14  `,
+      `**Split**: Sealed Held-Out Test Set (\`eval/dataset/test.json\`)  `,
+      `**Test Checksum**: \`${testSha}\`  `,
+      `**Total Items Evaluated**: ${items.length} (25 Scam / 25 Genuine, including 10 Owner Slots)  `,
+      `**Mode**: Pure Rules Engine (\`lib/rules/engine.ts\`, deterministic, zero LLM calls)  `,
+      "",
+      "## 1. Metric Comparison Across Splits",
+      "",
+      "| Metric | Baseline dev (frozen) | Tuned dev (frozen) | Sealed test (held-out) |",
+      "| :--- | :--- | :--- | :--- |",
+      `| **Recall @ Trust < 50** | 0/35 (0.0%) | 3/35 (8.6%) | ${primary.tp}/${totalScams} (${primary.rec.value}%) |`,
+      `| **Recall @ Trust < 75** | 7/35 (20.0%) | 14/35 (40.0%) | ${secondary.tp}/${totalScams} (${secondary.rec.value}%) |`,
+      `| **False-positive rate** | 1/35 (2.9%) | 0/35 (0.0%) | ${primary.fp}/${totalGenuine} (${(100 - primary.spec.value).toFixed(1)}%) |`,
+      `| **ROC AUC** | 0.6624 | 0.8073 | ${rocAuc.toFixed(4)} |`,
+      `| **Latency p50 / p95** | 0.14 ms / 0.18 ms | 0.18 ms / 0.22 ms | ${p50Latency.toFixed(2)} ms / ${p95Latency.toFixed(2)} ms |`,
+      "",
+      "## 2. Test Error Breakdown (Zero-Leakage)",
+      "",
+      `### False Positives (Genuine messages flagged as scam at Trust < 50, n=${falsePositives.length})`,
+      "",
+    ];
+
+    if (falsePositives.length === 0) {
+      mdLines.push("- None! (Zero false positives at Trust < 50)");
+    } else {
+      mdLines.push("| ID | True Label | Pred Trust | Pred Band | Fired Rules |");
+      mdLines.push("| :--- | :--- | :--- | :--- | :--- |");
+      for (const fp of falsePositives) {
+        mdLines.push(`| \`${fp.item.id}\` | \`${fp.item.label}\` | ${fp.trust} | \`${fp.band}\` | \`${fp.flags.join(", ") || "none"}\` |`);
+      }
+    }
+
+    mdLines.push("");
+    mdLines.push(`### False Negatives (Scams missed as genuine at Trust < 50, n=${falseNegatives.length})`);
+    mdLines.push("");
+
+    if (falseNegatives.length === 0) {
+      mdLines.push("- None!");
+    } else {
+      mdLines.push("| ID | Scam Type | True Label | Pred Trust | Pred Band | Fired Rules |");
+      mdLines.push("| :--- | :--- | :--- | :--- | :--- | :--- |");
+      for (const fn of falseNegatives) {
+        mdLines.push(`| \`${fn.item.id}\` | \`${fn.item.scam_type}\` | \`${fn.item.label}\` | ${fn.trust} | \`${fn.band}\` | \`${fn.flags.join(", ") || "none"}\` |`);
+      }
+    }
+
+    writeFileSync(mdPath, mdLines.join("\n") + "\n", "utf-8");
+    console.log(`[LOCKED EVALUATION COMPLETE]`);
+    console.log(`  Saved JSON: ${jsonPath}`);
+    console.log(`  Saved Markdown: ${mdPath}\n`);
+  }
 
   return {
     split: options.split,
@@ -362,6 +494,10 @@ export async function runEvaluation(options: {
     primary,
     secondary,
     rocAuc,
+    latency: {
+      p50: p50Latency,
+      p95: p95Latency,
+    },
     falsePositives,
     falseNegatives,
     adversarial,
