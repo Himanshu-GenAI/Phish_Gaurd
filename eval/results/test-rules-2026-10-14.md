@@ -16,16 +16,16 @@
 | **Recall @ Trust < 75** | 7/35 (20.0%) [10.0%, 35.9%] | 14/35 (40.0%) [25.7%, 56.4%] | **9/25 (36.0%) [20.2%, 55.5%]** |
 | **False-positive rate @ Trust < 50** | 1/35 (2.9%) [0.5%, 14.5%] | 0/35 (0.0%) [0.0%, 9.9%] | **3/25 (12.0%) [4.2%, 30.0%]** |
 | **False-positive rate @ Trust < 75** | 1/35 (2.9%) [0.5%, 14.5%] | 0/35 (0.0%) [0.0%, 9.9%] | **4/25 (16.0%) [6.4%, 34.7%]** |
-| **Precision @ Trust < 50** | 0.0% (0/1) [0.0%, 79.3%] | 100.0% (3/3) [43.8%, 100.0%] | **0.0% (0/3) [0.0%, 56.2%]** |
-| **Precision @ Trust < 75** | 87.5% (7/8) [52.9%, 97.8%] | 100.0% (14/14) [78.5%, 100.0%] | **69.2% (9/13) [42.4%, 87.3%]** |
+| **Precision @ Trust < 50** *(precision on a balanced set is not real-world precision)* | 0.0% (0/1) [0.0%, 79.3%] *(precision on a balanced set is not real-world precision)* | 100.0% (3/3) [43.8%, 100.0%] *(precision on a balanced set is not real-world precision)* | **0.0% (0/3) [0.0%, 56.2%] *(precision on a balanced set is not real-world precision)*** |
+| **Precision @ Trust < 75** *(precision on a balanced set is not real-world precision)* | 87.5% (7/8) [52.9%, 97.8%] *(precision on a balanced set is not real-world precision)* | 100.0% (14/14) [78.5%, 100.0%] *(precision on a balanced set is not real-world precision)* | **69.2% (9/13) [42.4%, 87.3%] *(precision on a balanced set is not real-world precision)*** |
 | **Specificity @ Trust < 50** | 97.1% (34/35) [85.5%, 99.5%] | 100.0% (35/35) [90.1%, 100.0%] | **88.0% (22/25) [70.0%, 95.8%]** |
 | **Specificity @ Trust < 75** | 97.1% (34/35) [85.5%, 99.5%] | 100.0% (35/35) [90.1%, 100.0%] | **84.0% (21/25) [65.3%, 93.6%]** |
 | **Accuracy @ Trust < 50** | 48.6% (34/70) [37.2%, 60.0%] | 54.3% (38/70) [42.6%, 65.5%] | **44.0% (22/50) [31.2%, 57.7%]** |
 | **Accuracy @ Trust < 75** | 58.6% (41/70) [46.9%, 69.4%] | 70.0% (49/70) [58.5%, 79.5%] | **60.0% (30/50) [46.2%, 72.4%]** |
-| **ROC AUC** | 0.6624 | 0.8073 | **0.6704** |
+| **ROC AUC** | 0.6624 | 0.8073 [0.7081, 0.8936] | **0.6704 [0.5256, 0.8084]** |
 | **Latency p50 / p95** | 0.14 ms / 0.18 ms | 0.18 ms / 0.22 ms | **0.05 ms / 1.35 ms** |
 
-*All brackets indicate Wilson 95% score confidence intervals.*
+*All bracketed intervals for proportions are Wilson 95% score confidence intervals. ROC AUC 95% confidence intervals are empirical bootstrap intervals over 1,000 resamples with fixed seed 42.*
 
 ---
 
@@ -34,6 +34,7 @@
 AUC fell from 0.8073 on tuned dev to 0.6704 on test, close to the untuned baseline of 0.6624, which indicates that the tuning overfit dev vocabulary; recall differences at n=25 have overlapping intervals:
 - Recall @ Trust < 50: tuned dev 8.6% [2.2%, 22.8%] vs test 0.0% [0.0%, 13.3%] (intervals overlap).
 - Recall @ Trust < 75: tuned dev 40.0% [25.7%, 56.4%] vs test 36.0% [20.2%, 55.5%] (intervals overlap).
+- ROC AUC: tuned dev 0.8073 [0.7081, 0.8936] vs test 0.6704 [0.5256, 0.8084] (1,000 bootstrap resamples, seed 42).
 
 ---
 
@@ -61,6 +62,16 @@ AUC fell from 0.8073 on tuned dev to 0.6704 on test, close to the untuned baseli
 | hinglish | 0/3 (0.0%) | 2/3 (66.7%) | 2/9 (22.2%) | 2/9 (22.2%) |
 | mixed | 0/7 (0.0%) | 3/7 (42.9%) | 1/5 (20.0%) | 1/5 (20.0%) |
 
+*Note: Only 3 test scams are Hinglish, so per-language scam recall is not interpretable.*
+
+### Breakdown by Item Author (Genuine Test Items, Counts Only)
+| Author | Total Genuine | Items Below Trust 75 (FP < 75) | Items Below Trust 50 (FP < 50) |
+| :--- | :--- | :--- | :--- |
+| Assistant | 15 | 0 / 15 (0.0%) | 0 / 15 (0.0%) |
+| Project Owner (`test-USER-*`) | 10 | 4 / 10 (40.0%) | 3 / 10 (30.0%) |
+
+All 4 genuine items below 75 were owner-written items, consistent with the same-author caveat; n is small.
+
 ### Breakdown by Difficulty
 | Category | Scams (Rec <50) | Scams (Rec <75) | Genuine (FP <50) | Genuine (FP <75) |
 | :--- | :--- | :--- | :--- | :--- |
@@ -74,12 +85,6 @@ AUC fell from 0.8073 on tuned dev to 0.6704 on test, close to the untuned baseli
 | call_transcript | 0/2 (0.0%) | 1/2 (50.0%) | N/A | N/A |
 | sms | 0/9 (0.0%) | 4/9 (44.4%) | 1/12 (8.3%) | 1/12 (8.3%) |
 | email | 0/2 (0.0%) | 0/2 (0.0%) | 0/4 (0.0%) | 1/4 (25.0%) |
-
-### Breakdown by Keyword-Free (Scams)
-| Category | Scams (Rec <50) | Scams (Rec <75) | Genuine (FP <50) | Genuine (FP <75) |
-| :--- | :--- | :--- | :--- | :--- |
-| keyword_free: false | 0/25 (0.0%) | 9/25 (36.0%) | N/A | N/A |
-| genuine | N/A | N/A | 3/25 (12.0%) | 4/25 (16.0%) |
 
 ---
 

@@ -81,7 +81,37 @@
           "formal-process"
         ]
       }
-    ]
+    ],
+    "rocAucBootstrap": {
+      "dev": {
+        "value": 0.8073,
+        "ciLower": 0.7081,
+        "ciUpper": 0.8936,
+        "seed": 42,
+        "B": 1000
+      },
+      "test": {
+        "value": 0.6704,
+        "ciLower": 0.5256,
+        "ciUpper": 0.8084,
+        "seed": 42,
+        "B": 1000
+      }
+    },
+    "byAuthor": {
+      "assistant": {
+        "total": 15,
+        "below75": 0,
+        "below50": 0
+      },
+      "owner": {
+        "total": 10,
+        "below75": 4,
+        "below50": 3
+      },
+      "note": "all 4 genuine items below 75 were owner-written items, consistent with the same-author caveat; n is small."
+    },
+    "precisionNote": "precision on a balanced set is not real-world precision"
   },
   "primary": {
     "tp": 0,

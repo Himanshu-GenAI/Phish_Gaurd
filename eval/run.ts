@@ -3,7 +3,8 @@ import { resolve } from "path";
 import { createHash } from "crypto";
 import { analyzeText } from "../lib/analyze/pipeline";
 import { RULES } from "../lib/rules/lexicon";
-import { PROMPT_VERSION } from "../lib/ai/gemini";
+import { PROMPT_VERSION, analyzeWithGemini, geminiSignalsToHits } from "../lib/ai/gemini";
+import { runRules } from "../lib/rules/engine";
 import type { RuleHit } from "../lib/rules/types";
 import type { DomainCheck } from "../lib/checks/rdap";
 
@@ -75,12 +76,15 @@ export async function runEvaluation(options: {
   live?: boolean;
   cacheDir?: string;
   shaPath?: string;
+  maxCalls?: number;
 }) {
   const ROOT = resolve(process.cwd());
   const devPath = resolve(ROOT, "eval/dataset/dev.json");
   const testPath = resolve(ROOT, "eval/dataset/test.json");
   const shaPath = options.shaPath ?? resolve(ROOT, "eval/dataset/test.sha256");
   const cacheDirectory = options.cacheDir ?? resolve(ROOT, "eval/cache");
+  const maxCalls = options.maxCalls ?? 250;
+  let liveCallsCount = 0;
 
   // Gatekeeping on test split
   if (options.split === "test") {
@@ -195,9 +199,24 @@ export async function runEvaluation(options: {
           );
           process.exit(1);
         }
-        // Live calls are explicitly prohibited in Phase 4 baseline
-        console.error("[LIVE BLOCKED] Live API calls are disabled during baseline run.");
-        process.exit(1);
+
+        if (liveCallsCount >= maxCalls) {
+          console.error(
+            `\n[MAX CALLS REACHED] Reached maximum allowed live API calls limit (--max-calls ${maxCalls}). Stopping run.\n`
+          );
+          process.exit(1);
+        }
+
+        const ruleHits = runRules(item.text);
+        const ruleLabels = ruleHits.map((r) => r.label);
+        const geminiResult = await analyzeWithGemini(item.text, ruleLabels);
+        const aiHits = geminiResult ? geminiSignalsToHits(geminiResult.ai_signals) : [];
+        cachedResponse = { aiHits, domainResults: [] };
+        writeFileSync(cacheFile, JSON.stringify(cachedResponse, null, 2) + "\n", "utf-8");
+        liveCallsCount++;
+
+        // Pacing delay between consecutive live calls (500ms)
+        await new Promise((resolve) => setTimeout(resolve, 500));
       }
 
       // Process cached response
@@ -510,12 +529,15 @@ if (process.argv[1]?.endsWith("run.ts")) {
   const modeArg = args.find((a, i) => args[i - 1] === "--mode") || "rules";
   const final = args.includes("--final");
   const live = args.includes("--live");
+  const maxCallsIdx = args.indexOf("--max-calls");
+  const maxCalls = maxCallsIdx !== -1 && args[maxCallsIdx + 1] ? parseInt(args[maxCallsIdx + 1], 10) : 250;
 
   runEvaluation({
     split: splitArg as "dev" | "test",
     mode: modeArg as "rules" | "full",
     final,
     live,
+    maxCalls,
   }).catch((err) => {
     console.error("Evaluation run failed:", err);
     process.exit(1);
