@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "fake_job",
+  "aiHits": [
+    {
+      "id": "telegram_redirection",
+      "label": "Communication via Anonymous App",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "HR ko sirf Telegram par contact karein: @amazon_wfh_hr_bot"
+    },
+    {
+      "id": "no_interview_hiring",
+      "label": "Too Good To Be True Hiring",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "no interview, no resume"
+    }
+  ],
+  "domainResults": []
+}

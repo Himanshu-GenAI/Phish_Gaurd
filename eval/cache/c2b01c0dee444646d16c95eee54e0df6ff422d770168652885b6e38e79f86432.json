@@ -1,0 +1,18 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 1,
+  "keptSignalCount": 1,
+  "scam_type": "phishing",
+  "aiHits": [
+    {
+      "id": "suspicious_forward_number",
+      "label": "Suspicious Mobile Number for Blocking",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Asks to forward SMS to a standard mobile number (9223008338 or similar) instead …"
+    }
+  ],
+  "domainResults": []
+}

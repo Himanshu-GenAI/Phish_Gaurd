@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_impersonation",
+      "label": "Family Member Impersonation",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Papa, my phone fell down and broke. I am messaging from my friend Rohit's phone."
+    },
+    {
+      "id": "sig_unusual_payment_channel",
+      "label": "Unusual Payment Channel for Emergency",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Please transfer Rs 18,000 immediately to his UPI ID rohit-help@oksbi for my host…"
+    }
+  ],
+  "domainResults": []
+}

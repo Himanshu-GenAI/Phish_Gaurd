@@ -1,0 +1,15 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "unsolicited_account_statement",
+      "label": "Unsolicited Account Statement Notification",
+      "category": "ai",
+      "weight": 10,
+      "evidence": "State Bank of India: September 2026 ka monthly account statement generate ho gay…"
+    }
+  ],
+  "domainResults": []
+}

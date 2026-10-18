@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_incomplete_address_hook",
+      "label": "Incomplete Address Hook",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Consignment number IN-88392 address was incomplete."
+    },
+    {
+      "id": "sig_nominal_fee_demand",
+      "label": "Small Fee Demand for Release",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "nominal transit clearance processing of Rs 25 through the parcel tracking termin…"
+    }
+  ],
+  "domainResults": []
+}

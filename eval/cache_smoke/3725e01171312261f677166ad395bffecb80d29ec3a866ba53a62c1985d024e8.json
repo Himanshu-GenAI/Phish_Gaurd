@@ -1,0 +1,11 @@
+{
+  "aiHits": [
+    {
+      "id": "unsolicited_link",
+      "label": "Unsolicited Cloud Storage Link",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Shaadi ki photos Google Drive link par share kar di hain, download kar lo."
+    }
+  ]
+}

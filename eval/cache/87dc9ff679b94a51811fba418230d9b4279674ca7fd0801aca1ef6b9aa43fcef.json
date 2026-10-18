@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_emergency_impersonation",
+      "label": "Impersonation in Emergency",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Bhai emergency hai, mera accident ho gaya chhota sa hospital me hu."
+    },
+    {
+      "id": "sig_communication_barrier",
+      "label": "Excuses to Avoid Direct Call",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Phone pe baat nahi ho pa rahi."
+    }
+  ],
+  "domainResults": []
+}

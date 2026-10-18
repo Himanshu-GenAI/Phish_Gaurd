@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "phishing",
+  "aiHits": [
+    {
+      "id": "screen_sharing_coercion",
+      "label": "Screen Sharing Request",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "our representative will guide you through screen sharing protocol"
+    },
+    {
+      "id": "external_link_utility",
+      "label": "Suspicious Companion Utility Link",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Install the verified companion utility from link"
+    }
+  ],
+  "domainResults": []
+}

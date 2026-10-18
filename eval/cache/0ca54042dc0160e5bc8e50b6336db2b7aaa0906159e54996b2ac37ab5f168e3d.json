@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_impersonation",
+      "label": "Family Member Impersonation",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Claims to be the user's child stuck on a college trip with a stolen wallet."
+    },
+    {
+      "id": "sig_isolation",
+      "label": "Avoiding Verification",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Explicitly instructs 'please call mat karna class chal rahi hai' to prevent voic…"
+    }
+  ],
+  "domainResults": []
+}

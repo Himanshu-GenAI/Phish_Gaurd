@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "phishing",
+  "aiHits": [
+    {
+      "id": "sig_phishing_link",
+      "label": "Suspicious domain",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "URL uses a non-official test domain (incometax-efiling-refund.test) instead of t…"
+    },
+    {
+      "id": "sig_unsolicited_refund",
+      "label": "Lure of unexpected money",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Claims an unexpected tax refund amount of Rs 18,420 to trick the user into click…"
+    }
+  ],
+  "domainResults": []
+}

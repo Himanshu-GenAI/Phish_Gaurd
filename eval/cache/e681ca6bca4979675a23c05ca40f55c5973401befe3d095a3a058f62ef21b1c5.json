@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "unrealistic_earnings",
+      "label": "Unrealistic Earnings for Low Effort",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Daily 2 ghante mobile typing karke Rs 25,000 weekly kamao"
+    },
+    {
+      "id": "unsolicited_contact",
+      "label": "Unsolicited Job Offer via Messaging App",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Namaste! HR department se message hai"
+    }
+  ],
+  "domainResults": []
+}

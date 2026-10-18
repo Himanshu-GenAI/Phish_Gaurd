@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "urgency_coercion",
+      "label": "Artificial Urgency and Compliance",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Demands immediate compliance for a meter replacement audit and clearance."
+    },
+    {
+      "id": "vague_technical_jargon",
+      "label": "Vague Technical Jargon",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Uses terms like 'screen verification' and 'diagnostic sharing session' to disgui…"
+    }
+  ],
+  "domainResults": []
+}

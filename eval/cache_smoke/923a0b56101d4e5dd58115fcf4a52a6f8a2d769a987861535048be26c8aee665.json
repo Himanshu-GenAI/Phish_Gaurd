@@ -1,0 +1,18 @@
+{
+  "aiHits": [
+    {
+      "id": "unsolicited_delivery",
+      "label": "Unexpected delivery lure",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Diwali sweets packet delivery boy aa raha hai"
+    },
+    {
+      "id": "sensitive_info_request",
+      "label": "Asking for PIN code / location details",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "pin code sahi batana"
+    }
+  ]
+}

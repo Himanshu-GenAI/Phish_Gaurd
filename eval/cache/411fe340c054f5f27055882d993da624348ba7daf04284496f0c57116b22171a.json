@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "digital_arrest",
+  "aiHits": [
+    {
+      "id": "sig_impersonation_law_enforcement",
+      "label": "Law Enforcement Impersonation",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Crime branch officer bol raha hu"
+    },
+    {
+      "id": "sig_video_call_coercion",
+      "label": "Coercion via Video Call for Enquiry",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Turant hamare enquiry officer se video call pe judiye"
+    }
+  ],
+  "domainResults": []
+}

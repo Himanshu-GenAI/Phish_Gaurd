@@ -1,0 +1,29 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_unrealistic_returns",
+      "label": "Guaranteed daily profit claims",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Guaranteed daily profit, 100% safe returns."
+    },
+    {
+      "id": "sig_false_urgency",
+      "label": "Artificial time pressure",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "today only. Limited seats!"
+    },
+    {
+      "id": "sig_upfront_fee",
+      "label": "Upfront payment demand via UPI",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Pay joining amount via UPI and get premium signals"
+    }
+  ],
+  "domainResults": []
+}

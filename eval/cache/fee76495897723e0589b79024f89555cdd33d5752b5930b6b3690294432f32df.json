@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "investment",
+  "aiHits": [
+    {
+      "id": "sig_urgency_elite",
+      "label": "Exclusive Elite Framing",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Join our elite group for 500% weekly return on options."
+    },
+    {
+      "id": "sig_vague_fund_manager",
+      "label": "Suspicious Personal Handle for Funds",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "transfer joining investment to fund-manager@oksbi now."
+    }
+  ],
+  "domainResults": []
+}

@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 3,
+  "keptSignalCount": 3,
+  "scam_type": "digital_arrest",
+  "aiHits": [
+    {
+      "id": "digital_arrest_coercion",
+      "label": "Threat of immediate digital arrest",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Aapki immediate arrest ho sakti hai... Digital arrest se bachne ke liye 30 minut…"
+    },
+    {
+      "id": "artificial_urgency",
+      "label": "Extreme time pressure",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "30 minute ke andar ₹2,40,000 RBI verification account mein transfer karein"
+    },
+    {
+      "id": "fake_authority",
+      "label": "Impersonation of law enforcement and RBI",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Mumbai Cyber Cell ka Inspector Rajesh Verma bol raha hoon... RBI verification ac…"
+    }
+  ],
+  "domainResults": []
+}

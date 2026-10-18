@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "fake_job",
+  "aiHits": [
+    {
+      "id": "unsolicited_high_salary",
+      "label": "Unsolicited Job Offer with High Payout",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Offered Rs 45,000 monthly for a junior content evaluator role without any interv…"
+    },
+    {
+      "id": "personal_upi_handle",
+      "label": "Suspicious UPI Handle for Fees",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Asked to send money to desk@ybl for activating company portal access."
+    }
+  ],
+  "domainResults": []
+}

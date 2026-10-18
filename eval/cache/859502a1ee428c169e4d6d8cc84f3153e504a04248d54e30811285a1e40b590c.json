@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "investment",
+  "aiHits": [
+    {
+      "id": "unrealistic_returns",
+      "label": "Unrealistic Investment Returns",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Aapka offshore mutual portfolio 350% appreciate hua hai."
+    },
+    {
+      "id": "advance_fee_fraud",
+      "label": "Advance Fee Requirement",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Funds bank account me release karne ke liye RBI foreign currency clearance stamp…"
+    }
+  ],
+  "domainResults": []
+}

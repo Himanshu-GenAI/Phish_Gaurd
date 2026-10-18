@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "upi_collect_fraud",
+      "label": "Tricking to Approve Collect Request",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Tap the incoming notification on PhonePe and authorize collect approval to final…"
+    },
+    {
+      "id": "unsolicited_cashback",
+      "label": "Unexpected Cashback Lure",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Merchant credit of Rs 1,499 is pending in your payment inbox"
+    }
+  ],
+  "domainResults": []
+}

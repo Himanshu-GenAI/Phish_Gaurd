@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_urgency",
+      "label": "High-Pressure Urgency",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Abhi fund transfer karein demands immediate action to pressure the victim."
+    },
+    {
+      "id": "sig_vague_contact",
+      "label": "Anonymous Admin Contact",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Admin se baat karein directs communication to an unverified individual instead o…"
+    }
+  ],
+  "domainResults": []
+}

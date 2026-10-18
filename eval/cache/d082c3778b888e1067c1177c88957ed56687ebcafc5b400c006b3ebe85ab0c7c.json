@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "investment",
+  "aiHits": [
+    {
+      "id": "tax_demand",
+      "label": "Demand for advance tax before withdrawal",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Withdrawal par sirf 12% advance tax lagta hai."
+    },
+    {
+      "id": "secrecy_coercion",
+      "label": "Forcing secrecy to avoid scrutiny",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Group ke screenshots kisi ko share na karein — market manipulation case ho sakta…"
+    }
+  ],
+  "domainResults": []
+}

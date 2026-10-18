@@ -1,0 +1,29 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "domain_spoofing",
+      "label": "Suspicious Custom Domain",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Emails are sent from '@sbi-supportdesk.test' instead of the official 'sbi.co.in'…"
+    },
+    {
+      "id": "phishing_link",
+      "label": "Fraudulent Link",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Directs the user to a suspicious external URL 'sbi-dispute-clearance.test/verify…"
+    },
+    {
+      "id": "forced_isolation",
+      "label": "Isolation Tactics",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Instructs the user: 'Do not contact the local branch regarding this active sessi…"
+    }
+  ],
+  "domainResults": []
+}

@@ -1,0 +1,15 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_confidential_protocol",
+      "label": "Coercion via Secret Protocol",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Agar legal matter nahi chahte toh call continue rakhein aur confidential protoco…"
+    }
+  ],
+  "domainResults": []
+}

@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 3,
+  "keptSignalCount": 3,
+  "scam_type": "task_scam",
+  "aiHits": [
+    {
+      "id": "sig_task_payment_coercion",
+      "label": "Pay to Earn Coercion",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "₹2,000 deposit karke VIP room unlock karein aur ₹3,200 instant return paayein"
+    },
+    {
+      "id": "sig_withdrawal_block",
+      "label": "Threat of Blocked Withdrawal",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "deposit ke bina withdrawal block rahega"
+    },
+    {
+      "id": "sig_false_urgency",
+      "label": "Artificial Urgency",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "ऑफर आज रात 11 बजे तक वैध है"
+    }
+  ],
+  "domainResults": []
+}

@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "upi_collect",
+  "aiHits": [
+    {
+      "id": "upi_collect_trick",
+      "label": "UPI Collect Request Fraud",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Tap the collect notification received on PhonePe and press pay to claim credit"
+    },
+    {
+      "id": "reversing_transaction_logic",
+      "label": "Payment to Receive Money",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Asking user to press 'pay' to claim a refund or credit amount"
+    }
+  ],
+  "domainResults": []
+}

@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_threat_disconnect",
+      "label": "Threat of Mobile Disconnection",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Aapka mobile number agle 2 ghante me disconnect ho jayega court complaints ki wa…"
+    },
+    {
+      "id": "sig_fake_authority",
+      "label": "Impersonation of Telecom and Investigative Officers",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Telecom Regulatory Department notice ... Press 9 now to connect with on-duty inv…"
+    }
+  ],
+  "domainResults": []
+}

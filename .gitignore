@@ -43,11 +43,26 @@ next-env.d.ts
 voice_data/
 
 # eval cache and tmp
-eval/cache/*
-!eval/cache/.gitkeep
-eval/cache_smoke/*
-!eval/cache_smoke/.gitkeep
+# Legacy gemini-3.8-flash cache entries (excluded from metrics and git)
+eval/cache/0e178a15d0d290ec394f1878ebcfeb062beb7c78f5d9ef616216738ebd67f157.json
+eval/cache/322e3bb9db14c22c9a727cd62e1a8c810441cb45e15f12ff05c68e1d64372286.json
+eval/cache/483ad472cf945b4b5cf3fad5f3f2901e378c1534b0264bca074dda473ab63c74.json
+eval/cache/7d96a4537a301a233c86a70e0cd442feffc0dfc8accfbe1bf5b42f3463b5de2b.json
+eval/cache/85aea5af7ea6dc0d2c8308070ddcdf72eb7326603efef77523ee3e67bb00bcc7.json
+eval/cache/8c864c4920f4d1563864d66ff2d69cf4da7170b0d3ccb8ade91be8df035ec7da.json
+eval/cache/9a5dbbd04d742cdf52e340591fb21f6f7a8145b2c8919576dfdfe89997764708.json
+eval/cache/a50ac5c09da263e2e6f228fcb9b636d9b0c54cb1cd67400557bfe2c7c879b2a8.json
+eval/cache/a831863fe386284407428ca22194c9d4c29341140c46b165366c82f7cb08dbb8.json
+eval/cache/ab93ab096935481563ebfd1b5ba7794c3f7127682d250650e34428f065ad4cf6.json
+eval/cache/cc7cdfd5d55e93e54b4d44ea78e2858cdf69d14cbe012bb7a64fdac83bf0cf32.json
+eval/cache/e373daf43cce674dc87ac32b9743fbc6a8e080bc8ba6f36a9bc97af4e1416515.json
+eval/cache/e52ec481bb3f54ece8f6897c46e8cefab91e6cc6d74fd352e09bd230628b5f95.json
+eval/cache/f8b3f6d3807e0b18e2cfaa7f698151419648ab8ecb5d3fd5de235a23fdee1b5d.json
+eval/cache/f975a7bcc19bc1a5084a7668f9a067ad01539bd57c974a1ddd42f64f2e167cb0.json
+eval/cache/fbd40680f4861dc8245c6915f63906f86f5ee506e51cfef1a5f99468f15a67c5.json
+
 eval/tmp/
 eval/private/
 scratch/
+
 

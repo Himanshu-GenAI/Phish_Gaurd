@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "law_enforcement_threat",
+      "label": "Threat of legal action",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Case close karne ke liye clearance verification fee jama karni hogi turant"
+    },
+    {
+      "id": "financial_extortion",
+      "label": "Demand for money transfer",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "clearance verification fee jama karni hogi"
+    }
+  ],
+  "domainResults": []
+}

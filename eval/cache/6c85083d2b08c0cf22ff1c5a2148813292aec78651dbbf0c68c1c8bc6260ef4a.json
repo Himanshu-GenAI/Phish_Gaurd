@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "kyc_utility",
+  "aiHits": [
+    {
+      "id": "app_download_coercion",
+      "label": "Requests App Download for KYC",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Download and install the mandatory KYC verification update package file"
+    },
+    {
+      "id": "threat_of_account_closure",
+      "label": "Threat of Permanent Account Disable",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Your Savings Account access will be permanently disabled"
+    }
+  ],
+  "domainResults": []
+}

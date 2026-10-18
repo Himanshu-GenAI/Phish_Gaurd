@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "fake_job",
+  "aiHits": [
+    {
+      "id": "advance_payment_required",
+      "label": "Advance Payment for Equipment",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "a one-time refundable shipment insurance of ₹2,499 is required before we dispatc…"
+    },
+    {
+      "id": "unprofessional_upi_handle",
+      "label": "Vendor UPI Handle for Corporate Job",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Pay to vendor UPI: infosys-logistics@ybl"
+    }
+  ],
+  "domainResults": []
+}

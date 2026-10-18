@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_threat_shame",
+      "label": "Threat to contact family and share photos",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Our recovery team has accessed your contact list and will send your photos to fa…"
+    },
+    {
+      "id": "sig_urgent_coercion",
+      "label": "Urgent ultimatum to induce panic",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Final warning: Your overdue loan balance of Rs 12,400 has not been paid... in 1 …"
+    }
+  ],
+  "domainResults": []
+}

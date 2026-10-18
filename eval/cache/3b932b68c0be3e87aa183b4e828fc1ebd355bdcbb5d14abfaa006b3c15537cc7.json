@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 3,
+  "keptSignalCount": 3,
+  "scam_type": "loan_app",
+  "aiHits": [
+    {
+      "id": "sig_blackmail_contacts",
+      "label": "Blackmail using private data",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Threatening to send photos and contacts to everyone if payment is not made withi…"
+    },
+    {
+      "id": "sig_inflated_demand",
+      "label": "Inflated late fee demand",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Demanding ₹15,000 for an initial ₹8,000 loan within an unreasonable time limit o…"
+    },
+    {
+      "id": "sig_upi_coercion",
+      "label": "Coercive payment method",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Insisting on accepting a WhatsApp UPI collect request immediately under pressure…"
+    }
+  ],
+  "domainResults": []
+}

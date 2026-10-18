@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "fake_support",
+  "aiHits": [
+    {
+      "id": "medical_emergency_guilt",
+      "label": "Medical Emergency Manipulation",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Urgent emergency operation ke liye cash chahiye doctor ko dene ke liye"
+    },
+    {
+      "id": "communication_barrier_excuse",
+      "label": "Communication Block",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Call mat karna ICU ke bahar hu"
+    }
+  ],
+  "domainResults": []
+}

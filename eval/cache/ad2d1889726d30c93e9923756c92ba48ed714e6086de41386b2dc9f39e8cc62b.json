@@ -1,0 +1,29 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "external_messenger",
+      "label": "External Messaging App",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Contact HR only on Telegram @infotech_hr01"
+    },
+    {
+      "id": "unrealistic_earnings",
+      "label": "Unrealistic Earnings",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Earn Rs 5,000/day, no interview needed!"
+    },
+    {
+      "id": "upfront_fee",
+      "label": "Upfront Payment Demand",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Pay one-time registration fee of Rs 499 via UPI"
+    }
+  ],
+  "domainResults": []
+}

@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "phishing",
+  "aiHits": [
+    {
+      "id": "urgency_coercion",
+      "label": "Urgency and Coercion",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Clear fine before summons date by downloading vehicle notice APK from server."
+    },
+    {
+      "id": "suspicious_channel",
+      "label": "Suspicious Official Channel",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Downloading vehicle notice APK from server instead of using official government …"
+    }
+  ],
+  "domainResults": []
+}

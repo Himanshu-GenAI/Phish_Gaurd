@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 3,
+  "keptSignalCount": 3,
+  "scam_type": "fake_support",
+  "aiHits": [
+    {
+      "id": "sig_urgency_coercion",
+      "label": "High Urgency and Coercion",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Demand for immediate deposit of Rs 65,000 threatening that treatment will be sto…"
+    },
+    {
+      "id": "sig_secrecy",
+      "label": "Demanding Secrecy",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Asking not to tell the mother to avoid tension, isolating the victim from family…"
+    },
+    {
+      "id": "sig_excuse_communication",
+      "label": "Excuses for Alternative Communication",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Claiming the phone is with the nurse and voice is weak to prevent a direct phone…"
+    }
+  ],
+  "domainResults": []
+}

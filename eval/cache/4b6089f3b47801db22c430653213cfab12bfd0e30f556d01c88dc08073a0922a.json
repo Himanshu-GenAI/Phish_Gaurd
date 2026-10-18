@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "digital_arrest_claim",
+      "label": "Digital Arrest Impersonation",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Aap digital arrest me ho abhi. Video call par bane rahiye"
+    },
+    {
+      "id": "supervisory_account_transfer",
+      "label": "Demand for Transfer to Supervisory Account",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "supervisory account me Rs 1,50,000 turant bhej do agar detention se bachna hai"
+    }
+  ],
+  "domainResults": []
+}

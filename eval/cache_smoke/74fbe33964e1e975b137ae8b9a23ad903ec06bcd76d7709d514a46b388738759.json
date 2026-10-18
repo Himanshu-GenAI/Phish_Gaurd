@@ -1,0 +1,11 @@
+{
+  "aiHits": [
+    {
+      "id": "urgency_customer_care",
+      "label": "Fake Support Urgency",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Aunty bol rahi thi customer care support desk kal band rahega Sunday ki wajah se…"
+    }
+  ]
+}

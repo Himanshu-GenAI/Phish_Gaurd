@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_no_cibil_proof",
+      "label": "Unrealistic Financial Offer",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Promises Rs 1,00,000 without CIBIL or income proof, which no legitimate bank doe…"
+    },
+    {
+      "id": "sig_high_urgency_disbursement",
+      "label": "High Urgency and Speed",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Claims instant disbursement in 5 minutes to pressure the victim."
+    }
+  ],
+  "domainResults": []
+}

@@ -1,0 +1,15 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_phone_number_call_to_action",
+      "label": "Direct personal mobile number for billing official",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Turant Electricity Officer ko call karein 9876543210 par"
+    }
+  ],
+  "domainResults": []
+}

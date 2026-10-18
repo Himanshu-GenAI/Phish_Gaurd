@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "digital_arrest",
+  "aiHits": [
+    {
+      "id": "sig_emergency_impersonation",
+      "label": "Emergency Family Impersonation",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Papa, badi problem me hu. Police ne hamari car rok li hai aur chowki pe hu."
+    },
+    {
+      "id": "sig_isolation_tactic",
+      "label": "Isolation Tactic via Low Battery",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Phone battery low hai."
+    }
+  ],
+  "domainResults": []
+}

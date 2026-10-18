@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "advance_payment_demand",
+      "label": "Demand for Money to Release Funds",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Merchant order complete karne ke liye Rs 5,000 recharge karein tabhi pura withdr…"
+    },
+    {
+      "id": "false_profit_lure",
+      "label": "Fake Earnings Hook",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Aapka Task 4 complete ho gaya. Rs 800 profit aapke wallet me add hua"
+    }
+  ],
+  "domainResults": []
+}

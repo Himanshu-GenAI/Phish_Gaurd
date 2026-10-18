@@ -1,0 +1,11 @@
+{
+  "aiHits": [
+    {
+      "id": "sig_confidentiality_pressure",
+      "label": "Forced Secrecy",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Yeh personal baat hai, confidential rakhna kisi dost ko mat batana."
+    }
+  ]
+}

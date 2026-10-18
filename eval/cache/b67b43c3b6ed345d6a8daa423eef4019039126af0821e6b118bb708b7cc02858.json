@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "upi_collect",
+  "aiHits": [
+    {
+      "id": "upi_pin_for_credit",
+      "label": "Asking UPI PIN to receive money",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "UPI PIN is never required to receive money; it is only needed to send money or a…"
+    },
+    {
+      "id": "unsolicited_refund",
+      "label": "Fake refund lure",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Claiming a pending credit of Rs 4,500 to trick the user into scanning a QR code."
+    }
+  ],
+  "domainResults": []
+}

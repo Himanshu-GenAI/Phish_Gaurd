@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "fake_job",
+  "aiHits": [
+    {
+      "id": "PAY_FOR_JOB",
+      "label": "Payment demanded for onboarding or equipment",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "please purchase a Rs 2,000 Amazon e-voucher and forward the voucher code to our …"
+    },
+    {
+      "id": "VAGUE_JOB_MATCH",
+      "label": "Vague job matching without interview details",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "your profile was matched for Executive Assistant. Our team conducts orientation …"
+    }
+  ],
+  "domainResults": []
+}

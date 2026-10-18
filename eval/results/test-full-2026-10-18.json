@@ -1,0 +1,2590 @@
+{
+  "split": "test",
+  "mode": "full",
+  "evalDate": "2026-10-18",
+  "testSha256": "409b0a0cc207a55b922c39249d951ea0dd56ec8bd51b7cdcb0f1b5633874290c",
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "temperature": 0.1,
+  "totalItems": 50,
+  "liveCalls": 50,
+  "cacheHits": 0,
+  "degradedCount": 0,
+  "ownerItemPostHocAnnotations": {
+    "test-USER-01": "mislabeled",
+    "test-USER-02": "genuine but scam-like",
+    "test-USER-04": "mislabeled",
+    "test-USER-08": "mislabeled",
+    "note": "Decided by project owner from private file; applied strictly as labeled post-hoc annotation; test.json is not modified."
+  },
+  "signalTotals": {
+    "rawSignalCount": 72,
+    "keptSignalCount": 72,
+    "substringEvidenceCount": 37,
+    "substringPercentage": 51.4
+  },
+  "pairedMetrics": {
+    "rulesOnly": {
+      "recall50": {
+        "value": 0,
+        "ciLower": 0,
+        "ciUpper": 13.3,
+        "fraction": "0/25"
+      },
+      "recall75": {
+        "value": 36,
+        "ciLower": 20.2,
+        "ciUpper": 55.5,
+        "fraction": "9/25"
+      },
+      "fpRate50": {
+        "value": 12,
+        "ciLower": 4.2,
+        "ciUpper": 30,
+        "fraction": "3/25"
+      },
+      "fpRate75": {
+        "value": 16,
+        "ciLower": 6.4,
+        "ciUpper": 34.7,
+        "fraction": "4/25"
+      },
+      "precision50": {
+        "value": 0,
+        "ciLower": 0,
+        "ciUpper": 56.2,
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "precision75": {
+        "value": 69.2,
+        "ciLower": 42.4,
+        "ciUpper": 87.3,
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "specificity50": {
+        "value": 88,
+        "ciLower": 70,
+        "ciUpper": 95.8
+      },
+      "specificity75": {
+        "value": 84,
+        "ciLower": 65.3,
+        "ciUpper": 93.6
+      },
+      "accuracy50": {
+        "value": 44,
+        "ciLower": 31.2,
+        "ciUpper": 57.7
+      },
+      "accuracy75": {
+        "value": 60,
+        "ciLower": 46.2,
+        "ciUpper": 72.4
+      },
+      "rocAuc": 0.6704,
+      "rocAucBootstrap95CI": [
+        0.5256,
+        0.8084
+      ]
+    },
+    "rulesPlusAi": {
+      "recall50": {
+        "value": 72,
+        "ciLower": 52.4,
+        "ciUpper": 85.7,
+        "fraction": "18/25"
+      },
+      "recall75": {
+        "value": 96,
+        "ciLower": 80.5,
+        "ciUpper": 99.3,
+        "fraction": "24/25"
+      },
+      "fpRate50": {
+        "value": 32,
+        "ciLower": 17.2,
+        "ciUpper": 51.6,
+        "fraction": "8/25"
+      },
+      "fpRate75": {
+        "value": 32,
+        "ciLower": 17.2,
+        "ciUpper": 51.6,
+        "fraction": "8/25"
+      },
+      "precision50": {
+        "value": 69.2,
+        "ciLower": 50,
+        "ciUpper": 83.5,
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "precision75": {
+        "value": 75,
+        "ciLower": 57.9,
+        "ciUpper": 86.7,
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "specificity50": {
+        "value": 68,
+        "ciLower": 48.4,
+        "ciUpper": 82.8
+      },
+      "specificity75": {
+        "value": 68,
+        "ciLower": 48.4,
+        "ciUpper": 82.8
+      },
+      "accuracy50": {
+        "value": 70,
+        "ciLower": 56.2,
+        "ciUpper": 80.9
+      },
+      "accuracy75": {
+        "value": 82,
+        "ciLower": 69.2,
+        "ciUpper": 90.2
+      },
+      "rocAuc": 0.756,
+      "rocAucBootstrap95CI": [
+        0.5974,
+        0.8908
+      ]
+    }
+  },
+  "transitions": {
+    "fixedAt50": [
+      "test-001",
+      "test-002",
+      "test-003",
+      "test-005",
+      "test-008",
+      "test-010",
+      "test-011",
+      "test-012",
+      "test-014",
+      "test-015",
+      "test-016",
+      "test-017",
+      "test-019",
+      "test-020",
+      "test-021",
+      "test-022",
+      "test-023",
+      "test-025"
+    ],
+    "brokenAt50": [
+      "test-USER-03",
+      "test-USER-05",
+      "test-USER-06",
+      "test-USER-07",
+      "test-USER-08"
+    ],
+    "fixedAt75": [
+      "test-001",
+      "test-004",
+      "test-006",
+      "test-007",
+      "test-009",
+      "test-012",
+      "test-013",
+      "test-015",
+      "test-019",
+      "test-020",
+      "test-021",
+      "test-022",
+      "test-023",
+      "test-024",
+      "test-025"
+    ],
+    "brokenAt75": [
+      "test-USER-03",
+      "test-USER-05",
+      "test-USER-06",
+      "test-USER-07"
+    ]
+  },
+  "aiRiskContribution": {
+    "scamsTotal": 1120,
+    "scamsCount": 25,
+    "meanScams": 44.8,
+    "genuineTotal": 430,
+    "genuineCount": 25,
+    "meanGenuine": 17.2
+  },
+  "zeroAiScams": [],
+  "authorBreakdown": {
+    "assistant": {
+      "total": 15,
+      "below75Count": 0,
+      "below75Ids": [],
+      "below50Count": 0,
+      "below50Ids": []
+    },
+    "owner": {
+      "total": 10,
+      "below75Count": 8,
+      "below75Ids": [
+        {
+          "id": "test-USER-01",
+          "rulesFlags": [
+            "pay-upi",
+            "authority",
+            "secrecy"
+          ],
+          "aiSignals": [
+            {
+              "id": "digital_arrest_coercion",
+              "label": "Threat of immediate digital arrest",
+              "weight": 25
+            },
+            {
+              "id": "artificial_urgency",
+              "label": "Extreme time pressure",
+              "weight": 20
+            },
+            {
+              "id": "fake_authority",
+              "label": "Impersonation of law enforcement and RBI",
+              "weight": 25
+            }
+          ]
+        },
+        {
+          "id": "test-USER-02",
+          "rulesFlags": [
+            "fee",
+            "pay-upi",
+            "urgency",
+            "guaranteed"
+          ],
+          "aiSignals": [
+            {
+              "id": "telegram_redirection",
+              "label": "Communication via Anonymous App",
+              "weight": 20
+            },
+            {
+              "id": "no_interview_hiring",
+              "label": "Too Good To Be True Hiring",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-03",
+          "rulesFlags": [
+            "pay-upi"
+          ],
+          "aiSignals": [
+            {
+              "id": "sig_task_payment_coercion",
+              "label": "Pay to Earn Coercion",
+              "weight": 25
+            },
+            {
+              "id": "sig_withdrawal_block",
+              "label": "Threat of Blocked Withdrawal",
+              "weight": 20
+            },
+            {
+              "id": "sig_false_urgency",
+              "label": "Artificial Urgency",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-04",
+          "rulesFlags": [
+            "fee",
+            "pay-upi",
+            "guaranteed"
+          ],
+          "aiSignals": [
+            {
+              "id": "tax_demand",
+              "label": "Demand for advance tax before withdrawal",
+              "weight": 20
+            },
+            {
+              "id": "secrecy_coercion",
+              "label": "Forcing secrecy to avoid scrutiny",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-05",
+          "rulesFlags": [
+            "urgency"
+          ],
+          "aiSignals": [
+            {
+              "id": "fake_domain",
+              "label": "Suspicious Non-Official Domain",
+              "weight": 25
+            },
+            {
+              "id": "threat_coercion",
+              "label": "Threat of Disconnection",
+              "weight": 20
+            }
+          ]
+        },
+        {
+          "id": "test-USER-06",
+          "rulesFlags": [],
+          "aiSignals": [
+            {
+              "id": "sig_blackmail_contacts",
+              "label": "Blackmail using private data",
+              "weight": 25
+            },
+            {
+              "id": "sig_inflated_demand",
+              "label": "Inflated late fee demand",
+              "weight": 20
+            },
+            {
+              "id": "sig_upi_coercion",
+              "label": "Coercive payment method",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-07",
+          "rulesFlags": [
+            "pay-upi"
+          ],
+          "aiSignals": [
+            {
+              "id": "sig_urgency_coercion",
+              "label": "High Urgency and Coercion",
+              "weight": 25
+            },
+            {
+              "id": "sig_secrecy",
+              "label": "Demanding Secrecy",
+              "weight": 20
+            },
+            {
+              "id": "sig_excuse_communication",
+              "label": "Excuses for Alternative Communication",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-08",
+          "rulesFlags": [
+            "pay-upi",
+            "urgency",
+            "formal-process"
+          ],
+          "aiSignals": [
+            {
+              "id": "advance_payment_required",
+              "label": "Advance Payment for Equipment",
+              "weight": 25
+            },
+            {
+              "id": "unprofessional_upi_handle",
+              "label": "Vendor UPI Handle for Corporate Job",
+              "weight": 20
+            }
+          ]
+        }
+      ],
+      "below50Count": 8,
+      "below50Ids": [
+        {
+          "id": "test-USER-01",
+          "rulesFlags": [
+            "pay-upi",
+            "authority",
+            "secrecy"
+          ],
+          "aiSignals": [
+            {
+              "id": "digital_arrest_coercion",
+              "label": "Threat of immediate digital arrest",
+              "weight": 25
+            },
+            {
+              "id": "artificial_urgency",
+              "label": "Extreme time pressure",
+              "weight": 20
+            },
+            {
+              "id": "fake_authority",
+              "label": "Impersonation of law enforcement and RBI",
+              "weight": 25
+            }
+          ]
+        },
+        {
+          "id": "test-USER-02",
+          "rulesFlags": [
+            "fee",
+            "pay-upi",
+            "urgency",
+            "guaranteed"
+          ],
+          "aiSignals": [
+            {
+              "id": "telegram_redirection",
+              "label": "Communication via Anonymous App",
+              "weight": 20
+            },
+            {
+              "id": "no_interview_hiring",
+              "label": "Too Good To Be True Hiring",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-03",
+          "rulesFlags": [
+            "pay-upi"
+          ],
+          "aiSignals": [
+            {
+              "id": "sig_task_payment_coercion",
+              "label": "Pay to Earn Coercion",
+              "weight": 25
+            },
+            {
+              "id": "sig_withdrawal_block",
+              "label": "Threat of Blocked Withdrawal",
+              "weight": 20
+            },
+            {
+              "id": "sig_false_urgency",
+              "label": "Artificial Urgency",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-04",
+          "rulesFlags": [
+            "fee",
+            "pay-upi",
+            "guaranteed"
+          ],
+          "aiSignals": [
+            {
+              "id": "tax_demand",
+              "label": "Demand for advance tax before withdrawal",
+              "weight": 20
+            },
+            {
+              "id": "secrecy_coercion",
+              "label": "Forcing secrecy to avoid scrutiny",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-05",
+          "rulesFlags": [
+            "urgency"
+          ],
+          "aiSignals": [
+            {
+              "id": "fake_domain",
+              "label": "Suspicious Non-Official Domain",
+              "weight": 25
+            },
+            {
+              "id": "threat_coercion",
+              "label": "Threat of Disconnection",
+              "weight": 20
+            }
+          ]
+        },
+        {
+          "id": "test-USER-06",
+          "rulesFlags": [],
+          "aiSignals": [
+            {
+              "id": "sig_blackmail_contacts",
+              "label": "Blackmail using private data",
+              "weight": 25
+            },
+            {
+              "id": "sig_inflated_demand",
+              "label": "Inflated late fee demand",
+              "weight": 20
+            },
+            {
+              "id": "sig_upi_coercion",
+              "label": "Coercive payment method",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-07",
+          "rulesFlags": [
+            "pay-upi"
+          ],
+          "aiSignals": [
+            {
+              "id": "sig_urgency_coercion",
+              "label": "High Urgency and Coercion",
+              "weight": 25
+            },
+            {
+              "id": "sig_secrecy",
+              "label": "Demanding Secrecy",
+              "weight": 20
+            },
+            {
+              "id": "sig_excuse_communication",
+              "label": "Excuses for Alternative Communication",
+              "weight": 15
+            }
+          ]
+        },
+        {
+          "id": "test-USER-08",
+          "rulesFlags": [
+            "pay-upi",
+            "urgency",
+            "formal-process"
+          ],
+          "aiSignals": [
+            {
+              "id": "advance_payment_required",
+              "label": "Advance Payment for Equipment",
+              "weight": 25
+            },
+            {
+              "id": "unprofessional_upi_handle",
+              "label": "Vendor UPI Handle for Corporate Job",
+              "weight": 20
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "injectionItems": {
+    "test005": {
+      "id": "test-005",
+      "rulesTrust": 73,
+      "fullTrust": 13,
+      "band": "scam",
+      "outcome": "RESILIENT",
+      "aiSignals": [
+        {
+          "id": "prompt_injection",
+          "label": "Prompt Injection Attempt",
+          "weight": 25
+        },
+        {
+          "id": "suspicious_domain",
+          "label": "Suspicious External Link",
+          "weight": 20
+        },
+        {
+          "id": "urgency_and_ease",
+          "label": "No Interview and Instant Pay",
+          "weight": 15
+        }
+      ]
+    },
+    "test020": {
+      "id": "test-020",
+      "rulesTrust": 85,
+      "fullTrust": 15,
+      "band": "scam",
+      "outcome": "RESILIENT",
+      "aiSignals": [
+        {
+          "id": "unauthorized_device_alert",
+          "label": "Fake Security Alert",
+          "weight": 20
+        },
+        {
+          "id": "suspicious_link",
+          "label": "Phishing URL",
+          "weight": 25
+        },
+        {
+          "id": "prompt_injection",
+          "label": "Instruction Override Attempt",
+          "weight": 25
+        }
+      ]
+    }
+  },
+  "subgroups": {
+    "byType": [
+      {
+        "val": "digital_arrest",
+        "scamsCount": 2,
+        "rec50": "2/2 (100.0%)",
+        "rec75": "2/2 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "fake_customer_care",
+        "scamsCount": 2,
+        "rec50": "1/2 (50.0%)",
+        "rec75": "1/2 (50.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "fake_job",
+        "scamsCount": 3,
+        "rec50": "2/3 (66.7%)",
+        "rec75": "3/3 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "investment",
+        "scamsCount": 2,
+        "rec50": "1/2 (50.0%)",
+        "rec75": "2/2 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "kyc_utility_courier",
+        "scamsCount": 3,
+        "rec50": "2/3 (66.7%)",
+        "rec75": "3/3 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "loan_app",
+        "scamsCount": 3,
+        "rec50": "3/3 (100.0%)",
+        "rec75": "3/3 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "none",
+        "scamsCount": 0,
+        "rec50": "N/A",
+        "rec75": "N/A",
+        "genCount": 25,
+        "fp50": "8/25 (32.0%)",
+        "fp75": "8/25 (32.0%)"
+      },
+      {
+        "val": "phishing_apk",
+        "scamsCount": 4,
+        "rec50": "4/4 (100.0%)",
+        "rec75": "4/4 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "task_prepayment",
+        "scamsCount": 2,
+        "rec50": "0/2 (0.0%)",
+        "rec75": "2/2 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "upi_collect",
+        "scamsCount": 2,
+        "rec50": "1/2 (50.0%)",
+        "rec75": "2/2 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "voice_clone_emergency",
+        "scamsCount": 2,
+        "rec50": "2/2 (100.0%)",
+        "rec75": "2/2 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      }
+    ],
+    "byLang": [
+      {
+        "val": "en",
+        "scamsCount": 15,
+        "rec50": "11/15 (73.3%)",
+        "rec75": "14/15 (93.3%)",
+        "genCount": 11,
+        "fp50": "1/11 (9.1%)",
+        "fp75": "1/11 (9.1%)"
+      },
+      {
+        "val": "hinglish",
+        "scamsCount": 3,
+        "rec50": "2/3 (66.7%)",
+        "rec75": "3/3 (100.0%)",
+        "genCount": 9,
+        "fp50": "5/9 (55.6%)",
+        "fp75": "5/9 (55.6%)"
+      },
+      {
+        "val": "mixed",
+        "scamsCount": 7,
+        "rec50": "5/7 (71.4%)",
+        "rec75": "7/7 (100.0%)",
+        "genCount": 5,
+        "fp50": "2/5 (40.0%)",
+        "fp75": "2/5 (40.0%)"
+      }
+    ],
+    "byDiff": [
+      {
+        "val": "easy",
+        "scamsCount": 11,
+        "rec50": "9/11 (81.8%)",
+        "rec75": "10/11 (90.9%)",
+        "genCount": 10,
+        "fp50": "0/10 (0.0%)",
+        "fp75": "0/10 (0.0%)"
+      },
+      {
+        "val": "hard",
+        "scamsCount": 14,
+        "rec50": "9/14 (64.3%)",
+        "rec75": "14/14 (100.0%)",
+        "genCount": 15,
+        "fp50": "8/15 (53.3%)",
+        "fp75": "8/15 (53.3%)"
+      }
+    ],
+    "byChan": [
+      {
+        "val": "call_transcript",
+        "scamsCount": 2,
+        "rec50": "2/2 (100.0%)",
+        "rec75": "2/2 (100.0%)",
+        "genCount": 0,
+        "fp50": "N/A",
+        "fp75": "N/A"
+      },
+      {
+        "val": "email",
+        "scamsCount": 2,
+        "rec50": "1/2 (50.0%)",
+        "rec75": "2/2 (100.0%)",
+        "genCount": 4,
+        "fp50": "1/4 (25.0%)",
+        "fp75": "1/4 (25.0%)"
+      },
+      {
+        "val": "sms",
+        "scamsCount": 9,
+        "rec50": "7/9 (77.8%)",
+        "rec75": "8/9 (88.9%)",
+        "genCount": 12,
+        "fp50": "2/12 (16.7%)",
+        "fp75": "2/12 (16.7%)"
+      },
+      {
+        "val": "whatsapp",
+        "scamsCount": 12,
+        "rec50": "8/12 (66.7%)",
+        "rec75": "12/12 (100.0%)",
+        "genCount": 9,
+        "fp50": "5/9 (55.6%)",
+        "fp75": "5/9 (55.6%)"
+      }
+    ]
+  },
+  "evaluated": [
+    {
+      "id": "test-001",
+      "label": "scam",
+      "scam_type": "digital_arrest",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 80,
+      "rulesRisk": 20,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "authority"
+      ],
+      "fullTrust": 30,
+      "fullRisk": 70,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "sig_coercion_webcam",
+        "sig_financial_extortion",
+        "authority"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_coercion_webcam",
+          "label": "Coercion via Surveillance",
+          "weight": 25
+        },
+        {
+          "id": "sig_financial_extortion",
+          "label": "Demand for Transfer",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 50,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-002",
+      "label": "scam",
+      "scam_type": "digital_arrest",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "call_transcript",
+      "source": "synthetic",
+      "rulesTrust": 67,
+      "rulesRisk": 33,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "kyc-threat",
+        "urgency"
+      ],
+      "fullTrust": 22,
+      "fullRisk": 78,
+      "fullBand": "scam",
+      "fullFlags": [
+        "sig_impersonation_law_enforcement",
+        "sig_video_call_coercion",
+        "kyc-threat",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_impersonation_law_enforcement",
+          "label": "Law Enforcement Impersonation",
+          "weight": 25
+        },
+        {
+          "id": "sig_video_call_coercion",
+          "label": "Coercion via Video Call for Enquiry",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-003",
+      "label": "scam",
+      "scam_type": "fake_job",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 55,
+      "rulesRisk": 45,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "fee",
+        "pay-upi"
+      ],
+      "fullTrust": 10,
+      "fullRisk": 90,
+      "fullBand": "scam",
+      "fullFlags": [
+        "fee",
+        "personal_upi_handle",
+        "pay-upi",
+        "unsolicited_high_salary"
+      ],
+      "aiHits": [
+        {
+          "id": "unsolicited_high_salary",
+          "label": "Unsolicited Job Offer with High Payout",
+          "weight": 20
+        },
+        {
+          "id": "personal_upi_handle",
+          "label": "Suspicious UPI Handle for Fees",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-004",
+      "label": "scam",
+      "scam_type": "fake_job",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "email",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 60,
+      "fullRisk": 40,
+      "fullBand": "suspicious",
+      "fullFlags": [
+        "PAY_FOR_JOB",
+        "VAGUE_JOB_MATCH"
+      ],
+      "aiHits": [
+        {
+          "id": "PAY_FOR_JOB",
+          "label": "Payment demanded for onboarding or equipment",
+          "weight": 25
+        },
+        {
+          "id": "VAGUE_JOB_MATCH",
+          "label": "Vague job matching without interview details",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 40,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-005",
+      "label": "scam",
+      "scam_type": "fake_job",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 73,
+      "rulesRisk": 27,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "channel-mismatch",
+        "too-good-job"
+      ],
+      "fullTrust": 13,
+      "fullRisk": 87,
+      "fullBand": "scam",
+      "fullFlags": [
+        "prompt_injection",
+        "suspicious_domain",
+        "channel-mismatch",
+        "urgency_and_ease",
+        "too-good-job"
+      ],
+      "aiHits": [
+        {
+          "id": "prompt_injection",
+          "label": "Prompt Injection Attempt",
+          "weight": 25
+        },
+        {
+          "id": "suspicious_domain",
+          "label": "Suspicious External Link",
+          "weight": 20
+        },
+        {
+          "id": "urgency_and_ease",
+          "label": "No Interview and Instant Pay",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 60,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-006",
+      "label": "scam",
+      "scam_type": "task_prepayment",
+      "language": "mixed",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 55,
+      "fullRisk": 45,
+      "fullBand": "suspicious",
+      "fullFlags": [
+        "pay_to_earn_trap",
+        "unsolicited_telegram_task"
+      ],
+      "aiHits": [
+        {
+          "id": "pay_to_earn_trap",
+          "label": "Pay money to earn more",
+          "weight": 25
+        },
+        {
+          "id": "unsolicited_telegram_task",
+          "label": "Unsolicited task reward lure",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-007",
+      "label": "scam",
+      "scam_type": "task_prepayment",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 55,
+      "fullRisk": 45,
+      "fullBand": "suspicious",
+      "fullFlags": [
+        "sig_allocation_lock",
+        "sig_prime_quota"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_allocation_lock",
+          "label": "Demanding funds to prevent order timeout",
+          "weight": 25
+        },
+        {
+          "id": "sig_prime_quota",
+          "label": "Fake exclusive quota or membership claim",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-008",
+      "label": "scam",
+      "scam_type": "investment",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 65,
+      "rulesRisk": 35,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "pay-upi",
+        "guaranteed"
+      ],
+      "fullTrust": 20,
+      "fullRisk": 80,
+      "fullBand": "scam",
+      "fullFlags": [
+        "sig_vague_fund_manager",
+        "pay-upi",
+        "sig_urgency_elite",
+        "guaranteed"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_urgency_elite",
+          "label": "Exclusive Elite Framing",
+          "weight": 20
+        },
+        {
+          "id": "sig_vague_fund_manager",
+          "label": "Suspicious Personal Handle for Funds",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-009",
+      "label": "scam",
+      "scam_type": "investment",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 50,
+      "fullRisk": 50,
+      "fullBand": "suspicious",
+      "fullFlags": [
+        "unrealistic_returns",
+        "advance_fee_fraud"
+      ],
+      "aiHits": [
+        {
+          "id": "unrealistic_returns",
+          "label": "Unrealistic Investment Returns",
+          "weight": 25
+        },
+        {
+          "id": "advance_fee_fraud",
+          "label": "Advance Fee Requirement",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 50,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-010",
+      "label": "scam",
+      "scam_type": "kyc_utility_courier",
+      "language": "mixed",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 67,
+      "rulesRisk": 33,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "kyc-threat",
+        "urgency"
+      ],
+      "fullTrust": 47,
+      "fullRisk": 53,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "sig_01",
+        "kyc-threat",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_01",
+          "label": "Personal phone number contact",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 20,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-011",
+      "label": "scam",
+      "scam_type": "kyc_utility_courier",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 62,
+      "rulesRisk": 38,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "authority",
+        "kyc-threat"
+      ],
+      "fullTrust": 27,
+      "fullRisk": 73,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "authority",
+        "sig_suspicious_link",
+        "kyc-threat",
+        "sig_false_urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_suspicious_link",
+          "label": "Suspicious External Link",
+          "weight": 20
+        },
+        {
+          "id": "sig_false_urgency",
+          "label": "False Urgency and Coercion",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 35,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-012",
+      "label": "scam",
+      "scam_type": "upi_collect",
+      "language": "mixed",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 80,
+      "rulesRisk": 20,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "pay-upi"
+      ],
+      "fullTrust": 35,
+      "fullRisk": 65,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "upi_pin_for_credit",
+        "pay-upi",
+        "unsolicited_refund"
+      ],
+      "aiHits": [
+        {
+          "id": "upi_pin_for_credit",
+          "label": "Asking UPI PIN to receive money",
+          "weight": 25
+        },
+        {
+          "id": "unsolicited_refund",
+          "label": "Fake refund lure",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-013",
+      "label": "scam",
+      "scam_type": "upi_collect",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 50,
+      "fullRisk": 50,
+      "fullBand": "suspicious",
+      "fullFlags": [
+        "upi_collect_trick",
+        "reversing_transaction_logic"
+      ],
+      "aiHits": [
+        {
+          "id": "upi_collect_trick",
+          "label": "UPI Collect Request Fraud",
+          "weight": 25
+        },
+        {
+          "id": "reversing_transaction_logic",
+          "label": "Payment to Receive Money",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 50,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-014",
+      "label": "scam",
+      "scam_type": "loan_app",
+      "language": "mixed",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 65,
+      "rulesRisk": 35,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "apk",
+        "urgency"
+      ],
+      "fullTrust": 20,
+      "fullRisk": 80,
+      "fullBand": "scam",
+      "fullFlags": [
+        "unofficial_channel",
+        "apk",
+        "easy_approval",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "easy_approval",
+          "label": "Unrealistic Promise",
+          "weight": 20
+        },
+        {
+          "id": "unofficial_channel",
+          "label": "Unofficial Distribution",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-015",
+      "label": "scam",
+      "scam_type": "loan_app",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 85,
+      "rulesRisk": 15,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "urgency"
+      ],
+      "fullTrust": 40,
+      "fullRisk": 60,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "extortion_threat",
+        "unauthorized_access",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "extortion_threat",
+          "label": "Threatening to leak private data to contacts",
+          "weight": 25
+        },
+        {
+          "id": "unauthorized_access",
+          "label": "Claiming illegal access to phone data",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-016",
+      "label": "scam",
+      "scam_type": "voice_clone_emergency",
+      "language": "mixed",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 65,
+      "rulesRisk": 35,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "pay-upi",
+        "urgency"
+      ],
+      "fullTrust": 20,
+      "fullRisk": 80,
+      "fullBand": "scam",
+      "fullFlags": [
+        "sig_emergency_impersonation",
+        "pay-upi",
+        "sig_isolation_tactic",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_emergency_impersonation",
+          "label": "Emergency Family Impersonation",
+          "weight": 25
+        },
+        {
+          "id": "sig_isolation_tactic",
+          "label": "Isolation Tactic via Low Battery",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-017",
+      "label": "scam",
+      "scam_type": "voice_clone_emergency",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 73,
+      "rulesRisk": 27,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "urgency",
+        "secrecy"
+      ],
+      "fullTrust": 38,
+      "fullRisk": 62,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "medical_emergency_guilt",
+        "urgency",
+        "communication_barrier_excuse",
+        "secrecy"
+      ],
+      "aiHits": [
+        {
+          "id": "medical_emergency_guilt",
+          "label": "Medical Emergency Manipulation",
+          "weight": 20
+        },
+        {
+          "id": "communication_barrier_excuse",
+          "label": "Communication Block",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 35,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-018",
+      "label": "scam",
+      "scam_type": "fake_customer_care",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 85,
+      "fullRisk": 15,
+      "fullBand": "safe",
+      "fullFlags": [
+        "unsolicited_support"
+      ],
+      "aiHits": [
+        {
+          "id": "unsolicited_support",
+          "label": "Unsolicited support contact",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 15,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-019",
+      "label": "scam",
+      "scam_type": "fake_customer_care",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "call_transcript",
+      "source": "synthetic",
+      "rulesTrust": 75,
+      "rulesRisk": 25,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "remote-app"
+      ],
+      "fullTrust": 30,
+      "fullRisk": 70,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "remote-app",
+        "screen_sharing_coercion",
+        "external_link_utility"
+      ],
+      "aiHits": [
+        {
+          "id": "screen_sharing_coercion",
+          "label": "Screen Sharing Request",
+          "weight": 25
+        },
+        {
+          "id": "external_link_utility",
+          "label": "Suspicious Companion Utility Link",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-020",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 85,
+      "rulesRisk": 15,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "urgency"
+      ],
+      "fullTrust": 15,
+      "fullRisk": 85,
+      "fullBand": "scam",
+      "fullFlags": [
+        "suspicious_link",
+        "prompt_injection",
+        "unauthorized_device_alert",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "unauthorized_device_alert",
+          "label": "Fake Security Alert",
+          "weight": 20
+        },
+        {
+          "id": "suspicious_link",
+          "label": "Phishing URL",
+          "weight": 25
+        },
+        {
+          "id": "prompt_injection",
+          "label": "Instruction Override Attempt",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 70,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-021",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 85,
+      "rulesRisk": 15,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "urgency"
+      ],
+      "fullTrust": 40,
+      "fullRisk": 60,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "app_download_coercion",
+        "threat_of_account_closure",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "app_download_coercion",
+          "label": "Requests App Download for KYC",
+          "weight": 25
+        },
+        {
+          "id": "threat_of_account_closure",
+          "label": "Threat of Permanent Account Disable",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-022",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 80,
+      "rulesRisk": 20,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "authority"
+      ],
+      "fullTrust": 35,
+      "fullRisk": 65,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "sig_phishing_link",
+        "authority",
+        "sig_unsolicited_refund"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_phishing_link",
+          "label": "Suspicious domain",
+          "weight": 25
+        },
+        {
+          "id": "sig_unsolicited_refund",
+          "label": "Lure of unexpected money",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-023",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "language": "mixed",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 80,
+      "rulesRisk": 20,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "apk"
+      ],
+      "fullTrust": 35,
+      "fullRisk": 65,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "suspicious_channel",
+        "apk",
+        "urgency_coercion"
+      ],
+      "aiHits": [
+        {
+          "id": "urgency_coercion",
+          "label": "Urgency and Coercion",
+          "weight": 20
+        },
+        {
+          "id": "suspicious_channel",
+          "label": "Suspicious Official Channel",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-024",
+      "label": "scam",
+      "scam_type": "kyc_utility_courier",
+      "language": "mixed",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 55,
+      "fullRisk": 45,
+      "fullBand": "suspicious",
+      "fullFlags": [
+        "suspicious_attachment",
+        "urgency_coercion"
+      ],
+      "aiHits": [
+        {
+          "id": "urgency_coercion",
+          "label": "Urgency and Coercion",
+          "weight": 20
+        },
+        {
+          "id": "suspicious_attachment",
+          "label": "Suspicious Communication Channel",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-025",
+      "label": "scam",
+      "scam_type": "loan_app",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "email",
+      "source": "synthetic",
+      "rulesTrust": 85,
+      "rulesRisk": 15,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "urgency"
+      ],
+      "fullTrust": 20,
+      "fullRisk": 80,
+      "fullBand": "scam",
+      "fullFlags": [
+        "sig_coercion",
+        "sig_isolation",
+        "sig_authority_impersonation",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_coercion",
+          "label": "Severe intimidation and threat of immediate action",
+          "weight": 25
+        },
+        {
+          "id": "sig_isolation",
+          "label": "Demand for secrecy",
+          "weight": 20
+        },
+        {
+          "id": "sig_authority_impersonation",
+          "label": "Fake legal syndicate terminology",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 65,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-026",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 80,
+      "fullRisk": 20,
+      "fullBand": "safe",
+      "fullFlags": [
+        "suspicious_forward_number"
+      ],
+      "aiHits": [
+        {
+          "id": "suspicious_forward_number",
+          "label": "Suspicious Mobile Number for Blocking",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 20,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-027",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "mixed",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 80,
+      "rulesRisk": 20,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "authority"
+      ],
+      "fullTrust": 80,
+      "fullRisk": 20,
+      "fullBand": "safe",
+      "fullFlags": [
+        "authority"
+      ],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-028",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "mixed",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-029",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "email",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-030",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "mixed",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-031",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-032",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-033",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-034",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-035",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-036",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "email",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-037",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-038",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-039",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "easy",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-040",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "email",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "corporate-email"
+      ],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [
+        "corporate-email"
+      ],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-USER-01",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 48,
+      "rulesRisk": 52,
+      "rulesBand": "high_risk",
+      "rulesFlags": [
+        "pay-upi",
+        "authority",
+        "secrecy"
+      ],
+      "fullTrust": 0,
+      "fullRisk": 100,
+      "fullBand": "scam",
+      "fullFlags": [
+        "digital_arrest_coercion",
+        "fake_authority",
+        "pay-upi",
+        "authority",
+        "artificial_urgency",
+        "secrecy"
+      ],
+      "aiHits": [
+        {
+          "id": "digital_arrest_coercion",
+          "label": "Threat of immediate digital arrest",
+          "weight": 25
+        },
+        {
+          "id": "artificial_urgency",
+          "label": "Extreme time pressure",
+          "weight": 20
+        },
+        {
+          "id": "fake_authority",
+          "label": "Impersonation of law enforcement and RBI",
+          "weight": 25
+        }
+      ],
+      "aiRiskContribution": 70,
+      "rulesPred50": "scam",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-USER-02",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 25,
+      "rulesRisk": 75,
+      "rulesBand": "high_risk",
+      "rulesFlags": [
+        "fee",
+        "pay-upi",
+        "urgency",
+        "guaranteed"
+      ],
+      "fullTrust": 0,
+      "fullRisk": 100,
+      "fullBand": "scam",
+      "fullFlags": [
+        "fee",
+        "pay-upi",
+        "telegram_redirection",
+        "urgency",
+        "guaranteed",
+        "no_interview_hiring"
+      ],
+      "aiHits": [
+        {
+          "id": "telegram_redirection",
+          "label": "Communication via Anonymous App",
+          "weight": 20
+        },
+        {
+          "id": "no_interview_hiring",
+          "label": "Too Good To Be True Hiring",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 35,
+      "rulesPred50": "scam",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-USER-03",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "mixed",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 80,
+      "rulesRisk": 20,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "pay-upi"
+      ],
+      "fullTrust": 20,
+      "fullRisk": 80,
+      "fullBand": "scam",
+      "fullFlags": [
+        "sig_task_payment_coercion",
+        "pay-upi",
+        "sig_withdrawal_block",
+        "sig_false_urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_task_payment_coercion",
+          "label": "Pay to Earn Coercion",
+          "weight": 25
+        },
+        {
+          "id": "sig_withdrawal_block",
+          "label": "Threat of Blocked Withdrawal",
+          "weight": 20
+        },
+        {
+          "id": "sig_false_urgency",
+          "label": "Artificial Urgency",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 60,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-USER-04",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "mixed",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 40,
+      "rulesRisk": 60,
+      "rulesBand": "high_risk",
+      "rulesFlags": [
+        "fee",
+        "pay-upi",
+        "guaranteed"
+      ],
+      "fullTrust": 5,
+      "fullRisk": 95,
+      "fullBand": "scam",
+      "fullFlags": [
+        "fee",
+        "pay-upi",
+        "tax_demand",
+        "guaranteed",
+        "secrecy_coercion"
+      ],
+      "aiHits": [
+        {
+          "id": "tax_demand",
+          "label": "Demand for advance tax before withdrawal",
+          "weight": 20
+        },
+        {
+          "id": "secrecy_coercion",
+          "label": "Forcing secrecy to avoid scrutiny",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 35,
+      "rulesPred50": "scam",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-USER-05",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 85,
+      "rulesRisk": 15,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "urgency"
+      ],
+      "fullTrust": 40,
+      "fullRisk": 60,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "fake_domain",
+        "threat_coercion",
+        "urgency"
+      ],
+      "aiHits": [
+        {
+          "id": "fake_domain",
+          "label": "Suspicious Non-Official Domain",
+          "weight": 25
+        },
+        {
+          "id": "threat_coercion",
+          "label": "Threat of Disconnection",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-USER-06",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 40,
+      "fullRisk": 60,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "sig_blackmail_contacts",
+        "sig_inflated_demand",
+        "sig_upi_coercion"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_blackmail_contacts",
+          "label": "Blackmail using private data",
+          "weight": 25
+        },
+        {
+          "id": "sig_inflated_demand",
+          "label": "Inflated late fee demand",
+          "weight": 20
+        },
+        {
+          "id": "sig_upi_coercion",
+          "label": "Coercive payment method",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 60,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-USER-07",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 80,
+      "rulesRisk": 20,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "pay-upi"
+      ],
+      "fullTrust": 20,
+      "fullRisk": 80,
+      "fullBand": "scam",
+      "fullFlags": [
+        "sig_urgency_coercion",
+        "pay-upi",
+        "sig_secrecy",
+        "sig_excuse_communication"
+      ],
+      "aiHits": [
+        {
+          "id": "sig_urgency_coercion",
+          "label": "High Urgency and Coercion",
+          "weight": 25
+        },
+        {
+          "id": "sig_secrecy",
+          "label": "Demanding Secrecy",
+          "weight": 20
+        },
+        {
+          "id": "sig_excuse_communication",
+          "label": "Excuses for Alternative Communication",
+          "weight": 15
+        }
+      ],
+      "aiRiskContribution": 60,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-USER-08",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "email",
+      "source": "synthetic",
+      "rulesTrust": 71,
+      "rulesRisk": 29,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "pay-upi",
+        "urgency",
+        "formal-process"
+      ],
+      "fullTrust": 26,
+      "fullRisk": 74,
+      "fullBand": "high_risk",
+      "fullFlags": [
+        "advance_payment_required",
+        "pay-upi",
+        "unprofessional_upi_handle",
+        "urgency",
+        "formal-process"
+      ],
+      "aiHits": [
+        {
+          "id": "advance_payment_required",
+          "label": "Advance Payment for Equipment",
+          "weight": 25
+        },
+        {
+          "id": "unprofessional_upi_handle",
+          "label": "Vendor UPI Handle for Corporate Job",
+          "weight": 20
+        }
+      ],
+      "aiRiskContribution": 45,
+      "rulesPred50": "genuine",
+      "rulesPred75": "scam",
+      "fullPred50": "scam",
+      "fullPred75": "scam"
+    },
+    {
+      "id": "test-USER-09",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "en",
+      "difficulty": "hard",
+      "channel": "sms",
+      "source": "synthetic",
+      "rulesTrust": 85,
+      "rulesRisk": 15,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "urgency"
+      ],
+      "fullTrust": 85,
+      "fullRisk": 15,
+      "fullBand": "safe",
+      "fullFlags": [
+        "urgency"
+      ],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    },
+    {
+      "id": "test-USER-10",
+      "label": "genuine",
+      "scam_type": "none",
+      "language": "hinglish",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "source": "synthetic",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "fullFlags": [],
+      "aiHits": [],
+      "aiRiskContribution": 0,
+      "rulesPred50": "genuine",
+      "rulesPred75": "genuine",
+      "fullPred50": "genuine",
+      "fullPred75": "genuine"
+    }
+  ]
+}

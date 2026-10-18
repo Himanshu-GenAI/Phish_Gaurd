@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "loan_app",
+  "aiHits": [
+    {
+      "id": "extortion_threat",
+      "label": "Threatening to leak private data to contacts",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "We have downloaded your gallery contacts. If payment is not verified within 45 m…"
+    },
+    {
+      "id": "unauthorized_access",
+      "label": "Claiming illegal access to phone data",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "We have downloaded your gallery contacts."
+    }
+  ],
+  "domainResults": []
+}

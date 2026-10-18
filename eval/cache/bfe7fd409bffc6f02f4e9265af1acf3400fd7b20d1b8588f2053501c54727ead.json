@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "upi_pin_fraud",
+      "label": "Asking for UPI PIN to receive money",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "incoming request par apna 6-digit UPI PIN enter karein"
+    },
+    {
+      "id": "fake_refund",
+      "label": "Unsolicited refund bait",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Aapka Rs 5,000 ka refund approve ho gaya hai"
+    }
+  ],
+  "domainResults": []
+}

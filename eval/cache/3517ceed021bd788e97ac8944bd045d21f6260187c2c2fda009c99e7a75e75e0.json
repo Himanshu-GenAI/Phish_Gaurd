@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "urgency_threat",
+      "label": "High Urgency and Detention Threats",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Failure to establish contact on the secure inter-departmental videoconference po…"
+    },
+    {
+      "id": "fake_authority",
+      "label": "Complex Fake Legal Jargon and Sections",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Reference Case No: ED/WZ/MUM/2026/049182. Under Section 41A of the Criminal Proc…"
+    }
+  ],
+  "domainResults": []
+}

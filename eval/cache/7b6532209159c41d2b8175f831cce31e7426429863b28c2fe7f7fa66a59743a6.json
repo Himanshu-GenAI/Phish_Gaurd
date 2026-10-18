@@ -1,0 +1,29 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "coercion_threat",
+      "label": "Coercion and Intimidation",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Legal department has prepared field verification summons"
+    },
+    {
+      "id": "employer_harassment",
+      "label": "Threat to contact employer",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "our representatives will contact your employer HR directly"
+    },
+    {
+      "id": "artificial_urgency",
+      "label": "High pressure deadline",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "If you do not resolve pending ledger dues by 3 PM"
+    }
+  ],
+  "domainResults": []
+}

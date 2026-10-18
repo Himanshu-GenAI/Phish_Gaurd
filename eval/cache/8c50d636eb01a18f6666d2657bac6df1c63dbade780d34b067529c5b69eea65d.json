@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "unsolicited_action_prompt",
+      "label": "Urgent Action Prompt",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Agar aapne transaction nahi kiya toh call 18002583838 or SMS BLOCK to 5676712"
+    },
+    {
+      "id": "unknown_phone_number",
+      "label": "Suspicious Toll-Free Number",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "call 18002583838 provided for cancellation"
+    }
+  ],
+  "domainResults": []
+}

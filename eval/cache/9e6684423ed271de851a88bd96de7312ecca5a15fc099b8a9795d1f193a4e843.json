@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "task_scam",
+  "aiHits": [
+    {
+      "id": "sig_allocation_lock",
+      "label": "Demanding funds to prevent order timeout",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "requires an active allocation lock of funds to prevent order timeout"
+    },
+    {
+      "id": "sig_prime_quota",
+      "label": "Fake exclusive quota or membership claim",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "reserved the prime affiliate rating quota"
+    }
+  ],
+  "domainResults": []
+}

@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "financial_coercion",
+      "label": "Demand for deposit",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "dashboard me active balance pledge deposit karna zaruri hai"
+    },
+    {
+      "id": "commission_lure",
+      "label": "Commission payout promise",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "User commitment verify hote hi commission payout release ho jayega"
+    }
+  ],
+  "domainResults": []
+}

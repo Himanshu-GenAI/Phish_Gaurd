@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "kyc_utility",
+  "aiHits": [
+    {
+      "id": "fake_domain",
+      "label": "Suspicious Non-Official Domain",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "bses-billpay.online is not the official BSES website and uses a generic .online …"
+    },
+    {
+      "id": "threat_coercion",
+      "label": "Threat of Disconnection",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Connection aaj raat 9 baje DISCONNECT kar diya jayega."
+    }
+  ],
+  "domainResults": []
+}

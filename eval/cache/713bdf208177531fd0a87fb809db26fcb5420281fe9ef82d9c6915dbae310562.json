@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "loan_app",
+  "aiHits": [
+    {
+      "id": "easy_approval",
+      "label": "Unrealistic Promise",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Instant 5-minute personal loan Rs 2,00,000 approved bina kisi salary slip ke"
+    },
+    {
+      "id": "unofficial_channel",
+      "label": "Unofficial Distribution",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "EasyRupee APK install karein"
+    }
+  ],
+  "domainResults": []
+}

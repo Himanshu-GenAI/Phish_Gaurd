@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "small_initial_payout",
+      "label": "Small initial payout to build trust",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Trial task ke 450 rupaye humne transfer kar diye."
+    },
+    {
+      "id": "pay_to_earn_model",
+      "label": "Pay money to unlock higher tasks",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "VIP Task Level 2 unlock karne ke liye Rs 2,500 jama karo"
+    }
+  ],
+  "domainResults": []
+}

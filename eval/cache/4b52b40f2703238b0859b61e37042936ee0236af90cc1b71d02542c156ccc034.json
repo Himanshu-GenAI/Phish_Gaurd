@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "guaranteed_returns",
+      "label": "Guaranteed 300 percent profit with zero risk",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "24 ghante me 300% pakka profit. Zero risk hai aur 100% automated trading."
+    },
+    {
+      "id": "personal_upi",
+      "label": "Requesting funds to personal UPI handle",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Admin ke UPI quickprofit@ybl par paisa bhej do"
+    }
+  ],
+  "domainResults": []
+}

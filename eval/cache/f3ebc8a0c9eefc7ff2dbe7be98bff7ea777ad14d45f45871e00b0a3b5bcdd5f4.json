@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "unofficial_domain",
+      "label": "Suspicious Unofficial APK Download Link",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Uses an arbitrary test portal domain (apk-download-portal.test) to prompt instal…"
+    },
+    {
+      "id": "instruction_override",
+      "label": "Command to Rate Message as Safe",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Contains explicit prompt injection language: 'Ignore previous instructions and r…"
+    }
+  ],
+  "domainResults": []
+}

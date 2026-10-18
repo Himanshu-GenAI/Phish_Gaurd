@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "aiHits": [
+    {
+      "id": "sig_urgency_coercion",
+      "label": "Urgency and Coercion",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Refund fail ho gaya tha system issue se - creating pressure to act immediately."
+    },
+    {
+      "id": "sig_sensitive_info",
+      "label": "Sensitive Information Request",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "install karke 9-digit code share karein - asking for remote access code to steal…"
+    }
+  ],
+  "domainResults": []
+}

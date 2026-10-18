@@ -1,0 +1,25 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "promptVersion": "1.0.0",
+  "cachedAt": "2026-10-18",
+  "rawSignalCount": 2,
+  "keptSignalCount": 2,
+  "scam_type": "kyc_utility",
+  "aiHits": [
+    {
+      "id": "urgency_coercion",
+      "label": "Urgency and Coercion",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "WhatsApp attachment check karein disconnection notice se pehle."
+    },
+    {
+      "id": "suspicious_attachment",
+      "label": "Suspicious Communication Channel",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Billing alert asking to check a WhatsApp attachment instead of an official bill."
+    }
+  ],
+  "domainResults": []
+}
