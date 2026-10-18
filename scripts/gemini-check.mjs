@@ -45,11 +45,12 @@ if (!apiKey) { console.error("GEMINI_API_KEY not found in", envPath); process.ex
 
 if (isDryRun) {
   console.log(`[DRY-RUN] Successfully loaded API key (${apiKey.length} chars) from ${envPath}`);
-  console.log(`[DRY-RUN] Target model: ${process.env.GEMINI_MODEL || "gemini-3.8-flash"}`);
+  console.log(`[DRY-RUN] Target model: ${process.env.GEMINI_MODEL || "gemini-3.5-flash-lite"}`);
   console.log(`[DRY-RUN] No Gemini API calls made.`);
   process.exit(0);
 }
 
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 const redact = (s) => String(s).split(apiKey).join("[REDACTED]");
 
@@ -94,11 +95,9 @@ async function callWithRetry(name, body) {
         continue;
       }
 
-      if (res.status === 429 && retries429 < 1) {
-        retries429++;
-        console.log(`[${name}] 429 received. Waiting 60s for quota reset (retry 1/1)...`);
-        await sleep(60000);
-        continue;
+      if (res.status === 429) {
+        console.log(`[${name}] 429 received. Stopping immediately without retry.`);
+        return { ok: false, status: 429, error: data?.error ?? data };
       }
 
       return { ok: false, status: res.status, error: data?.error ?? data };

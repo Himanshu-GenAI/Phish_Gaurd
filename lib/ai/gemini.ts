@@ -1,6 +1,7 @@
 import type { RuleHit } from "../rules/types";
 
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
+export const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+export const GEMINI_TEMPERATURE = 0.1;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 const SYSTEM_PROMPT = `You are a senior fraud analyst specializing in scams targeting Indians
@@ -111,31 +112,60 @@ export async function analyzeWithGemini(
 
     const prompt = `${SYSTEM_PROMPT}\n\nRule engine already flagged: ${flaggedInfo}.\n\nMESSAGE TO ANALYZE:\n"""\n${text}\n"""`;
 
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 10_000);
-    let res: Response;
-    try {
-      res = await fetch(GEMINI_URL, {
-        method: "POST",
-        signal: ctrl.signal,
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.1,
-            responseMimeType: "application/json",
-            responseSchema: RESPONSE_SCHEMA,
+    let res: Response | null = null;
+    let retries503 = 0;
+    while (true) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 15_000);
+      try {
+        res = await fetch(GEMINI_URL, {
+          method: "POST",
+          signal: ctrl.signal,
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": apiKey,
           },
-        }),
-      });
-    } finally {
-      clearTimeout(timer);
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.1,
+              responseMimeType: "application/json",
+              responseSchema: RESPONSE_SCHEMA,
+            },
+          }),
+        });
+      } finally {
+        clearTimeout(timer);
+      }
+
+      if (res.status === 503 && retries503 < 2) {
+        retries503++;
+        console.warn(`[Gemini 503] Overloaded. Retrying in 10s (retry ${retries503}/2)...`);
+        const pauseMs = process.env.NODE_ENV === "test" ? 10 : 10_000;
+        await new Promise((r) => setTimeout(r, pauseMs));
+        continue;
+      }
+      break;
     }
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      if (res.status === 429) {
+        let errMessage = "The AI service is busy or quota limit reached (HTTP 429).";
+        try {
+          const errData = await res.json().catch(() => null);
+          if (errData?.error?.message) {
+            errMessage = errData.error.message;
+          }
+        } catch {
+          // ignore
+        }
+        throw new GeminiServiceError(429, errMessage);
+      }
+      if (res.status === 503) {
+        throw new GeminiServiceError(503, "The AI service is overloaded (HTTP 503) after 2 retries.");
+      }
+      return null;
+    }
 
     const data = await res.json().catch(() => null);
     const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -154,7 +184,10 @@ export async function analyzeWithGemini(
       parsed.transcript = "";
     }
     return parsed;
-  } catch {
+  } catch (err) {
+    if (err instanceof GeminiServiceError) {
+      throw err;
+    }
     // Graceful degradation — rules-only mode
     return null;
   }
@@ -170,42 +203,54 @@ export async function analyzeAudioWithGemini(
 
     const promptText = `${SYSTEM_PROMPT}\n\nFirst transcribe the audio verbatim in romanized Hinglish (Latin script), keeping the speaker's words exactly as spoken, and check for intelligible human speech. Set speech_detected to true ONLY if intelligible human speech is present. If the audio contains only silence, music, background noise, or no intelligible speech, you MUST set speech_detected to false, return an empty transcript "", and empty ai_signals []. Then analyze the transcript as the message to analyze, following all the same rules.`;
 
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 20_000);
-    let res: Response;
-    try {
-      res = await fetch(GEMINI_URL, {
-        method: "POST",
-        signal: ctrl.signal,
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  inline_data: {
-                    mime_type: mimeType,
-                    data: base64,
-                  },
-                },
-                {
-                  text: promptText,
-                },
-              ],
-            },
-          ],
-          generationConfig: {
-            temperature: 0.1,
-            responseMimeType: "application/json",
-            responseSchema: RESPONSE_SCHEMA,
+    let res: Response | null = null;
+    let retries503 = 0;
+    while (true) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 20_000);
+      try {
+        res = await fetch(GEMINI_URL, {
+          method: "POST",
+          signal: ctrl.signal,
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": apiKey,
           },
-        }),
-      });
-    } finally {
-      clearTimeout(timer);
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    inline_data: {
+                      mime_type: mimeType,
+                      data: base64,
+                    },
+                  },
+                  {
+                    text: promptText,
+                  },
+                ],
+              },
+            ],
+            generationConfig: {
+              temperature: 0.1,
+              responseMimeType: "application/json",
+              responseSchema: RESPONSE_SCHEMA,
+            },
+          }),
+        });
+      } finally {
+        clearTimeout(timer);
+      }
+
+      if (res.status === 503 && retries503 < 2) {
+        retries503++;
+        console.warn(`[Gemini Audio 503] Overloaded. Retrying in 10s (retry ${retries503}/2)...`);
+        const pauseMs = process.env.NODE_ENV === "test" ? 10 : 10_000;
+        await new Promise((r) => setTimeout(r, pauseMs));
+        continue;
+      }
+      break;
     }
 
     if (!res.ok) {
