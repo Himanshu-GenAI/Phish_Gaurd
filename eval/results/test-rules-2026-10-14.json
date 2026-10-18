@@ -106,14 +106,47 @@
       "correctedMetrics": {
         "scamsCount": 33,
         "genuineCount": 17,
-        "recall50": { "fraction": "3/33", "value": 9.1, "ciLower": 3.1, "ciUpper": 23.6 },
-        "recall75": { "fraction": "13/33", "value": 39.4, "ciLower": 24.7, "ciUpper": 56.3 },
-        "fpRate50": { "fraction": "0/17", "value": 0.0, "ciLower": 0.0, "ciUpper": 18.4 },
-        "fpRate75": { "fraction": "0/17", "value": 0.0, "ciLower": 0.0, "ciUpper": 18.4 },
-        "precision50": { "value": 100.0, "ciLower": 43.8, "ciUpper": 100.0, "note": "precision on a balanced set is not real-world precision" },
-        "precision75": { "value": 100.0, "ciLower": 77.2, "ciUpper": 100.0, "note": "precision on a balanced set is not real-world precision" },
+        "recall50": {
+          "fraction": "3/33",
+          "value": 9.1,
+          "ciLower": 3.1,
+          "ciUpper": 23.6
+        },
+        "recall75": {
+          "fraction": "13/33",
+          "value": 39.4,
+          "ciLower": 24.7,
+          "ciUpper": 56.3
+        },
+        "fpRate50": {
+          "fraction": "0/17",
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 18.4
+        },
+        "fpRate75": {
+          "fraction": "0/17",
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 18.4
+        },
+        "precision50": {
+          "value": 100,
+          "ciLower": 43.8,
+          "ciUpper": 100,
+          "note": "precision on a balanced set is not real-world precision"
+        },
+        "precision75": {
+          "value": 100,
+          "ciLower": 77.2,
+          "ciUpper": 100,
+          "note": "precision on a balanced set is not real-world precision"
+        },
         "rocAuc": 0.8458,
-        "rocAucCi": [0.7456, 0.9317]
+        "rocAucCi": [
+          0.7456,
+          0.9317
+        ]
       }
     },
     "precisionNote": "precision on a balanced set is not real-world precision"
@@ -1108,5 +1141,329 @@
       "predPrimary": "genuine",
       "predSecondary": "genuine"
     }
-  ]
+  ],
+  "baselineDev": {
+    "recall50": {
+      "fraction": "0/35",
+      "value": 0,
+      "ciLower": 0,
+      "ciUpper": 9.9
+    },
+    "recall75": {
+      "fraction": "7/35",
+      "value": 20,
+      "ciLower": 10,
+      "ciUpper": 35.9
+    },
+    "fpRate50": {
+      "fraction": "1/35",
+      "value": 2.9,
+      "ciLower": 0.5,
+      "ciUpper": 14.5
+    },
+    "fpRate75": {
+      "fraction": "1/35",
+      "value": 2.9,
+      "ciLower": 0.5,
+      "ciUpper": 14.5
+    },
+    "precision50": {
+      "value": 0,
+      "ciLower": 0,
+      "ciUpper": 79.3
+    },
+    "precision75": {
+      "fraction": "7/8",
+      "value": 87.5,
+      "ciLower": 52.9,
+      "ciUpper": 97.8
+    },
+    "specificity50": {
+      "fraction": "34/35",
+      "value": 97.1,
+      "ciLower": 85.5,
+      "ciUpper": 99.5
+    },
+    "specificity75": {
+      "fraction": "34/35",
+      "value": 97.1,
+      "ciLower": 85.5,
+      "ciUpper": 99.5
+    },
+    "rocAuc": 0.6624
+  },
+  "tunedDev": {
+    "recall50": {
+      "fraction": "3/35",
+      "value": 8.6,
+      "ciLower": 3,
+      "ciUpper": 22.4
+    },
+    "recall75": {
+      "fraction": "14/35",
+      "value": 40,
+      "ciLower": 25.6,
+      "ciUpper": 56.4
+    },
+    "fpRate50": {
+      "fraction": "0/35",
+      "value": 0,
+      "ciLower": 0,
+      "ciUpper": 9.9
+    },
+    "fpRate75": {
+      "fraction": "0/35",
+      "value": 0,
+      "ciLower": 0,
+      "ciUpper": 9.9
+    },
+    "precision50": {
+      "value": 100,
+      "ciLower": 43.8,
+      "ciUpper": 100
+    },
+    "precision75": {
+      "value": 100,
+      "ciLower": 78.5,
+      "ciUpper": 100
+    },
+    "specificity50": {
+      "fraction": "35/35",
+      "value": 100,
+      "ciLower": 90.1,
+      "ciUpper": 100
+    },
+    "specificity75": {
+      "fraction": "35/35",
+      "value": 100,
+      "ciLower": 90.1,
+      "ciUpper": 100
+    },
+    "rocAuc": 0.8073,
+    "rocAucCi": [
+      0.7081,
+      0.8936
+    ]
+  },
+  "correctionNote": {
+    "text": "Owner items test-USER-01..08 were mislabeled as genuine at fill time. With corrected labels (33 scam / 17 genuine), rules-only test ROC AUC is 0.8458 [0.7456, 0.9317] against tuned dev 0.8073 [0.7081, 0.8936]. Overfitting can be neither confirmed nor excluded because the 8 owner scams were written with knowledge of the rules.",
+    "correctedMetrics": {
+      "scamsCount": 33,
+      "genuineCount": 17,
+      "recall50": {
+        "fraction": "3/33",
+        "value": 9.1,
+        "ciLower": 3.1,
+        "ciUpper": 23.6
+      },
+      "recall75": {
+        "fraction": "13/33",
+        "value": 39.4,
+        "ciLower": 24.7,
+        "ciUpper": 56.3
+      },
+      "fpRate50": {
+        "fraction": "0/17",
+        "value": 0,
+        "ciLower": 0,
+        "ciUpper": 18.4
+      },
+      "fpRate75": {
+        "fraction": "0/17",
+        "value": 0,
+        "ciLower": 0,
+        "ciUpper": 18.4
+      },
+      "precision50": {
+        "value": 100,
+        "ciLower": 43.8,
+        "ciUpper": 100,
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "precision75": {
+        "value": 100,
+        "ciLower": 77.2,
+        "ciUpper": 100,
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "specificity50": {
+        "fraction": "17/17",
+        "value": 100,
+        "ciLower": 81.6,
+        "ciUpper": 100
+      },
+      "specificity75": {
+        "fraction": "17/17",
+        "value": 100,
+        "ciLower": 81.6,
+        "ciUpper": 100
+      },
+      "rocAuc": 0.8458,
+      "rocAucCi": [
+        0.7456,
+        0.9317
+      ]
+    }
+  },
+  "comparisonSummary": {
+    "untunedBaselineDev": {
+      "scamsCount": 35,
+      "genuineCount": 35,
+      "recall50": {
+        "fraction": "0/35",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 9.9
+        }
+      },
+      "recall75": {
+        "fraction": "7/35",
+        "value": 20,
+        "ci": {
+          "value": 20,
+          "ciLower": 10,
+          "ciUpper": 35.9
+        }
+      },
+      "fpRate50": {
+        "fraction": "1/35",
+        "value": 2.9,
+        "ci": {
+          "value": 2.9,
+          "ciLower": 0.5,
+          "ciUpper": 14.5
+        }
+      },
+      "fpRate75": {
+        "fraction": "1/35",
+        "value": 2.9,
+        "ci": {
+          "value": 2.9,
+          "ciLower": 0.5,
+          "ciUpper": 14.5
+        }
+      },
+      "precision50": {
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 79.3
+        },
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "precision75": {
+        "fraction": "7/8",
+        "value": 87.5,
+        "ci": {
+          "value": 87.5,
+          "ciLower": 52.9,
+          "ciUpper": 97.8
+        },
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "specificity50": {
+        "fraction": "34/35",
+        "value": 97.1,
+        "ci": {
+          "value": 97.1,
+          "ciLower": 85.5,
+          "ciUpper": 99.5
+        }
+      },
+      "specificity75": {
+        "fraction": "34/35",
+        "value": 97.1,
+        "ci": {
+          "value": 97.1,
+          "ciLower": 85.5,
+          "ciUpper": 99.5
+        }
+      },
+      "rocAuc": 0.6624
+    },
+    "tunedDev": {
+      "scamsCount": 35,
+      "genuineCount": 35,
+      "recall50": {
+        "fraction": "3/35",
+        "value": 8.6,
+        "ci": {
+          "value": 8.6,
+          "ciLower": 3,
+          "ciUpper": 22.4
+        }
+      },
+      "recall75": {
+        "fraction": "14/35",
+        "value": 40,
+        "ci": {
+          "value": 40,
+          "ciLower": 25.6,
+          "ciUpper": 56.4
+        }
+      },
+      "fpRate50": {
+        "fraction": "0/35",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 9.9
+        }
+      },
+      "fpRate75": {
+        "fraction": "0/35",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 9.9
+        }
+      },
+      "precision50": {
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 43.8,
+          "ciUpper": 100
+        },
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "precision75": {
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 78.5,
+          "ciUpper": 100
+        },
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "specificity50": {
+        "fraction": "35/35",
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 90.1,
+          "ciUpper": 100
+        }
+      },
+      "specificity75": {
+        "fraction": "35/35",
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 90.1,
+          "ciUpper": 100
+        }
+      },
+      "rocAuc": 0.8073,
+      "rocAucCi": [
+        0.7081,
+        0.8936
+      ]
+    }
+  }
 }

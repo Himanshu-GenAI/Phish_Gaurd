@@ -1105,23 +1105,102 @@
   "falseAlarmSummary": {
     "dev": {
       "total": 35,
-      "below75Count": 1,
+      "rulesOnlyBelow75": {
+        "fraction": "0/35",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 9.9
+        }
+      },
+      "rulesAiBelow75": {
+        "fraction": "1/35",
+        "value": 2.9,
+        "ci": {
+          "value": 2.9,
+          "ciLower": 0.5,
+          "ciUpper": 14.5
+        }
+      },
       "flagged": "dev-036 at Trust 65",
-      "note": "AI signal authority_impersonation"
+      "signals": [
+        {
+          "label": "Urgent Action Prompt",
+          "weight": 20
+        },
+        {
+          "label": "Suspicious Toll-Free Number",
+          "weight": 15
+        }
+      ],
+      "note": "Benchmark development set; signals: Urgent Action Prompt (20), Suspicious Toll-Free Number (15)"
     },
     "testCorrectedGenuine": {
       "total": 17,
-      "below75Count": 0,
-      "note": "None below 75; test-026 received one 20-point signal, Trust 77 (band safe)"
+      "rulesOnlyBelow75": {
+        "fraction": "0/17",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 18.4
+        }
+      },
+      "rulesAiBelow75": {
+        "fraction": "0/17",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 18.4
+        }
+      },
+      "flagged": "None below 75",
+      "signals": [
+        {
+          "label": "Suspicious Mobile Number for Blocking",
+          "weight": 20
+        }
+      ],
+      "note": "Held-out sealed benchmark; test-026 received one 20-point signal, Trust 77 (band safe)"
     },
-    "stressTestV1RulesOnly": {
+    "stressTestV1": {
       "total": 30,
-      "below75Count": 3,
+      "rulesOnlyBelow75": {
+        "fraction": "3/30",
+        "value": 10,
+        "ci": {
+          "value": 10,
+          "ciLower": 3.5,
+          "ciUpper": 25.6
+        }
+      },
+      "rulesAiBelow75": "v1 with AI: not measured",
+      "flagged": "E-05 at 60, H-01 at 70, E-12 at 70",
       "note": "Deliberately seeded stress test; not a false-positive rate"
     },
-    "stressTestV2RulesAi": {
+    "stressTestV2": {
       "total": 30,
-      "below75Count": 2,
+      "rulesOnlyBelow75": {
+        "fraction": "0/30",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 11.4
+        }
+      },
+      "rulesAiBelow75": {
+        "fraction": "2/30",
+        "value": 6.7,
+        "ci": {
+          "value": 6.7,
+          "ciLower": 1.8,
+          "ciUpper": 21.3
+        }
+      },
+      "flagged": "H-03 at 70, H-04 at 65",
       "note": "Deliberately seeded stress test; not a false-positive rate"
     }
   },

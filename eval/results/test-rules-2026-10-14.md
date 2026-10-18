@@ -1,29 +1,26 @@
-# ScamShield AI — Locked Held-Out Test Evaluation (Rules-Only)
+# ScamShield AI — Rules-Only Sealed Test Split Evaluation Report
 
 **Evaluation Date**: 2026-10-14  
-**Split**: Sealed Held-Out Test Set (`eval/dataset/test.json`)  
-**Test Checksum**: `409b0a0cc207a55b922c39249d951ea0dd56ec8bd51b7cdcb0f1b5633874290c`  
-**Total Items Evaluated**: 50 (25 Scam / 25 Genuine, including 10 Owner Slots)  
-**Mode**: Pure Rules Engine (`lib/rules/engine.ts`, deterministic, zero LLM calls)  
+**Split**: Held-Out Test Set (`eval/dataset/test.json`)  
+**Test Checksum (SHA-256)**: `409b0a0cc207a55b922c39249d951ea0dd56ec8bd51b7cdcb0f1b5633874290c`  
+**Total Items Evaluated**: 50  
+**Pipeline Mode**: Rules-Only (`runRules` + `fuseScores`)  
 
 ---
 
-## 1. Metric Comparison Across Splits
+## 1. Key Metrics Summary (Rules-Only)
 
-| Metric | Baseline dev (frozen) | Tuned dev (frozen) | Sealed test (held-out) |
-| :--- | :--- | :--- | :--- |
-| **Recall @ Trust < 50** | 0/35 (0.0%) [0.0%, 9.9%] | 3/35 (8.6%) [2.2%, 22.8%] | **0/25 (0.0%) [0.0%, 13.3%]** |
-| **Recall @ Trust < 75** | 7/35 (20.0%) [10.0%, 35.9%] | 14/35 (40.0%) [25.7%, 56.4%] | **9/25 (36.0%) [20.2%, 55.5%]** |
-| **False-positive rate @ Trust < 50** | 1/35 (2.9%) [0.5%, 14.5%] | 0/35 (0.0%) [0.0%, 9.9%] | **3/25 (12.0%) [4.2%, 30.0%]** |
-| **False-positive rate @ Trust < 75** | 1/35 (2.9%) [0.5%, 14.5%] | 0/35 (0.0%) [0.0%, 9.9%] | **4/25 (16.0%) [6.4%, 34.7%]** |
-| **Precision @ Trust < 50** *(precision on a balanced set is not real-world precision)* | 0.0% (0/1) [0.0%, 79.3%] *(precision on a balanced set is not real-world precision)* | 100.0% (3/3) [43.8%, 100.0%] *(precision on a balanced set is not real-world precision)* | **0.0% (0/3) [0.0%, 56.2%] *(precision on a balanced set is not real-world precision)*** |
-| **Precision @ Trust < 75** *(precision on a balanced set is not real-world precision)* | 87.5% (7/8) [52.9%, 97.8%] *(precision on a balanced set is not real-world precision)* | 100.0% (14/14) [78.5%, 100.0%] *(precision on a balanced set is not real-world precision)* | **69.2% (9/13) [42.4%, 87.3%] *(precision on a balanced set is not real-world precision)*** |
-| **Specificity @ Trust < 50** | 97.1% (34/35) [85.5%, 99.5%] | 100.0% (35/35) [90.1%, 100.0%] | **88.0% (22/25) [70.0%, 95.8%]** |
-| **Specificity @ Trust < 75** | 97.1% (34/35) [85.5%, 99.5%] | 100.0% (35/35) [90.1%, 100.0%] | **84.0% (21/25) [65.3%, 93.6%]** |
-| **Accuracy @ Trust < 50** | 48.6% (34/70) [37.2%, 60.0%] | 54.3% (38/70) [42.6%, 65.5%] | **44.0% (22/50) [31.2%, 57.7%]** |
-| **Accuracy @ Trust < 75** | 58.6% (41/70) [46.9%, 69.4%] | 70.0% (49/70) [58.5%, 79.5%] | **60.0% (30/50) [46.2%, 72.4%]** |
-| **ROC AUC** | 0.6624 | 0.8073 [0.7081, 0.8936] | **0.6704 [0.5256, 0.8084]** |
-| **Latency p50 / p95** | 0.14 ms / 0.18 ms | 0.18 ms / 0.22 ms | **0.05 ms / 1.35 ms** |
+| Metric | Untuned Baseline (dev) | Tuned Rules (dev) | Sealed Test (25/25) | Corrected Test (33/17) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Recall @ Trust < 50** | 0.0% (0/35) [0.0%, 9.9%] | 8.6% (3/35) [3.0%, 22.4%] | 0.0% (0/25) [0.0%, 13.3%] | **9.1% (3/33) [3.1%, 23.6%]** |
+| **Recall @ Trust < 75** | 20.0% (7/35) [10.0%, 35.9%] | 40.0% (14/35) [25.6%, 56.4%] | 36.0% (9/25) [20.2%, 55.5%] | **39.4% (13/33) [24.7%, 56.3%]** |
+| **False-Positive Rate (<50)** | 2.9% (1/35) [0.5%, 14.5%] | 0.0% (0/35) [0.0%, 9.9%] | 12.0% (3/25) [4.2%, 30.0%] | **0.0% (0/17) [0.0%, 18.4%]** |
+| **False-Positive Rate (<75)** | 2.9% (1/35) [0.5%, 14.5%] | 0.0% (0/35) [0.0%, 9.9%] | 16.0% (4/25) [6.4%, 34.7%] | **0.0% (0/17) [0.0%, 18.4%]** |
+| **Precision @ Trust < 50** | 0.0% [0.0%, 79.3%] | 100.0% [43.8%, 100.0%] | 0.0% [0.0%, 56.2%] | **100.0% [43.8%, 100.0%]** *(precision on a balanced set is not real-world precision)* |
+| **Precision @ Trust < 75** | 87.5% (7/8) [52.9%, 97.8%] | 100.0% [78.5%, 100.0%] | 69.2% [42.4%, 87.3%] | **100.0% [77.2%, 100.0%]** *(precision on a balanced set is not real-world precision)* |
+| **Specificity @ Trust < 50** | 97.1% (34/35) [85.5%, 99.5%] | 100.0% (35/35) [90.1%, 100.0%] | 88.0% (22/25) [70.0%, 95.8%] | **100.0% (17/17) [81.6%, 100.0%]** |
+| **Specificity @ Trust < 75** | 97.1% (34/35) [85.5%, 99.5%] | 100.0% (35/35) [90.1%, 100.0%] | 84.0% (21/25) [65.3%, 93.6%] | **100.0% (17/17) [81.6%, 100.0%]** |
+| **ROC AUC** | 0.6624 | 0.8073 [0.7081, 0.8936] | 0.6704 [0.5256, 0.8084] | **0.8458 [0.7456, 0.9317]** |
 
 *All bracketed intervals for proportions are Wilson 95% score confidence intervals. ROC AUC 95% confidence intervals are empirical bootstrap intervals over 1,000 resamples with fixed seed 42.*
 
@@ -37,22 +34,8 @@
 > Under the corrected ground truth labels (33 scam / 17 genuine), rules-only test ROC AUC is **0.8458 [0.7456, 0.9317]** compared to tuned dev **0.8073 [0.7081, 0.8936]**.  
 > **Overfitting can be neither confirmed nor excluded** because the 8 owner scams were written with knowledge of the rules. The earlier hypothesis that the rules overfit dev vocabulary is retracted.
 
-### Corrected Rules-Only Evaluation Table (33 Scam / 17 Genuine)
-
-| Metric | Untuned Baseline (dev) | Tuned Rules (dev) | Sealed Test (25/25) | Corrected Test (33/17) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Recall @ Trust < 50** | 0.0% (0/35) | 8.6% (3/35) [2.2%, 22.8%] | 0.0% (0/25) [0.0%, 13.3%] | **9.1% (3/33) [3.1%, 23.6%]** |
-| **Recall @ Trust < 75** | 0.0% (0/35) | 40.0% (14/35) [25.7%, 56.4%] | 36.0% (9/25) [20.2%, 55.5%] | **39.4% (13/33) [24.7%, 56.3%]** |
-| **False-Positive Rate (<50)** | 0.0% (0/35) | 0.0% (0/35) [0.0%, 9.9%] | 12.0% (3/25) [4.2%, 30.0%] | **0.0% (0/17) [0.0%, 18.4%]** |
-| **False-Positive Rate (<75)** | 0.0% (0/35) | 0.0% (0/35) [0.0%, 9.9%] | 16.0% (4/25) [6.4%, 34.7%] | **0.0% (0/17) [0.0%, 18.4%]** |
-| **Precision @ Trust < 50** | 0.0% | 100.0% [43.8%, 100.0%] | 0.0% [0.0%, 56.2%] | **100.0% [43.8%, 100.0%]** *(precision on a balanced set is not real-world precision)* |
-| **Precision @ Trust < 75** | 0.0% | 100.0% [78.5%, 100.0%] | 69.2% [42.4%, 87.3%] | **100.0% [77.2%, 100.0%]** *(precision on a balanced set is not real-world precision)* |
-| **Specificity @ Trust < 50** | 97.1% (34/35) | 100.0% (35/35) | 88.0% (22/25) | **100.0% (17/17) [81.6%, 100.0%]** |
-| **Specificity @ Trust < 75** | 97.1% (34/35) | 100.0% (35/35) | 84.0% (21/25) | **100.0% (17/17) [81.6%, 100.0%]** |
-| **ROC AUC** | 0.6624 | 0.8073 [0.7081, 0.8936] | 0.6704 [0.5256, 0.8084] | **0.8458 [0.7456, 0.9317]** |
-
-- Recall @ Trust < 50: tuned dev 8.6% [2.2%, 22.8%] vs corrected test 9.1% [3.1%, 23.6%].
-- Recall @ Trust < 75: tuned dev 40.0% [25.7%, 56.4%] vs corrected test 39.4% [24.7%, 56.3%].
+- Recall @ Trust < 50: tuned dev 8.6% [3.0%, 22.4%] vs corrected test 9.1% [3.1%, 23.6%].
+- Recall @ Trust < 75: tuned dev 40.0% [25.6%, 56.4%] vs corrected test 39.4% [24.7%, 56.3%].
 - ROC AUC: tuned dev 0.8073 [0.7081, 0.8936] vs corrected test 0.8458 [0.7456, 0.9317] (1,000 bootstrap resamples, seed 42).
 
 ---
@@ -159,3 +142,4 @@ Scams firing 2 or more rules (all 9 detected at Trust < 75, but none reached Tru
 - `test-014` (loan_app): Trust 65, rules: `apk, urgency`
 - `test-016` (voice_clone_emergency): Trust 65, rules: `pay-upi, urgency`
 - `test-017` (voice_clone_emergency): Trust 73, rules: `urgency, secrecy`
+
