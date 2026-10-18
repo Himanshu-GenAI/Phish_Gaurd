@@ -4,6 +4,19 @@ import { execSync } from "child_process";
 
 export interface OwnerItemInput {
   text: string;
+  label: "scam" | "genuine";
+  scam_type:
+    | "digital_arrest"
+    | "fake_job"
+    | "task_prepayment"
+    | "investment"
+    | "kyc_utility_courier"
+    | "upi_collect"
+    | "loan_app"
+    | "voice_clone_emergency"
+    | "fake_customer_care"
+    | "phishing_apk"
+    | "none";
   language: "en" | "hinglish" | "mixed";
   difficulty: "easy" | "hard";
   channel: "sms" | "whatsapp" | "email" | "call_transcript";
@@ -44,6 +57,20 @@ export function fillOwnerSlots(options?: {
     );
   }
 
+  const allowedLabels = new Set(["scam", "genuine"]);
+  const allowedScamTypes = new Set([
+    "digital_arrest",
+    "fake_job",
+    "task_prepayment",
+    "investment",
+    "kyc_utility_courier",
+    "upi_collect",
+    "loan_app",
+    "voice_clone_emergency",
+    "fake_customer_care",
+    "phishing_apk",
+    "none",
+  ]);
   const allowedLanguages = new Set(["en", "hinglish", "mixed"]);
   const allowedDifficulties = new Set(["easy", "hard"]);
   const allowedChannels = new Set(["sms", "whatsapp", "email", "call_transcript"]);
@@ -52,6 +79,26 @@ export function fillOwnerSlots(options?: {
     const item = items[i];
     if (typeof item.text !== "string" || item.text.trim().length === 0) {
       throw new Error(`[VALIDATION ERROR] Item at index ${i} has empty or non-string text.`);
+    }
+    if (!item.label || !allowedLabels.has(item.label)) {
+      throw new Error(
+        `[VALIDATION ERROR] Item at index ${i} must carry an explicit label ('scam' | 'genuine'). Received: '${item.label}'.`
+      );
+    }
+    if (!item.scam_type || !allowedScamTypes.has(item.scam_type)) {
+      throw new Error(
+        `[VALIDATION ERROR] Item at index ${i} must carry an explicit scam_type. Received: '${item.scam_type}'.`
+      );
+    }
+    if (item.label === "genuine" && item.scam_type !== "none") {
+      throw new Error(
+        `[VALIDATION ERROR] Item at index ${i} has label 'genuine' but scam_type '${item.scam_type}'. Genuine items must have scam_type 'none'.`
+      );
+    }
+    if (item.label === "scam" && item.scam_type === "none") {
+      throw new Error(
+        `[VALIDATION ERROR] Item at index ${i} has label 'scam' but scam_type 'none'. Scam items must have a concrete scam_type.`
+      );
     }
     if (!allowedLanguages.has(item.language)) {
       throw new Error(`[VALIDATION ERROR] Item at index ${i} has invalid language '${item.language}'.`);
@@ -81,8 +128,8 @@ export function fillOwnerSlots(options?: {
     testItems[targetIdx] = {
       id,
       text: items[i].text,
-      label: "genuine",
-      scam_type: "none",
+      label: items[i].label,
+      scam_type: items[i].scam_type,
       language: items[i].language,
       difficulty: items[i].difficulty,
       source: "synthetic",

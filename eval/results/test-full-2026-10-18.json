@@ -10,566 +10,1007 @@
   "liveCalls": 50,
   "cacheHits": 0,
   "degradedCount": 0,
-  "ownerItemPostHocAnnotations": {
-    "test-USER-01": "mislabeled",
-    "test-USER-02": "genuine but scam-like",
-    "test-USER-04": "mislabeled",
-    "test-USER-08": "mislabeled",
-    "note": "Decided by project owner from private file; applied strictly as labeled post-hoc annotation; test.json is not modified."
-  },
+  "labelCorrectionNotice": "Owner items test-USER-01..08 were mislabeled as genuine at fill time because fill-owner-slots.ts assigned genuine to all owner slots; see eval/dataset/test.label-corrections.json. Corrected ground truth is 33 scams / 17 genuine.",
   "signalTotals": {
     "rawSignalCount": 72,
     "keptSignalCount": 72,
     "substringEvidenceCount": 37,
     "substringPercentage": 51.4
   },
-  "pairedMetrics": {
+  "sealedEvaluation": {
+    "scamsCount": 25,
+    "genuineCount": 25,
     "rulesOnly": {
+      "scamsCount": 25,
+      "genuineCount": 25,
       "recall50": {
+        "fraction": "0/25",
         "value": 0,
-        "ciLower": 0,
-        "ciUpper": 13.3,
-        "fraction": "0/25"
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 13.3
+        }
       },
       "recall75": {
+        "fraction": "9/25",
         "value": 36,
-        "ciLower": 20.2,
-        "ciUpper": 55.5,
-        "fraction": "9/25"
+        "ci": {
+          "value": 36,
+          "ciLower": 20.2,
+          "ciUpper": 55.5
+        }
       },
       "fpRate50": {
+        "fraction": "3/25",
         "value": 12,
-        "ciLower": 4.2,
-        "ciUpper": 30,
-        "fraction": "3/25"
+        "ci": {
+          "value": 12,
+          "ciLower": 4.2,
+          "ciUpper": 30
+        }
       },
       "fpRate75": {
+        "fraction": "4/25",
         "value": 16,
-        "ciLower": 6.4,
-        "ciUpper": 34.7,
-        "fraction": "4/25"
+        "ci": {
+          "value": 16,
+          "ciLower": 6.4,
+          "ciUpper": 34.7
+        }
       },
       "precision50": {
         "value": 0,
-        "ciLower": 0,
-        "ciUpper": 56.2,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 56.2
+        },
         "note": "precision on a balanced set is not real-world precision"
       },
       "precision75": {
-        "value": 69.2,
-        "ciLower": 42.4,
-        "ciUpper": 87.3,
+        "value": 69.23076923076923,
+        "ci": {
+          "value": 69.2,
+          "ciLower": 42.4,
+          "ciUpper": 87.3
+        },
         "note": "precision on a balanced set is not real-world precision"
       },
-      "specificity50": {
+      "spec50": {
         "value": 88,
-        "ciLower": 70,
-        "ciUpper": 95.8
+        "ci": {
+          "value": 88,
+          "ciLower": 70,
+          "ciUpper": 95.8
+        }
       },
-      "specificity75": {
-        "value": 84,
-        "ciLower": 65.3,
-        "ciUpper": 93.6
-      },
-      "accuracy50": {
+      "acc50": {
         "value": 44,
-        "ciLower": 31.2,
-        "ciUpper": 57.7
+        "ci": {
+          "value": 44,
+          "ciLower": 31.2,
+          "ciUpper": 57.7
+        }
       },
-      "accuracy75": {
-        "value": 60,
-        "ciLower": 46.2,
-        "ciUpper": 72.4
-      },
-      "rocAuc": 0.6704,
-      "rocAucBootstrap95CI": [
+      "auc": 0.6704,
+      "aucCi": [
         0.5256,
         0.8084
       ]
     },
-    "rulesPlusAi": {
+    "full": {
+      "scamsCount": 25,
+      "genuineCount": 25,
       "recall50": {
+        "fraction": "18/25",
         "value": 72,
-        "ciLower": 52.4,
-        "ciUpper": 85.7,
-        "fraction": "18/25"
+        "ci": {
+          "value": 72,
+          "ciLower": 52.4,
+          "ciUpper": 85.7
+        }
       },
       "recall75": {
+        "fraction": "24/25",
         "value": 96,
-        "ciLower": 80.5,
-        "ciUpper": 99.3,
-        "fraction": "24/25"
+        "ci": {
+          "value": 96,
+          "ciLower": 80.5,
+          "ciUpper": 99.3
+        }
       },
       "fpRate50": {
+        "fraction": "8/25",
         "value": 32,
-        "ciLower": 17.2,
-        "ciUpper": 51.6,
-        "fraction": "8/25"
+        "ci": {
+          "value": 32,
+          "ciLower": 17.2,
+          "ciUpper": 51.6
+        }
       },
       "fpRate75": {
+        "fraction": "8/25",
         "value": 32,
-        "ciLower": 17.2,
-        "ciUpper": 51.6,
-        "fraction": "8/25"
+        "ci": {
+          "value": 32,
+          "ciLower": 17.2,
+          "ciUpper": 51.6
+        }
       },
       "precision50": {
-        "value": 69.2,
-        "ciLower": 50,
-        "ciUpper": 83.5,
+        "value": 69.23076923076923,
+        "ci": {
+          "value": 69.2,
+          "ciLower": 50,
+          "ciUpper": 83.5
+        },
         "note": "precision on a balanced set is not real-world precision"
       },
       "precision75": {
         "value": 75,
-        "ciLower": 57.9,
-        "ciUpper": 86.7,
+        "ci": {
+          "value": 75,
+          "ciLower": 57.9,
+          "ciUpper": 86.7
+        },
         "note": "precision on a balanced set is not real-world precision"
       },
-      "specificity50": {
+      "spec50": {
         "value": 68,
-        "ciLower": 48.4,
-        "ciUpper": 82.8
+        "ci": {
+          "value": 68,
+          "ciLower": 48.4,
+          "ciUpper": 82.8
+        }
       },
-      "specificity75": {
-        "value": 68,
-        "ciLower": 48.4,
-        "ciUpper": 82.8
-      },
-      "accuracy50": {
+      "acc50": {
         "value": 70,
-        "ciLower": 56.2,
-        "ciUpper": 80.9
+        "ci": {
+          "value": 70,
+          "ciLower": 56.2,
+          "ciUpper": 80.9
+        }
       },
-      "accuracy75": {
-        "value": 82,
-        "ciLower": 69.2,
-        "ciUpper": 90.2
-      },
-      "rocAuc": 0.756,
-      "rocAucBootstrap95CI": [
+      "auc": 0.756,
+      "aucCi": [
         0.5974,
         0.8908
       ]
+    },
+    "transitions": {
+      "fixed50": [
+        "test-001",
+        "test-002",
+        "test-003",
+        "test-005",
+        "test-008",
+        "test-010",
+        "test-011",
+        "test-012",
+        "test-014",
+        "test-015",
+        "test-016",
+        "test-017",
+        "test-019",
+        "test-020",
+        "test-021",
+        "test-022",
+        "test-023",
+        "test-025"
+      ],
+      "broken50": [
+        "test-USER-03",
+        "test-USER-05",
+        "test-USER-06",
+        "test-USER-07",
+        "test-USER-08"
+      ],
+      "fixed75": [
+        "test-001",
+        "test-004",
+        "test-006",
+        "test-007",
+        "test-009",
+        "test-012",
+        "test-013",
+        "test-015",
+        "test-019",
+        "test-020",
+        "test-021",
+        "test-022",
+        "test-023",
+        "test-024",
+        "test-025"
+      ],
+      "broken75": [
+        "test-USER-03",
+        "test-USER-05",
+        "test-USER-06",
+        "test-USER-07"
+      ]
+    },
+    "aiRiskContribution": {
+      "scamsTotal": 1120,
+      "scamsCount": 25,
+      "meanScams": 44.8,
+      "genuineTotal": 430,
+      "genuineCount": 25,
+      "meanGenuine": 17.2,
+      "total": 1550,
+      "count": 50,
+      "meanOverall": 31
+    },
+    "subgroups": {
+      "byScamType": {
+        "digital_arrest": {
+          "scamsCount": 2,
+          "scamRec50": "2/2 (100.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "fake_customer_care": {
+          "scamsCount": 2,
+          "scamRec50": "1/2 (50.0%)",
+          "scamRec75": "1/2 (50.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "fake_job": {
+          "scamsCount": 3,
+          "scamRec50": "2/3 (66.7%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "investment": {
+          "scamsCount": 2,
+          "scamRec50": "1/2 (50.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "kyc_utility_courier": {
+          "scamsCount": 3,
+          "scamRec50": "2/3 (66.7%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "loan_app": {
+          "scamsCount": 3,
+          "scamRec50": "3/3 (100.0%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "none": {
+          "scamsCount": 0,
+          "scamRec50": "N/A",
+          "scamRec75": "N/A",
+          "genuineCount": 25,
+          "genFp50": "8/25 (32.0%)",
+          "genFp75": "8/25 (32.0%)"
+        },
+        "phishing_apk": {
+          "scamsCount": 4,
+          "scamRec50": "4/4 (100.0%)",
+          "scamRec75": "4/4 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "task_prepayment": {
+          "scamsCount": 2,
+          "scamRec50": "0/2 (0.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "upi_collect": {
+          "scamsCount": 2,
+          "scamRec50": "1/2 (50.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "voice_clone_emergency": {
+          "scamsCount": 2,
+          "scamRec50": "2/2 (100.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        }
+      },
+      "byLanguage": {
+        "en": {
+          "scamsCount": 15,
+          "scamRec50": "11/15 (73.3%)",
+          "scamRec75": "14/15 (93.3%)",
+          "genuineCount": 11,
+          "genFp50": "1/11 (9.1%)",
+          "genFp75": "1/11 (9.1%)"
+        },
+        "hinglish": {
+          "scamsCount": 3,
+          "scamRec50": "2/3 (66.7%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 9,
+          "genFp50": "5/9 (55.6%)",
+          "genFp75": "5/9 (55.6%)"
+        },
+        "mixed": {
+          "scamsCount": 7,
+          "scamRec50": "5/7 (71.4%)",
+          "scamRec75": "7/7 (100.0%)",
+          "genuineCount": 5,
+          "genFp50": "2/5 (40.0%)",
+          "genFp75": "2/5 (40.0%)"
+        }
+      },
+      "byDifficulty": {
+        "easy": {
+          "scamsCount": 11,
+          "scamRec50": "9/11 (81.8%)",
+          "scamRec75": "10/11 (90.9%)",
+          "genuineCount": 10,
+          "genFp50": "0/10 (0.0%)",
+          "genFp75": "0/10 (0.0%)"
+        },
+        "hard": {
+          "scamsCount": 14,
+          "scamRec50": "9/14 (64.3%)",
+          "scamRec75": "14/14 (100.0%)",
+          "genuineCount": 15,
+          "genFp50": "8/15 (53.3%)",
+          "genFp75": "8/15 (53.3%)"
+        }
+      },
+      "byChannel": {
+        "call_transcript": {
+          "scamsCount": 2,
+          "scamRec50": "2/2 (100.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "email": {
+          "scamsCount": 2,
+          "scamRec50": "1/2 (50.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 4,
+          "genFp50": "1/4 (25.0%)",
+          "genFp75": "1/4 (25.0%)"
+        },
+        "sms": {
+          "scamsCount": 9,
+          "scamRec50": "7/9 (77.8%)",
+          "scamRec75": "8/9 (88.9%)",
+          "genuineCount": 12,
+          "genFp50": "2/12 (16.7%)",
+          "genFp75": "2/12 (16.7%)"
+        },
+        "whatsapp": {
+          "scamsCount": 12,
+          "scamRec50": "8/12 (66.7%)",
+          "scamRec75": "12/12 (100.0%)",
+          "genuineCount": 9,
+          "genFp50": "5/9 (55.6%)",
+          "genFp75": "5/9 (55.6%)"
+        }
+      }
     }
   },
-  "transitions": {
-    "fixedAt50": [
-      "test-001",
-      "test-002",
-      "test-003",
-      "test-005",
-      "test-008",
-      "test-010",
-      "test-011",
-      "test-012",
-      "test-014",
-      "test-015",
-      "test-016",
-      "test-017",
-      "test-019",
-      "test-020",
-      "test-021",
-      "test-022",
-      "test-023",
-      "test-025"
-    ],
-    "brokenAt50": [
-      "test-USER-03",
-      "test-USER-05",
-      "test-USER-06",
-      "test-USER-07",
-      "test-USER-08"
-    ],
-    "fixedAt75": [
-      "test-001",
-      "test-004",
-      "test-006",
-      "test-007",
-      "test-009",
-      "test-012",
-      "test-013",
-      "test-015",
-      "test-019",
-      "test-020",
-      "test-021",
-      "test-022",
-      "test-023",
-      "test-024",
-      "test-025"
-    ],
-    "brokenAt75": [
-      "test-USER-03",
-      "test-USER-05",
-      "test-USER-06",
-      "test-USER-07"
+  "correctedEvaluation": {
+    "label": "post-hoc label correction, based on information that predates the run",
+    "scamsCount": 33,
+    "genuineCount": 17,
+    "rulesOnly": {
+      "scamsCount": 33,
+      "genuineCount": 17,
+      "recall50": {
+        "fraction": "3/33",
+        "value": 9.090909090909092,
+        "ci": {
+          "value": 9.1,
+          "ciLower": 3.1,
+          "ciUpper": 23.6
+        }
+      },
+      "recall75": {
+        "fraction": "13/33",
+        "value": 39.39393939393939,
+        "ci": {
+          "value": 39.4,
+          "ciLower": 24.7,
+          "ciUpper": 56.3
+        }
+      },
+      "fpRate50": {
+        "fraction": "0/17",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 18.4
+        }
+      },
+      "fpRate75": {
+        "fraction": "0/17",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 18.4
+        }
+      },
+      "precision50": {
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 43.8,
+          "ciUpper": 100
+        },
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "precision75": {
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 77.2,
+          "ciUpper": 100
+        },
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "spec50": {
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 81.6,
+          "ciUpper": 100
+        }
+      },
+      "acc50": {
+        "value": 40,
+        "ci": {
+          "value": 40,
+          "ciLower": 27.6,
+          "ciUpper": 53.8
+        }
+      },
+      "auc": 0.8458,
+      "aucCi": [
+        0.7456,
+        0.9317
+      ]
+    },
+    "full": {
+      "scamsCount": 33,
+      "genuineCount": 17,
+      "recall50": {
+        "fraction": "26/33",
+        "value": 78.78787878787878,
+        "ci": {
+          "value": 78.8,
+          "ciLower": 62.2,
+          "ciUpper": 89.3
+        }
+      },
+      "recall75": {
+        "fraction": "32/33",
+        "value": 96.96969696969697,
+        "ci": {
+          "value": 97,
+          "ciLower": 84.7,
+          "ciUpper": 99.5
+        }
+      },
+      "fpRate50": {
+        "fraction": "0/17",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 18.4
+        }
+      },
+      "fpRate75": {
+        "fraction": "0/17",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 18.4
+        }
+      },
+      "precision50": {
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 87.1,
+          "ciUpper": 100
+        },
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "precision75": {
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 89.3,
+          "ciUpper": 100
+        },
+        "note": "precision on a balanced set is not real-world precision"
+      },
+      "spec50": {
+        "value": 100,
+        "ci": {
+          "value": 100,
+          "ciLower": 81.6,
+          "ciUpper": 100
+        }
+      },
+      "acc50": {
+        "value": 86,
+        "ci": {
+          "value": 86,
+          "ciLower": 73.8,
+          "ciUpper": 93
+        }
+      },
+      "auc": 0.9955,
+      "aucCi": [
+        0.9803,
+        1
+      ]
+    },
+    "transitions": {
+      "fixed50": [
+        "test-001",
+        "test-002",
+        "test-003",
+        "test-005",
+        "test-008",
+        "test-010",
+        "test-011",
+        "test-012",
+        "test-014",
+        "test-015",
+        "test-016",
+        "test-017",
+        "test-019",
+        "test-020",
+        "test-021",
+        "test-022",
+        "test-023",
+        "test-025",
+        "test-USER-03",
+        "test-USER-05",
+        "test-USER-06",
+        "test-USER-07",
+        "test-USER-08"
+      ],
+      "broken50": [],
+      "fixed75": [
+        "test-001",
+        "test-004",
+        "test-006",
+        "test-007",
+        "test-009",
+        "test-012",
+        "test-013",
+        "test-015",
+        "test-019",
+        "test-020",
+        "test-021",
+        "test-022",
+        "test-023",
+        "test-024",
+        "test-025",
+        "test-USER-03",
+        "test-USER-05",
+        "test-USER-06",
+        "test-USER-07"
+      ],
+      "broken75": []
+    },
+    "aiRiskContribution": {
+      "scamsTotal": 1530,
+      "scamsCount": 33,
+      "meanScams": 46.36363636363637,
+      "genuineTotal": 20,
+      "genuineCount": 17,
+      "meanGenuine": 1.1764705882352942,
+      "total": 1550,
+      "count": 50,
+      "meanOverall": 31
+    },
+    "subgroups": {
+      "byScamType": {
+        "digital_arrest": {
+          "scamsCount": 3,
+          "scamRec50": "3/3 (100.0%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "fake_customer_care": {
+          "scamsCount": 2,
+          "scamRec50": "1/2 (50.0%)",
+          "scamRec75": "1/2 (50.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "fake_job": {
+          "scamsCount": 4,
+          "scamRec50": "3/4 (75.0%)",
+          "scamRec75": "4/4 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "investment": {
+          "scamsCount": 3,
+          "scamRec50": "2/3 (66.7%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "kyc_utility_courier": {
+          "scamsCount": 4,
+          "scamRec50": "3/4 (75.0%)",
+          "scamRec75": "4/4 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "loan_app": {
+          "scamsCount": 4,
+          "scamRec50": "4/4 (100.0%)",
+          "scamRec75": "4/4 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "none": {
+          "scamsCount": 0,
+          "scamRec50": "N/A",
+          "scamRec75": "N/A",
+          "genuineCount": 17,
+          "genFp50": "0/17 (0.0%)",
+          "genFp75": "0/17 (0.0%)"
+        },
+        "phishing_apk": {
+          "scamsCount": 5,
+          "scamRec50": "5/5 (100.0%)",
+          "scamRec75": "5/5 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "task_prepayment": {
+          "scamsCount": 3,
+          "scamRec50": "1/3 (33.3%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "upi_collect": {
+          "scamsCount": 2,
+          "scamRec50": "1/2 (50.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "voice_clone_emergency": {
+          "scamsCount": 3,
+          "scamRec50": "3/3 (100.0%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        }
+      },
+      "byLanguage": {
+        "en": {
+          "scamsCount": 16,
+          "scamRec50": "12/16 (75.0%)",
+          "scamRec75": "15/16 (93.8%)",
+          "genuineCount": 10,
+          "genFp50": "0/10 (0.0%)",
+          "genFp75": "0/10 (0.0%)"
+        },
+        "hinglish": {
+          "scamsCount": 8,
+          "scamRec50": "7/8 (87.5%)",
+          "scamRec75": "8/8 (100.0%)",
+          "genuineCount": 4,
+          "genFp50": "0/4 (0.0%)",
+          "genFp75": "0/4 (0.0%)"
+        },
+        "mixed": {
+          "scamsCount": 9,
+          "scamRec50": "7/9 (77.8%)",
+          "scamRec75": "9/9 (100.0%)",
+          "genuineCount": 3,
+          "genFp50": "0/3 (0.0%)",
+          "genFp75": "0/3 (0.0%)"
+        }
+      },
+      "byDifficulty": {
+        "easy": {
+          "scamsCount": 11,
+          "scamRec50": "9/11 (81.8%)",
+          "scamRec75": "10/11 (90.9%)",
+          "genuineCount": 10,
+          "genFp50": "0/10 (0.0%)",
+          "genFp75": "0/10 (0.0%)"
+        },
+        "hard": {
+          "scamsCount": 22,
+          "scamRec50": "17/22 (77.3%)",
+          "scamRec75": "22/22 (100.0%)",
+          "genuineCount": 7,
+          "genFp50": "0/7 (0.0%)",
+          "genFp75": "0/7 (0.0%)"
+        }
+      },
+      "byChannel": {
+        "call_transcript": {
+          "scamsCount": 2,
+          "scamRec50": "2/2 (100.0%)",
+          "scamRec75": "2/2 (100.0%)",
+          "genuineCount": 0,
+          "genFp50": "N/A",
+          "genFp75": "N/A"
+        },
+        "email": {
+          "scamsCount": 3,
+          "scamRec50": "2/3 (66.7%)",
+          "scamRec75": "3/3 (100.0%)",
+          "genuineCount": 3,
+          "genFp50": "0/3 (0.0%)",
+          "genFp75": "0/3 (0.0%)"
+        },
+        "sms": {
+          "scamsCount": 11,
+          "scamRec50": "9/11 (81.8%)",
+          "scamRec75": "10/11 (90.9%)",
+          "genuineCount": 10,
+          "genFp50": "0/10 (0.0%)",
+          "genFp75": "0/10 (0.0%)"
+        },
+        "whatsapp": {
+          "scamsCount": 17,
+          "scamRec50": "13/17 (76.5%)",
+          "scamRec75": "17/17 (100.0%)",
+          "genuineCount": 4,
+          "genFp50": "0/4 (0.0%)",
+          "genFp75": "0/4 (0.0%)"
+        }
+      }
+    },
+    "correctedScamsPerId": [
+      {
+        "id": "test-USER-01",
+        "scamType": "digital_arrest",
+        "rulesTrust": 48,
+        "fullTrust": 0,
+        "rulesBand": "high_risk",
+        "fullBand": "scam",
+        "rulesFlags": [
+          "pay-upi",
+          "authority",
+          "secrecy"
+        ],
+        "aiSignals": [
+          {
+            "label": "Threat of immediate digital arrest",
+            "weight": 25
+          },
+          {
+            "label": "Extreme time pressure",
+            "weight": 20
+          },
+          {
+            "label": "Impersonation of law enforcement and RBI",
+            "weight": 25
+          }
+        ]
+      },
+      {
+        "id": "test-USER-02",
+        "scamType": "fake_job",
+        "rulesTrust": 25,
+        "fullTrust": 0,
+        "rulesBand": "high_risk",
+        "fullBand": "scam",
+        "rulesFlags": [
+          "fee",
+          "pay-upi",
+          "urgency",
+          "guaranteed"
+        ],
+        "aiSignals": [
+          {
+            "label": "Communication via Anonymous App",
+            "weight": 20
+          },
+          {
+            "label": "Too Good To Be True Hiring",
+            "weight": 15
+          }
+        ]
+      },
+      {
+        "id": "test-USER-03",
+        "scamType": "task_prepayment",
+        "rulesTrust": 80,
+        "fullTrust": 20,
+        "rulesBand": "safe",
+        "fullBand": "scam",
+        "rulesFlags": [
+          "pay-upi"
+        ],
+        "aiSignals": [
+          {
+            "label": "Pay to Earn Coercion",
+            "weight": 25
+          },
+          {
+            "label": "Threat of Blocked Withdrawal",
+            "weight": 20
+          },
+          {
+            "label": "Artificial Urgency",
+            "weight": 15
+          }
+        ]
+      },
+      {
+        "id": "test-USER-04",
+        "scamType": "investment",
+        "rulesTrust": 40,
+        "fullTrust": 5,
+        "rulesBand": "high_risk",
+        "fullBand": "scam",
+        "rulesFlags": [
+          "fee",
+          "pay-upi",
+          "guaranteed"
+        ],
+        "aiSignals": [
+          {
+            "label": "Demand for advance tax before withdrawal",
+            "weight": 20
+          },
+          {
+            "label": "Forcing secrecy to avoid scrutiny",
+            "weight": 15
+          }
+        ]
+      },
+      {
+        "id": "test-USER-05",
+        "scamType": "kyc_utility_courier",
+        "rulesTrust": 85,
+        "fullTrust": 40,
+        "rulesBand": "safe",
+        "fullBand": "high_risk",
+        "rulesFlags": [
+          "urgency"
+        ],
+        "aiSignals": [
+          {
+            "label": "Suspicious Non-Official Domain",
+            "weight": 25
+          },
+          {
+            "label": "Threat of Disconnection",
+            "weight": 20
+          }
+        ]
+      },
+      {
+        "id": "test-USER-06",
+        "scamType": "loan_app",
+        "rulesTrust": 97,
+        "fullTrust": 40,
+        "rulesBand": "safe",
+        "fullBand": "high_risk",
+        "rulesFlags": [],
+        "aiSignals": [
+          {
+            "label": "Blackmail using private data",
+            "weight": 25
+          },
+          {
+            "label": "Inflated late fee demand",
+            "weight": 20
+          },
+          {
+            "label": "Coercive payment method",
+            "weight": 15
+          }
+        ]
+      },
+      {
+        "id": "test-USER-07",
+        "scamType": "voice_clone_emergency",
+        "rulesTrust": 80,
+        "fullTrust": 20,
+        "rulesBand": "safe",
+        "fullBand": "scam",
+        "rulesFlags": [
+          "pay-upi"
+        ],
+        "aiSignals": [
+          {
+            "label": "High Urgency and Coercion",
+            "weight": 25
+          },
+          {
+            "label": "Demanding Secrecy",
+            "weight": 20
+          },
+          {
+            "label": "Excuses for Alternative Communication",
+            "weight": 15
+          }
+        ]
+      },
+      {
+        "id": "test-USER-08",
+        "scamType": "phishing_apk",
+        "rulesTrust": 71,
+        "fullTrust": 26,
+        "rulesBand": "suspicious",
+        "fullBand": "high_risk",
+        "rulesFlags": [
+          "pay-upi",
+          "urgency",
+          "formal-process"
+        ],
+        "aiSignals": [
+          {
+            "label": "Advance Payment for Equipment",
+            "weight": 25
+          },
+          {
+            "label": "Vendor UPI Handle for Corporate Job",
+            "weight": 20
+          }
+        ]
+      }
     ]
   },
-  "aiRiskContribution": {
-    "scamsTotal": 1120,
-    "scamsCount": 25,
-    "meanScams": 44.8,
-    "genuineTotal": 430,
-    "genuineCount": 25,
-    "meanGenuine": 17.2
-  },
-  "zeroAiScams": [],
-  "authorBreakdown": {
-    "assistant": {
-      "total": 15,
-      "below75Count": 0,
-      "below75Ids": [],
-      "below50Count": 0,
-      "below50Ids": []
-    },
-    "owner": {
-      "total": 10,
-      "below75Count": 8,
-      "below75Ids": [
-        {
-          "id": "test-USER-01",
-          "rulesFlags": [
-            "pay-upi",
-            "authority",
-            "secrecy"
-          ],
-          "aiSignals": [
-            {
-              "id": "digital_arrest_coercion",
-              "label": "Threat of immediate digital arrest",
-              "weight": 25
-            },
-            {
-              "id": "artificial_urgency",
-              "label": "Extreme time pressure",
-              "weight": 20
-            },
-            {
-              "id": "fake_authority",
-              "label": "Impersonation of law enforcement and RBI",
-              "weight": 25
-            }
-          ]
-        },
-        {
-          "id": "test-USER-02",
-          "rulesFlags": [
-            "fee",
-            "pay-upi",
-            "urgency",
-            "guaranteed"
-          ],
-          "aiSignals": [
-            {
-              "id": "telegram_redirection",
-              "label": "Communication via Anonymous App",
-              "weight": 20
-            },
-            {
-              "id": "no_interview_hiring",
-              "label": "Too Good To Be True Hiring",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-03",
-          "rulesFlags": [
-            "pay-upi"
-          ],
-          "aiSignals": [
-            {
-              "id": "sig_task_payment_coercion",
-              "label": "Pay to Earn Coercion",
-              "weight": 25
-            },
-            {
-              "id": "sig_withdrawal_block",
-              "label": "Threat of Blocked Withdrawal",
-              "weight": 20
-            },
-            {
-              "id": "sig_false_urgency",
-              "label": "Artificial Urgency",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-04",
-          "rulesFlags": [
-            "fee",
-            "pay-upi",
-            "guaranteed"
-          ],
-          "aiSignals": [
-            {
-              "id": "tax_demand",
-              "label": "Demand for advance tax before withdrawal",
-              "weight": 20
-            },
-            {
-              "id": "secrecy_coercion",
-              "label": "Forcing secrecy to avoid scrutiny",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-05",
-          "rulesFlags": [
-            "urgency"
-          ],
-          "aiSignals": [
-            {
-              "id": "fake_domain",
-              "label": "Suspicious Non-Official Domain",
-              "weight": 25
-            },
-            {
-              "id": "threat_coercion",
-              "label": "Threat of Disconnection",
-              "weight": 20
-            }
-          ]
-        },
-        {
-          "id": "test-USER-06",
-          "rulesFlags": [],
-          "aiSignals": [
-            {
-              "id": "sig_blackmail_contacts",
-              "label": "Blackmail using private data",
-              "weight": 25
-            },
-            {
-              "id": "sig_inflated_demand",
-              "label": "Inflated late fee demand",
-              "weight": 20
-            },
-            {
-              "id": "sig_upi_coercion",
-              "label": "Coercive payment method",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-07",
-          "rulesFlags": [
-            "pay-upi"
-          ],
-          "aiSignals": [
-            {
-              "id": "sig_urgency_coercion",
-              "label": "High Urgency and Coercion",
-              "weight": 25
-            },
-            {
-              "id": "sig_secrecy",
-              "label": "Demanding Secrecy",
-              "weight": 20
-            },
-            {
-              "id": "sig_excuse_communication",
-              "label": "Excuses for Alternative Communication",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-08",
-          "rulesFlags": [
-            "pay-upi",
-            "urgency",
-            "formal-process"
-          ],
-          "aiSignals": [
-            {
-              "id": "advance_payment_required",
-              "label": "Advance Payment for Equipment",
-              "weight": 25
-            },
-            {
-              "id": "unprofessional_upi_handle",
-              "label": "Vendor UPI Handle for Corporate Job",
-              "weight": 20
-            }
-          ]
-        }
-      ],
-      "below50Count": 8,
-      "below50Ids": [
-        {
-          "id": "test-USER-01",
-          "rulesFlags": [
-            "pay-upi",
-            "authority",
-            "secrecy"
-          ],
-          "aiSignals": [
-            {
-              "id": "digital_arrest_coercion",
-              "label": "Threat of immediate digital arrest",
-              "weight": 25
-            },
-            {
-              "id": "artificial_urgency",
-              "label": "Extreme time pressure",
-              "weight": 20
-            },
-            {
-              "id": "fake_authority",
-              "label": "Impersonation of law enforcement and RBI",
-              "weight": 25
-            }
-          ]
-        },
-        {
-          "id": "test-USER-02",
-          "rulesFlags": [
-            "fee",
-            "pay-upi",
-            "urgency",
-            "guaranteed"
-          ],
-          "aiSignals": [
-            {
-              "id": "telegram_redirection",
-              "label": "Communication via Anonymous App",
-              "weight": 20
-            },
-            {
-              "id": "no_interview_hiring",
-              "label": "Too Good To Be True Hiring",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-03",
-          "rulesFlags": [
-            "pay-upi"
-          ],
-          "aiSignals": [
-            {
-              "id": "sig_task_payment_coercion",
-              "label": "Pay to Earn Coercion",
-              "weight": 25
-            },
-            {
-              "id": "sig_withdrawal_block",
-              "label": "Threat of Blocked Withdrawal",
-              "weight": 20
-            },
-            {
-              "id": "sig_false_urgency",
-              "label": "Artificial Urgency",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-04",
-          "rulesFlags": [
-            "fee",
-            "pay-upi",
-            "guaranteed"
-          ],
-          "aiSignals": [
-            {
-              "id": "tax_demand",
-              "label": "Demand for advance tax before withdrawal",
-              "weight": 20
-            },
-            {
-              "id": "secrecy_coercion",
-              "label": "Forcing secrecy to avoid scrutiny",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-05",
-          "rulesFlags": [
-            "urgency"
-          ],
-          "aiSignals": [
-            {
-              "id": "fake_domain",
-              "label": "Suspicious Non-Official Domain",
-              "weight": 25
-            },
-            {
-              "id": "threat_coercion",
-              "label": "Threat of Disconnection",
-              "weight": 20
-            }
-          ]
-        },
-        {
-          "id": "test-USER-06",
-          "rulesFlags": [],
-          "aiSignals": [
-            {
-              "id": "sig_blackmail_contacts",
-              "label": "Blackmail using private data",
-              "weight": 25
-            },
-            {
-              "id": "sig_inflated_demand",
-              "label": "Inflated late fee demand",
-              "weight": 20
-            },
-            {
-              "id": "sig_upi_coercion",
-              "label": "Coercive payment method",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-07",
-          "rulesFlags": [
-            "pay-upi"
-          ],
-          "aiSignals": [
-            {
-              "id": "sig_urgency_coercion",
-              "label": "High Urgency and Coercion",
-              "weight": 25
-            },
-            {
-              "id": "sig_secrecy",
-              "label": "Demanding Secrecy",
-              "weight": 20
-            },
-            {
-              "id": "sig_excuse_communication",
-              "label": "Excuses for Alternative Communication",
-              "weight": 15
-            }
-          ]
-        },
-        {
-          "id": "test-USER-08",
-          "rulesFlags": [
-            "pay-upi",
-            "urgency",
-            "formal-process"
-          ],
-          "aiSignals": [
-            {
-              "id": "advance_payment_required",
-              "label": "Advance Payment for Equipment",
-              "weight": 25
-            },
-            {
-              "id": "unprofessional_upi_handle",
-              "label": "Vendor UPI Handle for Corporate Job",
-              "weight": 20
-            }
-          ]
-        }
-      ]
+  "genuineSideParity": {
+    "devGenuineCount": 35,
+    "devGenuineEasy": 11,
+    "devGenuineHard": 24,
+    "devHardNegativeRatio": 0.6857142857142857,
+    "correctedGenuineCount": 17,
+    "correctedGenuineEasy": 10,
+    "correctedGenuineHard": 7,
+    "correctedHardNegativeRatio": 0.4117647058823529,
+    "breakdown": {
+      "assistantWritten": 15,
+      "ownerWritten": 2
     }
   },
   "injectionItems": {
@@ -621,196 +1062,6 @@
         }
       ]
     }
-  },
-  "subgroups": {
-    "byType": [
-      {
-        "val": "digital_arrest",
-        "scamsCount": 2,
-        "rec50": "2/2 (100.0%)",
-        "rec75": "2/2 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "fake_customer_care",
-        "scamsCount": 2,
-        "rec50": "1/2 (50.0%)",
-        "rec75": "1/2 (50.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "fake_job",
-        "scamsCount": 3,
-        "rec50": "2/3 (66.7%)",
-        "rec75": "3/3 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "investment",
-        "scamsCount": 2,
-        "rec50": "1/2 (50.0%)",
-        "rec75": "2/2 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "kyc_utility_courier",
-        "scamsCount": 3,
-        "rec50": "2/3 (66.7%)",
-        "rec75": "3/3 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "loan_app",
-        "scamsCount": 3,
-        "rec50": "3/3 (100.0%)",
-        "rec75": "3/3 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "none",
-        "scamsCount": 0,
-        "rec50": "N/A",
-        "rec75": "N/A",
-        "genCount": 25,
-        "fp50": "8/25 (32.0%)",
-        "fp75": "8/25 (32.0%)"
-      },
-      {
-        "val": "phishing_apk",
-        "scamsCount": 4,
-        "rec50": "4/4 (100.0%)",
-        "rec75": "4/4 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "task_prepayment",
-        "scamsCount": 2,
-        "rec50": "0/2 (0.0%)",
-        "rec75": "2/2 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "upi_collect",
-        "scamsCount": 2,
-        "rec50": "1/2 (50.0%)",
-        "rec75": "2/2 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "voice_clone_emergency",
-        "scamsCount": 2,
-        "rec50": "2/2 (100.0%)",
-        "rec75": "2/2 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      }
-    ],
-    "byLang": [
-      {
-        "val": "en",
-        "scamsCount": 15,
-        "rec50": "11/15 (73.3%)",
-        "rec75": "14/15 (93.3%)",
-        "genCount": 11,
-        "fp50": "1/11 (9.1%)",
-        "fp75": "1/11 (9.1%)"
-      },
-      {
-        "val": "hinglish",
-        "scamsCount": 3,
-        "rec50": "2/3 (66.7%)",
-        "rec75": "3/3 (100.0%)",
-        "genCount": 9,
-        "fp50": "5/9 (55.6%)",
-        "fp75": "5/9 (55.6%)"
-      },
-      {
-        "val": "mixed",
-        "scamsCount": 7,
-        "rec50": "5/7 (71.4%)",
-        "rec75": "7/7 (100.0%)",
-        "genCount": 5,
-        "fp50": "2/5 (40.0%)",
-        "fp75": "2/5 (40.0%)"
-      }
-    ],
-    "byDiff": [
-      {
-        "val": "easy",
-        "scamsCount": 11,
-        "rec50": "9/11 (81.8%)",
-        "rec75": "10/11 (90.9%)",
-        "genCount": 10,
-        "fp50": "0/10 (0.0%)",
-        "fp75": "0/10 (0.0%)"
-      },
-      {
-        "val": "hard",
-        "scamsCount": 14,
-        "rec50": "9/14 (64.3%)",
-        "rec75": "14/14 (100.0%)",
-        "genCount": 15,
-        "fp50": "8/15 (53.3%)",
-        "fp75": "8/15 (53.3%)"
-      }
-    ],
-    "byChan": [
-      {
-        "val": "call_transcript",
-        "scamsCount": 2,
-        "rec50": "2/2 (100.0%)",
-        "rec75": "2/2 (100.0%)",
-        "genCount": 0,
-        "fp50": "N/A",
-        "fp75": "N/A"
-      },
-      {
-        "val": "email",
-        "scamsCount": 2,
-        "rec50": "1/2 (50.0%)",
-        "rec75": "2/2 (100.0%)",
-        "genCount": 4,
-        "fp50": "1/4 (25.0%)",
-        "fp75": "1/4 (25.0%)"
-      },
-      {
-        "val": "sms",
-        "scamsCount": 9,
-        "rec50": "7/9 (77.8%)",
-        "rec75": "8/9 (88.9%)",
-        "genCount": 12,
-        "fp50": "2/12 (16.7%)",
-        "fp75": "2/12 (16.7%)"
-      },
-      {
-        "val": "whatsapp",
-        "scamsCount": 12,
-        "rec50": "8/12 (66.7%)",
-        "rec75": "12/12 (100.0%)",
-        "genCount": 9,
-        "fp50": "5/9 (55.6%)",
-        "fp75": "5/9 (55.6%)"
-      }
-    ]
   },
   "evaluated": [
     {

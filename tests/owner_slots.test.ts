@@ -72,6 +72,8 @@ describe("Owner Slot Tooling (eval/fill-owner-slots.ts & eval/seal.ts)", () => {
   it("refuses if any owner item has empty text or invalid metadata", () => {
     const invalidItems = Array.from({ length: 10 }, (_, i) => ({
       text: i === 5 ? "   " : "Valid authentic message",
+      label: "genuine",
+      scam_type: "none",
       language: "en",
       difficulty: "hard",
       channel: "sms",
@@ -86,9 +88,80 @@ describe("Owner Slot Tooling (eval/fill-owner-slots.ts & eval/seal.ts)", () => {
     ).toThrow("[VALIDATION ERROR]");
   });
 
-  it("successfully fills owner slots and preserves privacy", () => {
+  it("refuses if any owner item is missing explicit label or scam_type", () => {
+    const missingLabelItems = Array.from({ length: 10 }, () => ({
+      text: "Valid authentic message",
+      language: "en",
+      difficulty: "hard",
+      channel: "sms",
+    }));
+    writeFileSync(tmpOwnerJson, JSON.stringify(missingLabelItems), "utf-8");
+    expect(() =>
+      fillOwnerSlots({
+        ownerItemsPath: tmpOwnerJson,
+        testJsonPath: tmpTestJson,
+        shaPath: tmpShaPath,
+      })
+    ).toThrow("must carry an explicit label");
+
+    const missingScamTypeItems = Array.from({ length: 10 }, () => ({
+      text: "Valid authentic message",
+      label: "genuine",
+      language: "en",
+      difficulty: "hard",
+      channel: "sms",
+    }));
+    writeFileSync(tmpOwnerJson, JSON.stringify(missingScamTypeItems), "utf-8");
+    expect(() =>
+      fillOwnerSlots({
+        ownerItemsPath: tmpOwnerJson,
+        testJsonPath: tmpTestJson,
+        shaPath: tmpShaPath,
+      })
+    ).toThrow("must carry an explicit scam_type");
+  });
+
+  it("refuses if owner item has mismatched label and scam_type", () => {
+    const mismatchedGenuine = Array.from({ length: 10 }, (_, i) => ({
+      text: "Message text",
+      label: "genuine",
+      scam_type: i === 0 ? "fake_job" : "none",
+      language: "en",
+      difficulty: "hard",
+      channel: "sms",
+    }));
+    writeFileSync(tmpOwnerJson, JSON.stringify(mismatchedGenuine), "utf-8");
+    expect(() =>
+      fillOwnerSlots({
+        ownerItemsPath: tmpOwnerJson,
+        testJsonPath: tmpTestJson,
+        shaPath: tmpShaPath,
+      })
+    ).toThrow("Genuine items must have scam_type 'none'");
+
+    const mismatchedScam = Array.from({ length: 10 }, (_, i) => ({
+      text: "Message text",
+      label: "scam",
+      scam_type: i === 0 ? "none" : "fake_job",
+      language: "en",
+      difficulty: "hard",
+      channel: "sms",
+    }));
+    writeFileSync(tmpOwnerJson, JSON.stringify(mismatchedScam), "utf-8");
+    expect(() =>
+      fillOwnerSlots({
+        ownerItemsPath: tmpOwnerJson,
+        testJsonPath: tmpTestJson,
+        shaPath: tmpShaPath,
+      })
+    ).toThrow("Scam items must have a concrete scam_type");
+  });
+
+  it("successfully fills owner slots and preserves explicit labels and privacy", () => {
     const validItems = Array.from({ length: 10 }, (_, i) => ({
       text: `Private authentic message number ${i + 1}`,
+      label: i < 8 ? "scam" : "genuine",
+      scam_type: i < 8 ? "digital_arrest" : "none",
       language: "en",
       difficulty: "hard",
       channel: "sms",
@@ -105,6 +178,15 @@ describe("Owner Slot Tooling (eval/fill-owner-slots.ts & eval/seal.ts)", () => {
     expect(res.filledCount).toBe(10);
     expect(res.updatedIds).toHaveLength(10);
     expect(res.totalTestItems).toBe(12);
+
+    const updatedTest = JSON.parse(require("fs").readFileSync(tmpTestJson, "utf-8"));
+    const slot1 = updatedTest.find((it: any) => it.id === "test-USER-01");
+    expect(slot1.label).toBe("scam");
+    expect(slot1.scam_type).toBe("digital_arrest");
+
+    const slot9 = updatedTest.find((it: any) => it.id === "test-USER-09");
+    expect(slot9.label).toBe("genuine");
+    expect(slot9.scam_type).toBe("none");
   });
 
   it("sealTestSplit refuses if any slots still have empty text", () => {
@@ -119,6 +201,8 @@ describe("Owner Slot Tooling (eval/fill-owner-slots.ts & eval/seal.ts)", () => {
   it("sealTestSplit succeeds and computes hash when all slots are populated", () => {
     const validItems = Array.from({ length: 10 }, (_, i) => ({
       text: `Private authentic message number ${i + 1}`,
+      label: "genuine",
+      scam_type: "none",
       language: "en",
       difficulty: "hard",
       channel: "sms",

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "test-USER-01",
+    "original_label": "genuine",
+    "corrected_label": "scam",
+    "original_scam_type": "none",
+    "corrected_scam_type": "digital_arrest",
+    "reason": "fill script assigned genuine to all owner slots; owner file describes these as scams"
+  },
+  {
+    "id": "test-USER-02",
+    "original_label": "genuine",
+    "corrected_label": "scam",
+    "original_scam_type": "none",
+    "corrected_scam_type": "fake_job",
+    "reason": "fill script assigned genuine to all owner slots; owner file describes these as scams"
+  },
+  {
+    "id": "test-USER-03",
+    "original_label": "genuine",
+    "corrected_label": "scam",
+    "original_scam_type": "none",
+    "corrected_scam_type": "task_prepayment",
+    "reason": "fill script assigned genuine to all owner slots; owner file describes these as scams"
+  },
+  {
+    "id": "test-USER-04",
+    "original_label": "genuine",
+    "corrected_label": "scam",
+    "original_scam_type": "none",
+    "corrected_scam_type": "investment",
+    "reason": "fill script assigned genuine to all owner slots; owner file describes these as scams"
+  },
+  {
+    "id": "test-USER-05",
+    "original_label": "genuine",
+    "corrected_label": "scam",
+    "original_scam_type": "none",
+    "corrected_scam_type": "kyc_utility_courier",
+    "reason": "fill script assigned genuine to all owner slots; owner file describes these as scams"
+  },
+  {
+    "id": "test-USER-06",
+    "original_label": "genuine",
+    "corrected_label": "scam",
+    "original_scam_type": "none",
+    "corrected_scam_type": "loan_app",
+    "reason": "fill script assigned genuine to all owner slots; owner file describes these as scams"
+  },
+  {
+    "id": "test-USER-07",
+    "original_label": "genuine",
+    "corrected_label": "scam",
+    "original_scam_type": "none",
+    "corrected_scam_type": "voice_clone_emergency",
+    "reason": "fill script assigned genuine to all owner slots; owner file describes these as scams"
+  },
+  {
+    "id": "test-USER-08",
+    "original_label": "genuine",
+    "corrected_label": "scam",
+    "original_scam_type": "none",
+    "corrected_scam_type": "phishing_apk",
+    "reason": "fill script assigned genuine to all owner slots; owner file describes these as scams"
+  }
+]
