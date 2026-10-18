@@ -91,3 +91,13 @@ A set of 30 invented everyday messages (15 Hinglish, 15 English) covering routin
 - **Not a General False-Positive Rate:** This smoke test was deliberately seeded with trigger words (`turant`, `abhi`, `jaldi`, `daily`, `power`, `meter`, `fund`, `transfer`, `pin code`, `QR`, `charges`, `deposit`, `remote`, `support`, `share`, `confidential`, `guaranteed`) to probe edge-case boundaries; it represents an adversarial stress test, not a real-world false-positive rate.
 - **Near-Scam Linguistic Overlap:** The three flagged messages (*"5000 turant bhej de"*, *"remote assist invite immediately"*, *"transfer Rs 15000 rent immediately"*) employ coercive linguistic structures that keyword rules alone cannot distinguish from scam lures without semantic or pragmatic context.
 - **Single-Word Triggers:** Intentional single-word triggers (`turant`, `immediately`, `customs`, `warrant`, `lottery`) legitimately contribute risk points on their own, meaning benign messages containing these words start with a baseline risk penalty.
+
+---
+
+### 8. Unexplained Zero-Signal Entries on Legacy `gemini-3.8-flash` Cache
+
+- **Observation:** Among the 16 legacy cache entries originally generated under `gemini-3.8-flash`, 10 entries recorded zero AI signals (`aiHits: []`).
+- **Status & Policy:** The cause of this 10-of-16 zero-signal result is **unexplained** because raw API response bodies were not persisted in the legacy cache schema.
+- **Not Attributed to Fallbacks:** This behavior is **not** attributed to degraded fallbacks, as the API call completed and wrote a structured cache entry without throwing service errors.
+- **Metric Exclusion:** All legacy `gemini-3.8-flash` cache entries are **strictly excluded from all evaluation metrics and benchmark reports**. All reported evaluations rely exclusively on fresh `gemini-3.5-flash-lite` cache entries.
+

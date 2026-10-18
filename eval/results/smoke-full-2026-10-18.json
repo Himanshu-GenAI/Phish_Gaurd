@@ -1,0 +1,342 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "total": 30,
+  "liveCalls": 6,
+  "below75Count": 2,
+  "below50Count": 0,
+  "results": [
+    {
+      "id": "H-01",
+      "lang": "Hinglish",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Bhaiya trip ke expenses ka fund transfer kar do, maine hotel aur food ka split bheja hai."
+    },
+    {
+      "id": "H-02",
+      "lang": "Hinglish",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Doctor appointment sham 5 baje confirm hai, please time se pahunch jana, jaldi nikalna ghar se."
+    },
+    {
+      "id": "H-03",
+      "lang": "Hinglish",
+      "trust": 70,
+      "risk": 30,
+      "band": "suspicious",
+      "aiSignals": [
+        {
+          "label": "Artificial Urgency",
+          "weight": 15
+        },
+        {
+          "label": "Informal Cash/Digital Transfer Request",
+          "weight": 15
+        }
+      ],
+      "rulesTrust": 97,
+      "text": "Society office me meter replacement ka maintenance charges 500 jama kar dena kal tak."
+    },
+    {
+      "id": "H-04",
+      "lang": "Hinglish",
+      "trust": 65,
+      "risk": 35,
+      "band": "suspicious",
+      "aiSignals": [
+        {
+          "label": "Unexpected delivery lure",
+          "weight": 15
+        },
+        {
+          "label": "Asking for PIN code / location details",
+          "weight": 20
+        }
+      ],
+      "rulesTrust": 97,
+      "text": "Diwali sweets packet delivery boy aa raha hai, pin code sahi batana."
+    },
+    {
+      "id": "H-05",
+      "lang": "Hinglish",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Mummy boli kitchen ke ration ka daily hisaab register me likh do."
+    },
+    {
+      "id": "H-06",
+      "lang": "Hinglish",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Bhai swiggy delivery boy ko phone karke bol abhi aane ko."
+    },
+    {
+      "id": "H-07",
+      "lang": "Hinglish",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Bachhon ki school picnic ke liye 2000 deposit counter par jama karna hai."
+    },
+    {
+      "id": "H-08",
+      "lang": "Hinglish",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Electrician ne bola inverter power battery check kar li hai, sab theek hai."
+    },
+    {
+      "id": "H-09",
+      "lang": "Hinglish",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 85,
+      "text": "Gaadi service center me hai, delivery milte hi turant nikalenge."
+    },
+    {
+      "id": "H-10",
+      "lang": "Hinglish",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 80,
+      "text": "Table reserve karne ke liye restaurant gate par QR code scan karke menu dekh lo."
+    },
+    {
+      "id": "H-11",
+      "lang": "Hinglish",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Papa ne office se laptop remote setup mangwaya hai IT team se."
+    },
+    {
+      "id": "H-12",
+      "lang": "Hinglish",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Tu tension mat le, exam me 100% marks guaranteed nahi hote, bas mehnat kar."
+    },
+    {
+      "id": "H-13",
+      "lang": "Hinglish",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "aiSignals": [
+        {
+          "label": "Unsolicited Cloud Storage Link",
+          "weight": 20
+        }
+      ],
+      "rulesTrust": 97,
+      "text": "Shaadi ki photos Google Drive link par share kar di hain, download kar lo."
+    },
+    {
+      "id": "H-14",
+      "lang": "Hinglish",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "aiSignals": [
+        {
+          "label": "Forced Secrecy",
+          "weight": 20
+        }
+      ],
+      "rulesTrust": 97,
+      "text": "Yeh personal baat hai, confidential rakhna kisi dost ko mat batana."
+    },
+    {
+      "id": "H-15",
+      "lang": "Hinglish",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "aiSignals": [
+        {
+          "label": "Fake Support Urgency",
+          "weight": 15
+        }
+      ],
+      "rulesTrust": 97,
+      "text": "Aunty bol rahi thi customer care support desk kal band rahega Sunday ki wajah se."
+    },
+    {
+      "id": "E-01",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Please send your share of the dinner bill via the group payment link tonight."
+    },
+    {
+      "id": "E-02",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "The doctor advised a daily walk of thirty minutes to improve stamina."
+    },
+    {
+      "id": "E-03",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Don't forget to pay the monthly maintenance charges before the 10th."
+    },
+    {
+      "id": "E-04",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "The apartment key requires a refundable deposit of 500 rupees upon handover."
+    },
+    {
+      "id": "E-05",
+      "lang": "English",
+      "trust": 75,
+      "risk": 25,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 75,
+      "text": "Our office IT team provided remote assistance to configure the new printer."
+    },
+    {
+      "id": "E-06",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Your courier parcel has arrived at the local facility and will reach your pin code today."
+    },
+    {
+      "id": "E-07",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "The technician inspected the smart meter to verify electricity power readings."
+    },
+    {
+      "id": "E-08",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Customer support replied that the replacement item is dispatched via standard courier."
+    },
+    {
+      "id": "E-09",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Please complete the university registration form without delay."
+    },
+    {
+      "id": "E-10",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Scan the QR code on the table to access the restaurant's digital dinner menu."
+    },
+    {
+      "id": "E-11",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "The bank branch told us international fund transfers take up to three business days."
+    },
+    {
+      "id": "E-12",
+      "lang": "English",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 85,
+      "text": "Let's transfer our luggage to the hotel locker room immediately after check-in."
+    },
+    {
+      "id": "E-13",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Good weather is practically guaranteed for our weekend trekking trip."
+    },
+    {
+      "id": "E-14",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "This performance review discussion is strictly confidential between manager and employee."
+    },
+    {
+      "id": "E-15",
+      "lang": "English",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "aiSignals": [],
+      "rulesTrust": 97,
+      "text": "Please share the meeting agenda document with all project team members."
+    }
+  ]
+}

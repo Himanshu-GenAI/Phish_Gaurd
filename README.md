@@ -158,7 +158,7 @@ flowchart TD
     B --> C[Preprocessor: extract URLs, UPI handles, amounts]
     D["Layer 1 — Rule Engine\n18 weighted rules, EN + Hinglish"]
     E["Layer 2 — Live checks\nRDAP domain age"]
-    F["Layer 3 — gemini-3.8-flash\nstrict JSON schema"]
+    F["Layer 3 — gemini-3.5-flash-lite\nstrict JSON schema"]
     C --> D
     C --> E
     C --> F
@@ -178,12 +178,13 @@ flowchart TD
 |---|---|---|
 | Framework | Next.js (App Router) + TypeScript strict | One deploy for UI + API; type-safe contracts |
 | Styling | Tailwind CSS | Fast, consistent, dark-theme-first |
-| AI | gemini-3.8-flash via REST | Free tier, fast, native structured-JSON (responseSchema) — no SDK lock-in |
+| AI | gemini-3.5-flash-lite via REST | Free tier, fast, native structured-JSON (responseSchema) — no SDK lock-in |
 | Live checks | RDAP (rdap.org) | Free, keyless, authoritative registration data |
 | Rules | Pure TypeScript + regex lexicons | Deterministic, unit-testable, zero cost |
 | Hosting | Vercel | Live demo link, zero-config |
 
-> 📌 **Note:** Gemini models are retired on a fixed schedule; set `GEMINI_MODEL` to change the model without editing code. Model availability should be rechecked before submission.
+> 📌 **Note:** As of 2026-10-18 no shutdown date was listed for gemini-3.5-flash-lite on Google's deprecations page; model availability should be rechecked before use, because Gemini shutdown dates change frequently.
+
 
 ---
 
