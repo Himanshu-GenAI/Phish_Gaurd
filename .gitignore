@@ -45,5 +45,9 @@ voice_data/
 # eval cache and tmp
 eval/cache/*
 !eval/cache/.gitkeep
+eval/cache_smoke/*
+!eval/cache_smoke/.gitkeep
 eval/tmp/
-eval/private/
+eval/private/
+scratch/
+
