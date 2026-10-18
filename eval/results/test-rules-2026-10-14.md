@@ -29,12 +29,31 @@
 
 ---
 
-## 2. Dev-to-Test Gap Analysis
+## 2. Dev-to-Test Gap Analysis & Retraction of Overfitting Finding
 
-AUC fell from 0.8073 on tuned dev to 0.6704 on test, close to the untuned baseline of 0.6624, which indicates that the tuning overfit dev vocabulary; recall differences at n=25 have overlapping intervals:
-- Recall @ Trust < 50: tuned dev 8.6% [2.2%, 22.8%] vs test 0.0% [0.0%, 13.3%] (intervals overlap).
-- Recall @ Trust < 75: tuned dev 40.0% [25.7%, 56.4%] vs test 36.0% [20.2%, 55.5%] (intervals overlap).
-- ROC AUC: tuned dev 0.8073 [0.7081, 0.8936] vs test 0.6704 [0.5256, 0.8084] (1,000 bootstrap resamples, seed 42).
+> **Labelled Correction Note (Post-Hoc Label Correction)**:  
+> Owner items `test-USER-01` through `test-USER-08` were mislabeled as genuine at fill time because `fill-owner-slots.ts` assigned `"genuine"` to all owner slots without inspecting the input file; the owner's private file documents these 8 items as scams (see `eval/dataset/test.label-corrections.json`).  
+> 
+> Under the corrected ground truth labels (33 scam / 17 genuine), rules-only test ROC AUC is **0.8458 [0.7456, 0.9317]** compared to tuned dev **0.8073 [0.7081, 0.8936]**.  
+> **Overfitting can be neither confirmed nor excluded** because the 8 owner scams were written with knowledge of the rules. The earlier hypothesis that the rules overfit dev vocabulary is retracted.
+
+### Corrected Rules-Only Evaluation Table (33 Scam / 17 Genuine)
+
+| Metric | Untuned Baseline (dev) | Tuned Rules (dev) | Sealed Test (25/25) | Corrected Test (33/17) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Recall @ Trust < 50** | 0.0% (0/35) | 8.6% (3/35) [2.2%, 22.8%] | 0.0% (0/25) [0.0%, 13.3%] | **9.1% (3/33) [3.1%, 23.6%]** |
+| **Recall @ Trust < 75** | 0.0% (0/35) | 40.0% (14/35) [25.7%, 56.4%] | 36.0% (9/25) [20.2%, 55.5%] | **39.4% (13/33) [24.7%, 56.3%]** |
+| **False-Positive Rate (<50)** | 0.0% (0/35) | 0.0% (0/35) [0.0%, 9.9%] | 12.0% (3/25) [4.2%, 30.0%] | **0.0% (0/17) [0.0%, 18.4%]** |
+| **False-Positive Rate (<75)** | 0.0% (0/35) | 0.0% (0/35) [0.0%, 9.9%] | 16.0% (4/25) [6.4%, 34.7%] | **0.0% (0/17) [0.0%, 18.4%]** |
+| **Precision @ Trust < 50** | 0.0% | 100.0% [43.8%, 100.0%] | 0.0% [0.0%, 56.2%] | **100.0% [43.8%, 100.0%]** *(precision on a balanced set is not real-world precision)* |
+| **Precision @ Trust < 75** | 0.0% | 100.0% [78.5%, 100.0%] | 69.2% [42.4%, 87.3%] | **100.0% [77.2%, 100.0%]** *(precision on a balanced set is not real-world precision)* |
+| **Specificity @ Trust < 50** | 97.1% (34/35) | 100.0% (35/35) | 88.0% (22/25) | **100.0% (17/17) [81.6%, 100.0%]** |
+| **Specificity @ Trust < 75** | 97.1% (34/35) | 100.0% (35/35) | 84.0% (21/25) | **100.0% (17/17) [81.6%, 100.0%]** |
+| **ROC AUC** | 0.6624 | 0.8073 [0.7081, 0.8936] | 0.6704 [0.5256, 0.8084] | **0.8458 [0.7456, 0.9317]** |
+
+- Recall @ Trust < 50: tuned dev 8.6% [2.2%, 22.8%] vs corrected test 9.1% [3.1%, 23.6%].
+- Recall @ Trust < 75: tuned dev 40.0% [25.7%, 56.4%] vs corrected test 39.4% [24.7%, 56.3%].
+- ROC AUC: tuned dev 0.8073 [0.7081, 0.8936] vs corrected test 0.8458 [0.7456, 0.9317] (1,000 bootstrap resamples, seed 42).
 
 ---
 
@@ -64,13 +83,8 @@ AUC fell from 0.8073 on tuned dev to 0.6704 on test, close to the untuned baseli
 
 *Note: Only 3 test scams are Hinglish, so per-language scam recall is not interpretable.*
 
-### Breakdown by Item Author (Genuine Test Items, Counts Only)
-| Author | Total Genuine | Items Below Trust 75 (FP < 75) | Items Below Trust 50 (FP < 50) |
-| :--- | :--- | :--- | :--- |
-| Assistant | 15 | 0 / 15 (0.0%) | 0 / 15 (0.0%) |
-| Project Owner (`test-USER-*`) | 10 | 4 / 10 (40.0%) | 3 / 10 (30.0%) |
-
-All 4 genuine items below 75 were owner-written items, consistent with the same-author caveat; n is small.
+### Note on Owner-Written Items
+Owner items `test-USER-01` through `test-USER-08` were mislabeled as genuine at fill time; see `eval/dataset/test.label-corrections.json`. Under the corrected ground truth, the genuine test split contains 17 items (`test-026`..`test-040`, `test-USER-09`, `test-USER-10`) with 0 false positives at either threshold.
 
 ### Breakdown by Difficulty
 | Category | Scams (Rec <50) | Scams (Rec <75) | Genuine (FP <50) | Genuine (FP <75) |

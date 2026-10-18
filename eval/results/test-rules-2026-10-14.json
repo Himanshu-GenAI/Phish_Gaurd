@@ -99,17 +99,22 @@
       }
     },
     "byAuthor": {
-      "assistant": {
-        "total": 15,
-        "below75": 0,
-        "below50": 0
-      },
-      "owner": {
-        "total": 10,
-        "below75": 4,
-        "below50": 3
-      },
-      "note": "all 4 genuine items below 75 were owner-written items, consistent with the same-author caveat; n is small."
+      "note": "Owner items test-USER-01 through test-USER-08 were mislabeled at fill time; see eval/dataset/test.label-corrections.json."
+    },
+    "correctionNote": {
+      "text": "Owner items test-USER-01..08 were mislabeled as genuine at fill time. With corrected labels (33 scam / 17 genuine), rules-only test ROC AUC is 0.8458 [0.7456, 0.9317] against tuned dev 0.8073. Overfitting can be neither confirmed nor excluded because the 8 owner scams were written with knowledge of the rules.",
+      "correctedMetrics": {
+        "scamsCount": 33,
+        "genuineCount": 17,
+        "recall50": { "fraction": "3/33", "value": 9.1, "ciLower": 3.1, "ciUpper": 23.6 },
+        "recall75": { "fraction": "13/33", "value": 39.4, "ciLower": 24.7, "ciUpper": 56.3 },
+        "fpRate50": { "fraction": "0/17", "value": 0.0, "ciLower": 0.0, "ciUpper": 18.4 },
+        "fpRate75": { "fraction": "0/17", "value": 0.0, "ciLower": 0.0, "ciUpper": 18.4 },
+        "precision50": { "value": 100.0, "ciLower": 43.8, "ciUpper": 100.0, "note": "precision on a balanced set is not real-world precision" },
+        "precision75": { "value": 100.0, "ciLower": 77.2, "ciUpper": 100.0, "note": "precision on a balanced set is not real-world precision" },
+        "rocAuc": 0.8458,
+        "rocAucCi": [0.7456, 0.9317]
+      }
     },
     "precisionNote": "precision on a balanced set is not real-world precision"
   },
