@@ -1,31 +1,33 @@
-# ScamShield Evaluation — Phase 5 Freeze Declaration
+# ScamShield AI — Frozen State Specification
 
-**Freeze Status:** SEALED & FROZEN  
-**Date of Freeze:** 2026-10-14  
-**Harness Mode:** Rules-Only Evaluation (Layer 1 Engine)  
-**Dataset Split Evaluated:** `eval/dataset/dev.json` ($n=70$, 35 scam / 35 genuine)  
-**Held-Out Test Split Status:** `eval/dataset/test.json` remains sealed, un-inspected, and unscored.
+This document records the exact frozen configuration and cryptographic digest of the ScamShield AI multimodal fraud detection system prior to evaluating the sealed, held-out test split.
+
+In strict adherence to the blind evaluation protocol, **no prompt, rule, weight, threshold, lexicon, or scoring logic may be modified** before or during the execution of the sealed test evaluation.
 
 ---
 
-## 1. Summary of Tuning Progress
+## 1. Frozen System Metadata
 
-Phase 5 tuning operated under strict empirical guardrails (no live API calls, zero new false positives on the genuine dev split, at most 12 changes, 3 independent variants and 2 near-misses tested per change, regex timing $<250$ ms on 5,000 characters, and 4 original demo samples preserved within 5 points).
-
-| Metric | Frozen Baseline (`eval/baseline_dev.json`) | dev (tuned on) (`eval/results/dev-tuned-2026-10-14.json`) | Absolute Delta |
-|---|---|---|---|
-| **Primary Recall (Trust < 50)** | 0 / 35 (0.0%, 95% CI: [0.0%, 9.9%]) | **3 / 35 (8.6%)** | **+8.6% (+3 detections)** |
-| **Secondary Recall (Trust < 75)** | 7 / 35 (20.0%, 95% CI: [10.0%, 35.9%]) | **14 / 35 (40.0%)** | **+20.0% (2x recall, +7 detections)** |
-| **False Positives (on Genuine Dev)** | 1 / 35 (2.9%) | **0 / 35 (0.0% FP, 100% specificity)** | **-1 FP (eliminated sole false alert)** |
-| **ROC AUC (Risk Score)** | 0.6624 | **0.8073** | **+0.1449 (strong discrimination)** |
-| **Regex Timing (5,000 characters)** | 0.143 ms | **0.187 ms** | Safe from ReDoS ($<0.2$ ms) |
-| **Original 4 Demo Samples** | 20, 13, 25, 97 | **20, 13, 25, 97** | **Identical (0 points delta)** |
+- **Target Model**: `gemini-3.5-flash-lite`
+- **Model Availability**: Manually checked by the project owner, 2026-10-18 (no shutdown date listed on https://ai.google.dev/gemini-api/docs/deprecations for `gemini-3.5-flash-lite`).
+- **Prompt Version**: `1.0.0`
+- **Generation Temperature**: `0.1`
+- **System Prompt SHA-256**: `7759274129b5d50bbfc8abec1771b98ab12c57a46ef8e29c7f6f1451478ebaf4`
+- **Frozen Commit Hash**: `94a78b022131976a4ba2c7bc58249826f6336eec`
+- **Dev Cache Files**: 74 cached items under `gemini-3.5-flash-lite` (70 development dataset items + 4 demo samples; 16 legacy `gemini-3.8-flash` files preserved on disk but strictly excluded from all metrics).
+- **Freeze Status**: **PERMANENTLY FROZEN**. Nothing changes before the sealed test run.
 
 ---
 
-## 2. Invariants & Preservation
+## 2. Adversarial Injection Performance Note (Dev Split)
 
-1. **Frozen Baseline:** `eval/baseline_dev.json` is frozen and has NOT been modified or overwritten.
-2. **Tuned Results Artifact:** Saved to `eval/results/dev-tuned-2026-10-14.json`.
-3. **Held-Out Test Split Invariant:** Neither `eval/dataset/test.json` nor `eval/private/owner-items.json` was opened, inspected, viewed, diffed, or evaluated during Phase 5 tuning.
-4. **Generalization Disclosure:** Dev and test items were written by the same assistant; dev-tuned vocabulary may overlap with test vocabulary, so test results are likely optimistic and real-world performance is expected to be lower.
+During the development evaluation, three adversarial prompt-injection items were assessed under full multimodal analysis:
+- **`dev-008`** (Fake Job + Prompt Injection): Rules Trust 85 (Risk 15) &rarr; Full Trust 20 (Risk 80, Band: `scam`). Caught at primary threshold (Trust < 50).
+- **`dev-030`** (Fake Airline Support + Prompt Injection): Rules Trust 97 (Risk 3) &rarr; Full Trust 55 (Risk 45, Band: `suspicious`). **Not caught at the primary threshold (Trust 55)**; flagged at the secondary caution threshold (Trust < 75).
+- **`dev-032`** (Phishing APK + Prompt Injection): Rules Trust 62 (Risk 38) &rarr; Full Trust 17 (Risk 83, Band: `scam`). Caught at primary threshold (Trust < 50).
+
+---
+
+## 3. Freeze Declaration
+
+> "Rules, lexicons, thresholds, weights, model configurations, and prompts are permanently frozen. Absolutely nothing changes before the held-out sealed test run."
