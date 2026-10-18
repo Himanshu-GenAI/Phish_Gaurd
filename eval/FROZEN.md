@@ -13,7 +13,8 @@ In strict adherence to the blind evaluation protocol, **no prompt, rule, weight,
 - **Prompt Version**: `1.0.0`
 - **Generation Temperature**: `0.1`
 - **System Prompt SHA-256**: `7759274129b5d50bbfc8abec1771b98ab12c57a46ef8e29c7f6f1451478ebaf4`
-- **Frozen Commit Hash**: `94a78b022131976a4ba2c7bc58249826f6336eec`
+- **Frozen Commit Hash**: `94a78b040686a82b0e1cd089568e84e36d5d9703`
+
 - **Dev Cache Files**: 74 cached items under `gemini-3.5-flash-lite` (70 development dataset items + 4 demo samples; 16 legacy `gemini-3.8-flash` files preserved on disk but strictly excluded from all metrics).
 - **Freeze Status**: **PERMANENTLY FROZEN**. Nothing changes before the sealed test run.
 
