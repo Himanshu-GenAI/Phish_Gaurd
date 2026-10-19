@@ -1,0 +1,11 @@
+{
+  "aiHits": [
+    {
+      "id": "sig_unsolicited_tech_support",
+      "label": "Unsolicited Technical Support",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "Demands immediate remote assistance setup for screen fixing without prior ticket…"
+    }
+  ]
+}

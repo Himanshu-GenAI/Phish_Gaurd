@@ -1134,7 +1134,8 @@
           "weight": 15
         }
       ],
-      "note": "Benchmark development set; signals: Urgent Action Prompt (20), Suspicious Toll-Free Number (15)"
+      "explanation": "raw risk = rules 0 + AI 35 = 35; risk = clamp(35, 3, 100) = 35; Trust = 65. The 3-point floor applies to the rules-only score (97).",
+      "note": "Benchmark development set; signals: Urgent Action Prompt (20), Suspicious Toll-Free Number (15); raw risk = rules 0 + AI 35 = 35; risk = clamp(35, 3, 100) = 35; Trust = 65. The 3-point floor applies to the rules-only score (97)."
     },
     "testCorrectedGenuine": {
       "total": 17,
@@ -1176,8 +1177,36 @@
           "ciUpper": 25.6
         }
       },
-      "rulesAiBelow75": "v1 with AI: not measured",
-      "flagged": "E-05 at 60, H-01 at 70, E-12 at 70",
+      "rulesAiBelow75": {
+        "fraction": "6/30",
+        "value": 20,
+        "ci": {
+          "value": 20,
+          "ciLower": 9.5,
+          "ciUpper": 37.3
+        }
+      },
+      "rulesOnlyBelow50": {
+        "fraction": "0/30",
+        "value": 0,
+        "ci": {
+          "value": 0,
+          "ciLower": 0,
+          "ciUpper": 11.4
+        }
+      },
+      "rulesAiBelow50": {
+        "fraction": "1/30",
+        "value": 3.3,
+        "ci": {
+          "value": 3.3,
+          "ciLower": 0.6,
+          "ciUpper": 16.7
+        }
+      },
+      "flaggedRulesOnlyBelow75": "E-05 at 60, H-01 at 70, E-12 at 70",
+      "flaggedRulesAiBelow75": "H-01 at 70, H-03 at 65, H-04 at 65, H-10 at 70, E-05 at 40, E-12 at 70",
+      "flaggedRulesAiBelow50": "E-05 at 40",
       "note": "Deliberately seeded stress test; not a false-positive rate"
     },
     "stressTestV2": {

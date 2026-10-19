@@ -14,7 +14,8 @@
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "eval:rules": "tsx eval/run.ts --mode rules",
-    "eval:full": "tsx eval/run.ts --mode full"
+    "eval:full": "tsx eval/run.ts --mode full",
+    "eval:supp": "tsx eval/run-supp.ts"
   },
   "dependencies": {
     "next": "^16.4.0",

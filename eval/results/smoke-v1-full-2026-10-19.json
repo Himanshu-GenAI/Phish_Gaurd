@@ -1,0 +1,529 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "total": 30,
+  "liveCalls": 30,
+  "rulesOnly": {
+    "below75Count": 3,
+    "below50Count": 0,
+    "flaggedBelow75": [
+      {
+        "id": "H-01",
+        "trust": 70,
+        "flags": [
+          "transfer-demand",
+          "urgency"
+        ]
+      },
+      {
+        "id": "E-05",
+        "trust": 60,
+        "flags": [
+          "remote-app",
+          "urgency"
+        ]
+      },
+      {
+        "id": "E-12",
+        "trust": 70,
+        "flags": [
+          "transfer-demand",
+          "urgency"
+        ]
+      }
+    ]
+  },
+  "rulesAi": {
+    "below75Count": 6,
+    "below50Count": 1,
+    "flaggedBelow75": [
+      {
+        "id": "H-01",
+        "trust": 70,
+        "aiSignals": [],
+        "rulesFlags": [
+          "transfer-demand",
+          "urgency"
+        ]
+      },
+      {
+        "id": "H-03",
+        "trust": 65,
+        "aiSignals": [
+          {
+            "label": "Urgent Payment Demand",
+            "weight": 20
+          },
+          {
+            "label": "Informal Cash/Digital Collection Request",
+            "weight": 15
+          }
+        ],
+        "rulesFlags": []
+      },
+      {
+        "id": "H-04",
+        "trust": 65,
+        "aiSignals": [
+          {
+            "label": "Unexpected Delivery Claim",
+            "weight": 15
+          },
+          {
+            "label": "Requesting Personal Information",
+            "weight": 20
+          }
+        ],
+        "rulesFlags": []
+      },
+      {
+        "id": "H-10",
+        "trust": 70,
+        "aiSignals": [
+          {
+            "label": "QR Code Menu Redirect",
+            "weight": 10
+          }
+        ],
+        "rulesFlags": [
+          "pay-upi"
+        ]
+      },
+      {
+        "id": "E-05",
+        "trust": 40,
+        "aiSignals": [
+          {
+            "label": "Unsolicited Technical Support",
+            "weight": 20
+          }
+        ],
+        "rulesFlags": [
+          "remote-app",
+          "urgency"
+        ]
+      },
+      {
+        "id": "E-12",
+        "trust": 70,
+        "aiSignals": [],
+        "rulesFlags": [
+          "transfer-demand",
+          "urgency"
+        ]
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "H-01",
+      "lang": "Hinglish",
+      "rulesTrust": 70,
+      "rulesRisk": 30,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "transfer-demand",
+        "urgency"
+      ],
+      "fullTrust": 70,
+      "fullRisk": 30,
+      "fullBand": "suspicious",
+      "aiSignals": []
+    },
+    {
+      "id": "H-02",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "H-03",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 65,
+      "fullRisk": 35,
+      "fullBand": "suspicious",
+      "aiSignals": [
+        {
+          "label": "Urgent Payment Demand",
+          "weight": 20
+        },
+        {
+          "label": "Informal Cash/Digital Collection Request",
+          "weight": 15
+        }
+      ]
+    },
+    {
+      "id": "H-04",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 65,
+      "fullRisk": 35,
+      "fullBand": "suspicious",
+      "aiSignals": [
+        {
+          "label": "Unexpected Delivery Claim",
+          "weight": 15
+        },
+        {
+          "label": "Requesting Personal Information",
+          "weight": 20
+        }
+      ]
+    },
+    {
+      "id": "H-05",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "H-06",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "H-07",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "H-08",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "H-09",
+      "lang": "Hinglish",
+      "rulesTrust": 85,
+      "rulesRisk": 15,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "urgency"
+      ],
+      "fullTrust": 85,
+      "fullRisk": 15,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "H-10",
+      "lang": "Hinglish",
+      "rulesTrust": 80,
+      "rulesRisk": 20,
+      "rulesBand": "safe",
+      "rulesFlags": [
+        "pay-upi"
+      ],
+      "fullTrust": 70,
+      "fullRisk": 30,
+      "fullBand": "suspicious",
+      "aiSignals": [
+        {
+          "label": "QR Code Menu Redirect",
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "id": "H-11",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "H-12",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "H-13",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 80,
+      "fullRisk": 20,
+      "fullBand": "safe",
+      "aiSignals": [
+        {
+          "label": "Suspicious External Link",
+          "weight": 20
+        }
+      ]
+    },
+    {
+      "id": "H-14",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 85,
+      "fullRisk": 15,
+      "fullBand": "safe",
+      "aiSignals": [
+        {
+          "label": "Demand for Secrecy",
+          "weight": 15
+        }
+      ]
+    },
+    {
+      "id": "H-15",
+      "lang": "Hinglish",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-01",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-02",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-03",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-04",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-05",
+      "lang": "English",
+      "rulesTrust": 60,
+      "rulesRisk": 40,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "remote-app",
+        "urgency"
+      ],
+      "fullTrust": 40,
+      "fullRisk": 60,
+      "fullBand": "high_risk",
+      "aiSignals": [
+        {
+          "label": "Unsolicited Technical Support",
+          "weight": 20
+        }
+      ]
+    },
+    {
+      "id": "E-06",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-07",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-08",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-09",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-10",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-11",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-12",
+      "lang": "English",
+      "rulesTrust": 70,
+      "rulesRisk": 30,
+      "rulesBand": "suspicious",
+      "rulesFlags": [
+        "transfer-demand",
+        "urgency"
+      ],
+      "fullTrust": 70,
+      "fullRisk": 30,
+      "fullBand": "suspicious",
+      "aiSignals": []
+    },
+    {
+      "id": "E-13",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-14",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    },
+    {
+      "id": "E-15",
+      "lang": "English",
+      "rulesTrust": 97,
+      "rulesRisk": 3,
+      "rulesBand": "safe",
+      "rulesFlags": [],
+      "fullTrust": 97,
+      "fullRisk": 3,
+      "fullBand": "safe",
+      "aiSignals": []
+    }
+  ]
+}

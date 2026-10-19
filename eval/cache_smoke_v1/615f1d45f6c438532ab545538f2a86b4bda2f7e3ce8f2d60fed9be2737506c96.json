@@ -1,0 +1,11 @@
+{
+  "aiHits": [
+    {
+      "id": "qr_code_menu_risk",
+      "label": "QR Code Menu Redirect",
+      "category": "ai",
+      "weight": 10,
+      "evidence": "QR code scan karke menu dekh lo at restaurant gate"
+    }
+  ]
+}

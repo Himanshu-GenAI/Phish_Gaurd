@@ -101,3 +101,11 @@ A set of 30 invented everyday messages (15 Hinglish, 15 English) covering routin
 - **Not Attributed to Fallbacks:** This behavior is **not** attributed to degraded fallbacks, as the API call completed and wrote a structured cache entry without throwing service errors.
 - **Metric Exclusion:** All legacy `gemini-3.8-flash` cache entries are **strictly excluded from all evaluation metrics and benchmark reports**. All reported evaluations rely exclusively on fresh `gemini-3.5-flash-lite` cache entries.
 
+---
+
+### 9. Gemini Free-Tier Daily Quota and Observed Limit
+
+- **Empirical Observation:** On 2026-10-18, approximately 157 live API calls were completed on `gemini-3.5-flash-lite` without encountering an HTTP 429 quota exhaustion.
+- **Observed Minimum Daily Limit:** At least 157 requests per day. The true upper daily limit of the free-tier API key is unstated by Google documentation and remains unknown.
+- **Production Implication:** Applications relying on the free tier must maintain graceful degraded fallback mechanisms (pure rules engine) when the daily quota is exhausted.
+

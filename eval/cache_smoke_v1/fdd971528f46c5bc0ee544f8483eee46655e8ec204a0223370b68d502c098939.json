@@ -1,0 +1,11 @@
+{
+  "aiHits": [
+    {
+      "id": "secrecy_coercion",
+      "label": "Demand for Secrecy",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Yeh personal baat hai, confidential rakhna kisi dost ko mat batana."
+    }
+  ]
+}

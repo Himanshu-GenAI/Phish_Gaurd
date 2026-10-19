@@ -1,0 +1,18 @@
+{
+  "aiHits": [
+    {
+      "id": "urgency_demand",
+      "label": "Urgent Payment Demand",
+      "category": "ai",
+      "weight": 20,
+      "evidence": "jama kar dena kal tak"
+    },
+    {
+      "id": "informal_request",
+      "label": "Informal Cash/Digital Collection Request",
+      "category": "ai",
+      "weight": 15,
+      "evidence": "Society office me meter replacement ka maintenance charges 500"
+    }
+  ]
+}
