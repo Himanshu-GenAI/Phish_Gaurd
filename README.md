@@ -104,7 +104,7 @@ Trust = 100 − Risk
 | Layer | What it checks | Why |
 |---|---|---|
 | **1. Rule Engine (18 rules)** | Fees, UPI handles, authority impersonation, urgency, Hinglish keywords | Deterministic, explainable, instant — the backbone |
-| **2. Live Checks (RDAP)** | Domain registration age | Catches fresh scam infrastructure the rules can't see |
+| **2. Live Checks (RDAP)** | Domain registration age | Identifies newly registered domains the rules cannot observe |
 | **3. Gemini (structured JSON)** | Tone, coercion, vagueness, channel mismatch | Evaluates semantic coercion, tone, and context with a strict schema |
 | **🎙️ v2: Voice-note analysis** | Upload audio file (WAV verified; MP3 and OGG/OPUS expected to work, pending live verification; FLAC/AIFF untested) | In-memory multimodal speech-to-text forensics via Gemini `inline_data` |
 
@@ -256,7 +256,7 @@ npm run dev                   # → http://localhost:3000
 | **Assistant-Written Scams** | 25 | 0/25 (0.0%) [0.0%, 13.3%] | 9/25 (36.0%) [20.2%, 55.5%] | **18/25 (72.0%)** [52.4%, 85.7%] | **24/25 (96.0%)** [80.5%, 99.3%] |
 | **Owner-Written Scams** | 8 | 3/8 (37.5%) [13.7%, 69.4%] | 4/8 (50.0%) [21.5%, 78.5%] | **8/8 (100.0%)** [67.6%, 100.0%] | **8/8 (100.0%)** [67.6%, 100.0%] |
 
-> 📌 **Note on Dataset Independence & AI Driver**: The AI layer drives most of the detection: on the corrected test set, rules-only recall is only 3/33 (9.1%) at Trust < 50 and 13/33 (39.4%) at Trust < 75; adding the AI layer increases recall to 26/33 (78.8%) and 32/33 (97.0%). Furthermore, neither the dev nor the test scams are independent of the system: assistant-written items were generated alongside prompt development, and the 8 owner scams were authored with knowledge of the rules (two mirror README demo samples). Performance numbers on messages from the wild may be lower.
+> 📌 **Note on Dataset Independence & AI Driver**: The AI layer drives most of the detection: on the corrected test set, rules-only recall is only 3/33 (9.1%) at Trust < 50 and 13/33 (39.4%) at Trust < 75; adding the AI layer increases recall to 26/33 (78.8%) and 32/33 (97.0%). Furthermore, neither the dev nor the test scams are independent of the system: assistant-written items were written by the same AI assistant that built the system, and the 8 owner scams were authored with knowledge of the rules (two mirror README demo samples). Performance numbers on messages from the wild may be lower.
 
 ### 4. Development Set Tuning Progression (35 Scams / 35 Genuine)
 
@@ -322,7 +322,7 @@ npm run dev                   # → http://localhost:3000
 
 1. **Digital arrest** (Hinglish pressure tactics):
    > "This is Inspector Rajesh Verma, Cyber Cell Mumbai… to avoid digital arrest, transfer ₹2,40,000 to the RBI verification account within 30 minutes. Do not share this with anyone."
-   → 🔴 **Trust 20/100 (Rules) → 0/100 (Rules + AI)** — authority, urgency, secrecy, transfer all flagged with quoted evidence and AI threat forensics.
+   → 🔴 **Trust 20/100 (Rules) → 0/100 (Rules + AI)** — authority, urgency, secrecy, transfer flagged with rule-quoted evidence and AI rationale.
 
 2. **Fake internship** (the student scam):
    > "Selected! ₹5,000/day WFH. Pay ₹499 registration fee via UPI to quickjobs@ybl. Only 2 slots left. HR only on Telegram."
@@ -360,7 +360,7 @@ npm run dev                   # → http://localhost:3000
 |---|---|
 | **Problem & Impact (25%)** | • ₹22,000+ cr fraud wave; "digital arrest" ₹120+ cr in Q1 2024 alone<br>• Protects students AND their parents<br>• Intervenes at the MESSAGE stage, before payment |
 | **Technical Implementation (25%)** | • 18-rule deterministic weighted engine (EN + Hinglish)<br>• Live RDAP domain-age forensics<br>• Gemini structured-JSON (responseSchema), multimodal text + audio<br>• Score fusion with clamp + floor; graceful degradation |
-| **Innovation (20%)** | • Explainable Trust Score — every deduction quoted from user's own text<br>• Live domain-age checks ("registered 6 days ago")<br>• Voice-note analysis with verbatim transcript<br>• Hinglish-first lexicon |
+| **Innovation (20%)** | • Explainable Trust Score — rule deductions quoted with exact evidence, semantic cues explained via AI rationale<br>• Live domain-age checks ("registered 6 days ago")<br>• Voice-note analysis with verbatim transcript<br>• Hinglish-first lexicon |
 | **User Experience (15%)** | • One paste → full verdict; animated gauge<br>• Family mode for non-tech users<br>• Mobile-first verified <CONFIRM_375PX>; zero login |
 | **Feasibility & Scalability (15%)** | • 100% free-tier serverless stack, already deployed on Vercel<br>• Stateless privacy-first design<br>• Roadmap (extension / bot / open API) builds on existing architecture — no re-architecture |
 
