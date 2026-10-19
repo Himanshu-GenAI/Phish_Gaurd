@@ -153,6 +153,7 @@ export interface RunEvaluationOptions {
   pace?: number;
   dailyBudget?: number;
   reserve?: number;
+  corrected?: boolean;
 }
 
 export async function runEvaluation(options: RunEvaluationOptions) {
@@ -199,6 +200,35 @@ export async function runEvaluation(options: RunEvaluationOptions) {
 
   const dataPath = options.split === "test" ? testPath : devPath;
   const rawItems: DatasetItem[] = JSON.parse(readFileSync(dataPath, "utf-8"));
+
+  if (options.split === "test" && options.corrected) {
+    const corrPath = resolve(ROOT, "eval/dataset/test.label-corrections.json");
+    const corrShaPath = resolve(ROOT, "eval/dataset/test.label-corrections.sha256");
+    if (!existsSync(corrPath) || !existsSync(corrShaPath)) {
+      console.error("\n[GATE ERROR] test.label-corrections.json or its sha256 file missing!\n");
+      process.exit(1);
+    }
+    const expectedCorrHash = readFileSync(corrShaPath, "utf-8").trim().split(/\s+/)[0];
+    const actualCorrHash = createHash("sha256").update(readFileSync(corrPath)).digest("hex");
+    if (expectedCorrHash !== actualCorrHash) {
+      console.error(
+        `\n[GATE ERROR] Checksum mismatch for test.label-corrections.json!\nExpected: ${expectedCorrHash}\nActual:   ${actualCorrHash}\n`
+      );
+      process.exit(1);
+    }
+    const corrections: Array<{ id: string; corrected_label: "scam" | "genuine"; corrected_scam_type: string }> = JSON.parse(
+      readFileSync(corrPath, "utf-8")
+    );
+    const corrMap = new Map(corrections.map((c) => [c.id, c]));
+    for (const item of rawItems) {
+      const c = corrMap.get(item.id);
+      if (c) {
+        item.label = c.corrected_label;
+        item.scam_type = c.corrected_scam_type;
+      }
+    }
+    console.log(`[INFO] Applied label corrections from test.label-corrections.json (${corrections.length} items).`);
+  }
 
   let emptyOwnerSlotsCount = 0;
   const items: DatasetItem[] = [];
@@ -272,7 +302,17 @@ export async function runEvaluation(options: RunEvaluationOptions) {
       const key = getCacheKey(GEMINI_MODEL, PROMPT_VERSION, item.text);
       const cacheFile = resolve(cacheDirectory, `${key}.json`);
 
-      let cachedResponse: { aiHits?: RuleHit[]; domainResults?: DomainCheck[] } | null = null;
+      let cachedResponse: {
+        model?: string;
+        promptVersion?: string;
+        cachedAt?: string;
+        rawSignalCount?: number;
+        keptSignalCount?: number;
+        scam_type?: string;
+        aiHits?: RuleHit[];
+        domainResults?: DomainCheck[];
+        [key: string]: unknown;
+      } | null = null;
       if (existsSync(cacheFile)) {
         cachedResponse = JSON.parse(readFileSync(cacheFile, "utf-8"));
         cacheHitsCount++;
@@ -359,8 +399,8 @@ export async function runEvaluation(options: RunEvaluationOptions) {
 
       const tFull0 = performance.now();
       const fullRes = analyzeText(item.text, {
-        aiHits: cachedResponse.aiHits ?? [],
-        domainResults: cachedResponse.domainResults ?? [],
+        aiHits: cachedResponse?.aiHits ?? [],
+        domainResults: cachedResponse?.domainResults ?? [],
       });
       const tFull1 = performance.now();
       const fullDurationMs = Number((tFull1 - tFull0).toFixed(4));
@@ -380,7 +420,7 @@ export async function runEvaluation(options: RunEvaluationOptions) {
         flags: fullRes.flags.map((f) => f.id),
         predPrimary: fullRes.trust < 50 ? "scam" : "genuine",
         predSecondary: fullRes.trust < 75 ? "scam" : "genuine",
-        aiHits: cachedResponse.aiHits ?? [],
+        aiHits: cachedResponse?.aiHits ?? [],
         aiRiskContribution: fullRes.breakdown.ai ?? 0,
         fullDurationMs,
       });
@@ -435,7 +475,14 @@ export async function runEvaluation(options: RunEvaluationOptions) {
       const key = getCacheKey(GEMINI_MODEL, PROMPT_VERSION, sample.text);
       const cacheFile = resolve(cacheDirectory, `${key}.json`);
 
-      let cachedResponse: { aiHits?: RuleHit[]; domainResults?: DomainCheck[] } | null = null;
+      let cachedResponse: {
+        model?: string;
+        promptVersion?: string;
+        cachedAt?: string;
+        aiHits?: RuleHit[];
+        domainResults?: DomainCheck[];
+        [key: string]: unknown;
+      } | null = null;
       let cached = false;
       if (existsSync(cacheFile)) {
         cachedResponse = JSON.parse(readFileSync(cacheFile, "utf-8"));
@@ -876,7 +923,10 @@ export async function runEvaluation(options: RunEvaluationOptions) {
   // Preserve test rules writing if split === "test"
   if (options.split === "test" && options.mode === "rules") {
     mkdirSync(resolve(ROOT, "eval/results"), { recursive: true });
-    const jsonPath = resolve(ROOT, "eval/results/test-rules-2026-10-14.json");
+    const isCorrected = options.corrected;
+    const jsonPath = isCorrected
+      ? resolve(ROOT, "eval/results/test-rules-corrected.json")
+      : resolve(ROOT, "eval/results/test-rules-2026-10-14.json");
     const mdPath = resolve(ROOT, "eval/results/test-rules-2026-10-14.md");
 
     const testSha = readFileSync(shaPath, "utf-8").trim().split(/\s+/)[0];
@@ -884,14 +934,21 @@ export async function runEvaluation(options: RunEvaluationOptions) {
     const jsonContent = {
       split: "test",
       mode: options.mode,
-      evalDate: "2026-10-14",
+      corrected: !!isCorrected,
+      evalDate: isCorrected ? new Date().toISOString().split("T")[0] : "2026-10-14",
       testSha256: testSha,
       evaluatedCount: items.length,
+      scamsCount: totalScams,
+      genuineCount: totalGenuine,
       metrics: {
         recall50: `${primary.tp}/${totalScams} (${primary.rec.value}%)`,
         recall75: `${secondary.tp}/${totalScams} (${secondary.rec.value}%)`,
         fpCount: `${primary.fp}/${totalGenuine} (${(100 - primary.spec.value).toFixed(1)}%)`,
         rocAuc: fullRocAucBootstrap.point,
+        recall50Val: primary.rec.value,
+        recall75Val: secondary.rec.value,
+        fpRate50Val: Number((100 - primary.spec.value).toFixed(1)),
+        fpRate75Val: Number((100 - secondary.spec.value).toFixed(1)),
       },
       primary,
       secondary,
@@ -909,6 +966,10 @@ export async function runEvaluation(options: RunEvaluationOptions) {
     };
 
     writeFileSync(jsonPath, JSON.stringify(jsonContent, null, 2) + "\n", "utf-8");
+    console.log(`[TEST RULES COMPLETE] Saved: ${jsonPath}`);
+    if (isCorrected) {
+      return jsonContent;
+    }
 
     const falsePositives = results.filter((r) => r.item.label === "genuine" && r.predPrimary === "scam");
     const falseNegatives = results.filter((r) => r.item.label === "scam" && r.predPrimary === "genuine");
@@ -1004,6 +1065,7 @@ if (process.argv[1]?.endsWith("run.ts")) {
   const modeArg = args.find((a, i) => args[i - 1] === "--mode") || "rules";
   const final = args.includes("--final");
   const live = args.includes("--live");
+  const corrected = args.includes("--corrected");
   const maxCallsIdx = args.indexOf("--max-calls");
   const maxCalls = maxCallsIdx !== -1 && args[maxCallsIdx + 1] ? parseInt(args[maxCallsIdx + 1], 10) : 250;
   const paceIdx = args.indexOf("--pace");
@@ -1022,6 +1084,7 @@ if (process.argv[1]?.endsWith("run.ts")) {
     pace,
     dailyBudget,
     reserve,
+    corrected,
   }).catch((err) => {
     console.error("Evaluation run failed:", err);
     process.exit(1);

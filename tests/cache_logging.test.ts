@@ -18,7 +18,7 @@ describe("Cache Logging Invariance & Re-fusing Verification", () => {
 
   it("proves analyzeText is invariant to additional logging metadata in cache object", () => {
     const text = "Please transfer money urgently";
-    const baseHits = [{ id: "test", label: "Test", weight: 20, category: "ai" }];
+    const baseHits = [{ id: "test", label: "Test", weight: 20, category: "ai", evidence: "" }];
 
     const withoutExtra = analyzeText(text, { aiHits: baseHits, domainResults: [] });
     // Same call with extra logging metadata

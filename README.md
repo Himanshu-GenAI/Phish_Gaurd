@@ -8,10 +8,11 @@ Every scam message has a pattern.
 
 > 🎙️ **v2 (built during HACKDAY 1.0):** Voice-note analysis — upload audio file (WAV is the only verified format; MP3 and OGG/OPUS expected to work, pending live verification; FLAC and AIFF untested; AAC removed pending live verification), get a transcript + Trust Score.
 
-**Paste any suspicious message → Get a Trust Score with evidence-quoted red flags, scam classification, and a family-friendly Hinglish explainer**
+**Paste any suspicious message → Get a Trust Score with evidence-quoted red flags (or AI rationale), scam classification, and a family-friendly Hinglish explainer**
 
-[Live Demo](<PASTE_VERCEL_URL>) · [GitHub Repo](https://github.com/Himanshu-GenAI/Hackday-1.0) · [Issues](https://github.com/Himanshu-GenAI/Hackday-1.0/issues) · [How It Works](#-how-the-trust-score-works--the-innovation) · [Try the Samples](#-judges-90-second-demo)
+[Live Demo](<PASTE_VERCEL_URL>) · [GitHub Repo](https://github.com/Himanshu-GenAI/Phish_Gaurd) · [Issues](https://github.com/Himanshu-GenAI/Phish_Gaurd/issues) · [How It Works](#-how-the-trust-score-works--the-innovation) · [Evaluation](#-benchmark-evaluation--empirical-results) · [Try the Samples](#-judges-90-second-demo)
 
+[![CI](https://github.com/Himanshu-GenAI/Phish_Gaurd/actions/workflows/ci.yml/badge.svg)](https://github.com/Himanshu-GenAI/Phish_Gaurd/actions/workflows/ci.yml)
 ![HACKDAY 1.0](https://img.shields.io/badge/HACKDAY_1.0-Tech_for_a_Better_Tomorrow-22C55E)
 ![Next.js](https://img.shields.io/badge/Next.js-App_Router-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript)
@@ -36,7 +37,8 @@ The tomorrow we're building is one where a parent hangs up on a "digital arrest"
 [Our Solution](#-our-solution) · [How the Trust Score Works](#-how-the-trust-score-works--the-innovation) ·
 [Scam Taxonomy](#-scam-taxonomy-we-detect) · [Architecture](#️-architecture) ·
 [Tech Stack](#️-tech-stack---why) · [Getting Started](#-getting-started) ·
-[Limitations](#-limitations) · [Judge's 90-Second Demo](#-judges-90-second-demo) · [Roadmap](#️-roadmap) ·
+[Benchmark Evaluation](#-benchmark-evaluation--empirical-results) · [Judge's 90-Second Demo](#-judges-90-second-demo) ·
+[Roadmap](#️-roadmap) · [Limitations](#-limitations) ·
 [Evaluation Criteria](#-hackday-10--evaluation-criteria-mapping-weighted) · [Sources](#-research-sources)
 
 ---
@@ -74,7 +76,7 @@ India is in the middle of its largest cyber-fraud wave:
 ## 💡 Our Solution
 
 1. **🧭 Trust Score (0–100)** — one glance tells you if it's safe
-2. **🚩 Explainable red flags** — every deduction shown *with the exact evidence quoted from your message*
+2. **🚩 Explainable red flags** — every deduction shown with exact quotes from your message for rules, or AI rationale for semantic cues
 3. **🧬 Scam-type classification** — digital arrest, fake internship, task scam, investment group, and more
 4. **✅ "What to do next"** — concrete steps, incl. reporting via **1930** / cybercrime.gov.in / Chakshu
 5. **👨‍👩‍👧 Family mode** — a forwardable, jargon-free Hinglish explainer for parents
@@ -103,7 +105,7 @@ Trust = 100 − Risk
 |---|---|---|
 | **1. Rule Engine (18 rules)** | Fees, UPI handles, authority impersonation, urgency, Hinglish keywords | Deterministic, explainable, instant — the backbone |
 | **2. Live Checks (RDAP)** | Domain registration age | Catches fresh scam infrastructure the rules can't see |
-| **3. Gemini (structured JSON)** | Tone, coercion, vagueness, channel mismatch | Evaluates semantic coercion, tone, and context with a strict schema (empirical contribution pending live measurement) |
+| **3. Gemini (structured JSON)** | Tone, coercion, vagueness, channel mismatch | Evaluates semantic coercion, tone, and context with a strict schema |
 | **🎙️ v2: Voice-note analysis** | Upload audio file (WAV verified; MP3 and OGG/OPUS expected to work, pending live verification; FLAC/AIFF untested) | In-memory multimodal speech-to-text forensics via Gemini `inline_data` |
 
 **Why a hybrid design:** deterministic rules provide instant, reproducible baseline explainability; foundation models add semantic understanding for evasive text; and live infrastructure checks detect newly registered domains — fusing deductions with traceable evidence rather than relying solely on a single mechanism.
@@ -165,7 +167,7 @@ flowchart TD
     D --> G["Score Fusion\nTrust = 100 − clamped risk"]
     E --> G
     F --> G
-    G --> H["UI: animated gauge · evidence-quoted flags\nnext steps · family note"]
+    G --> H["UI: animated gauge · evidence-quoted flags and AI rationale\nnext steps · family note"]
 ```
 
 > Privacy by design: stateless pipeline — message text and voice notes are analyzed in memory and discarded without persistence in app databases or local storage. Text and audio payloads are transmitted to Google's Gemini API for processing via REST and multimodal `inline_data`.
@@ -191,8 +193,8 @@ flowchart TD
 ## 🚀 Getting Started
 
 ```bash
-git clone https://github.com/Himanshu-GenAI/Hackday-1.0.git
-cd Hackday-1.0
+git clone https://github.com/Himanshu-GenAI/Phish_Gaurd.git
+cd Phish_Gaurd
 npm install
 cp .env.example .env.local   # add your GEMINI_API_KEY (free: aistudio.google.com)
 npm run dev                   # → http://localhost:3000
@@ -213,35 +215,125 @@ npm run dev                   # → http://localhost:3000
 
 ---
 
+---
+
+## 📊 Benchmark Evaluation & Empirical Results
+
+<!-- EVAL-TABLES-START -->
+
+### 1. Held-Out Test Evaluation — Corrected Ground Truth (33 Scams / 17 Genuine)
+
+> ⚠️ **Post-Hoc Label Correction**: Owner-item labels (`test-USER-01` through `test-USER-08`) were mislabeled as genuine at fill time by `fill-owner-slots.ts` and corrected to scam post-hoc based on project owner notes written before the sealed run (documented in [eval/dataset/test.label-corrections.json](eval/dataset/test.label-corrections.json)). Both corrected and as-sealed tables are reported.
+
+| Metric | Rules-Only (Corrected) | Rules + AI (Corrected) | Absolute Delta | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| **Recall @ Trust < 50** | 3/33 (9.1%) [3.1%, 23.6%] | **26/33 (78.8%)** [62.2%, 89.3%] | **+69.7%** | Primary high-confidence threshold |
+| **Recall @ Trust < 75** | 13/33 (39.4%) [24.7%, 56.3%] | **32/33 (97.0%)** [84.7%, 99.5%] | **+57.6%** | Secondary caution screening threshold |
+| **False-Positive Rate (<50)** | 0/17 (0.0%) [0.0%, 18.4%] | **0/17 (0.0%)** [0.0%, 18.4%] | **0.0%** | Zero false alarms on genuine items |
+| **False-Positive Rate (<75)** | 0/17 (0.0%) [0.0%, 18.4%] | **0/17 (0.0%)** [0.0%, 18.4%] | **0.0%** | Zero false alarms at caution |
+| **Precision @ Trust < 50** | 100.0% [43.8%, 100.0%] | **100.0%** [87.1%, 100.0%] | 0.0% | *(precision on a balanced/curated set is not real-world precision)* |
+| **Precision @ Trust < 75** | 100.0% [77.2%, 100.0%] | **100.0%** [89.3%, 100.0%] | 0.0% | *(precision on a balanced/curated set is not real-world precision)* |
+| **Specificity @ Trust < 50** | 100.0% [81.6%, 100.0%] | **100.0%** [81.6%, 100.0%] | 0.0% | True negative rate |
+| **Accuracy @ Trust < 50** | 40.0% [27.6%, 53.8%] | **86.0%** [73.8%, 93.0%] | **+46.0%** | Binary classification accuracy |
+| **ROC AUC (1,000 bootstrap CI)** | 0.8458 [0.7456, 0.9317] | **0.9955** [0.9803, 1.0000] | **+0.1497** | Bootstrap seed 42 |
+
+### 2. Sealed Held-Out Test Set Evaluation (As-Sealed, 25 Scams / 25 Genuine)
+
+> *Evaluation recorded prior to post-hoc label correction ([eval/results/test-full-2026-10-18.json](eval/results/test-full-2026-10-18.json)).*
+
+| Metric | Rules-Only (Sealed) | Rules + AI (Sealed) | Absolute Delta | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| **Recall @ Trust < 50** | 0/25 (0.0%) [0.0%, 13.3%] | **18/25 (72.0%)** [52.4%, 85.7%] | **+72.0%** | Primary threshold |
+| **Recall @ Trust < 75** | 9/25 (36.0%) [20.2%, 55.5%] | **24/25 (96.0%)** [80.5%, 99.3%] | **+60.0%** | Caution threshold |
+| **False-Positive Rate (<50)** | 3/25 (12.0%) [4.2%, 30.0%] | **8/25 (32.0%)** [17.2%, 51.6%] | +20.0% | 8 mislabeled owner scams counted as genuine |
+| **False-Positive Rate (<75)** | 4/25 (16.0%) [6.4%, 34.7%] | **8/25 (32.0%)** [17.2%, 51.6%] | +16.0% | 8 mislabeled owner scams counted as genuine |
+| **ROC AUC (1,000 bootstrap CI)** | 0.6704 [0.5256, 0.8084] | **0.7560** [0.5974, 0.8908] | **+0.0856** | Bootstrap seed 42 |
+
+### 3. By-Author Scam Recall Breakdown (Corrected Test Split)
+
+| Author Group | Total Scams | Rules-Only (<50) | Rules-Only (<75) | Rules + AI (<50) | Rules + AI (<75) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Assistant-Written Scams** | 25 | 0/25 (0.0%) [0.0%, 13.3%] | 9/25 (36.0%) [20.2%, 55.5%] | **18/25 (72.0%)** [52.4%, 85.7%] | **24/25 (96.0%)** [80.5%, 99.3%] |
+| **Owner-Written Scams** | 8 | 3/8 (37.5%) [13.7%, 69.4%] | 4/8 (50.0%) [21.5%, 78.5%] | **8/8 (100.0%)** [67.6%, 100.0%] | **8/8 (100.0%)** [67.6%, 100.0%] |
+
+> 📌 **Note on Dataset Independence & AI Driver**: The AI layer drives most of the detection: on the corrected test set, rules-only recall is only 3/33 (9.1%) at Trust < 50 and 13/33 (39.4%) at Trust < 75; adding the AI layer increases recall to 26/33 (78.8%) and 32/33 (97.0%). Furthermore, neither the dev nor the test scams are independent of the system: assistant-written items were generated alongside prompt development, and the 8 owner scams were authored with knowledge of the rules (two mirror README demo samples). Performance numbers on messages from the wild may be lower.
+
+### 4. Development Set Tuning Progression (35 Scams / 35 Genuine)
+
+| Metric | Untuned Baseline Rules ([eval/baseline_dev.json](eval/baseline_dev.json)) | Tuned Rules ([eval/results/dev-tuned-2026-10-14.json](eval/results/dev-tuned-2026-10-14.json)) | Rules + AI Full Mode ([eval/results/dev-full-2026-10-18.json](eval/results/dev-full-2026-10-18.json)) |
+| :--- | :--- | :--- | :--- |
+| **Recall @ Trust < 50** | 0/35 (0.0%) [0.0%, 9.9%] | 3/35 (8.6%) [3.0%, 22.4%] | **25/35 (71.4%)** [54.9%, 83.7%] |
+| **Recall @ Trust < 75** | 7/35 (20.0%) [10.0%, 35.9%] | 14/35 (40.0%) [25.6%, 56.4%] | **35/35 (100.0%)** [90.1%, 100.0%] |
+| **False-Positive Rate (<50)** | 1/35 (2.9%) [0.5%, 14.5%] | 0/35 (0.0%) [0.0%, 9.9%] | **0/35 (0.0%)** [0.0%, 9.9%] |
+| **False-Positive Rate (<75)** | 1/35 (2.9%) [0.5%, 14.5%] | 0/35 (0.0%) [0.0%, 9.9%] | **1/35 (2.9%)** [0.5%, 14.5%] |
+| **ROC AUC** | 0.6624 | 0.8073 [0.7081, 0.8936] | **0.9988** [0.9950, 1.0000] |
+
+### 5. Development vs. Held-Out Test Comparison
+
+| Metric | Dev Split (35/35) | Sealed Test Split (25/25) | Corrected Test Split (33/17) |
+| :--- | :--- | :--- | :--- |
+| **Rules Recall @ Trust < 50** | 3/35 (8.6%) | 0/25 (0.0%) | 3/33 (9.1%) |
+| **Rules Recall @ Trust < 75** | 14/35 (40.0%) | 9/25 (36.0%) | 13/33 (39.4%) |
+| **Rules FP Rate (<75)** | 0/35 (0.0%) | 4/25 (16.0%)* | 0/17 (0.0%) |
+| **Rules ROC AUC** | 0.8073 | 0.6704* | 0.8458 |
+| **Rules + AI Recall @ Trust < 50** | 25/35 (71.4%) | 18/25 (72.0%) | 26/33 (78.8%) |
+| **Rules + AI Recall @ Trust < 75** | 35/35 (100.0%) | 24/25 (96.0%) | 32/33 (97.0%) |
+| **Rules + AI FP Rate (<75)** | 1/35 (2.9%) | 8/25 (32.0%)* | 0/17 (0.0%) |
+| **Rules + AI ROC AUC** | 0.9988 | 0.7560* | 0.9955 |
+
+**Sealed test FP and AUC were impacted by 8 owner-written scams initially labeled as genuine.*
+
+### 6. Deliberately Seeded Stress Tests (Genuine Edge Cases)
+
+> ⚠️ **Evaluation Protocol**: Described strictly as deliberately seeded stress tests on challenging genuine edge cases (urgent family requests, maintenance dues, remote-desktop IT troubleshooting, and courier queries). These counts must not be pooled or described as general false-positive rates.
+
+| Stress Test Corpus | Items | Rules-Only (<75) | Rules-Only (<50) | Rules + AI (<75) | Rules + AI (<50) | Results File | Key Failure Modes / Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Stress Test v1** | 30 | 3/30 (10.0%) | 0/30 (0.0%) | 6/30 (20.0%) | 1/30 (3.3%) | [eval/results/smoke-v1-full-2026-10-19.json](eval/results/smoke-v1-full-2026-10-19.json) | Flagged below 50: `E-05` (legitimate IT support request to install AnyDesk for router issue, Trust 40). Flagged below 75: urgent fund transfers (`H-01`, `E-12`), maintenance dues (`H-03`), society notice (`H-14`), laptop repair (`E-06`). |
+| **Stress Test v2** | 30 | 0/30 (0.0%) | 0/30 (0.0%) | 2/30 (6.7%) | 0/30 (0.0%) | [eval/results/smoke-full-2026-10-18.json](eval/results/smoke-full-2026-10-18.json) | Flagged below 75: `H-03` (society meter charges, Trust 70), `H-04` (sweets delivery boy pin code, Trust 65). Zero flagged below 50. |
+
+> **Failure Modes**: The AI layer and the deterministic rules both raise suspicion on legitimate urgent, money-related, or remote-support messages. When messages contain phrases like *"install AnyDesk"*, *"transfer fund urgently"*, or *"maintenance charges 500"*, risk scoring increases even on benign communication.
+
+### 7. Measured One-Click Demo Sample Scores
+
+| Sample | Ground Truth | Rules Only (Degraded Mode) | With AI (Full Mode) | Risk Band | AI Threat Signals |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Digital arrest** | scam | **20 / 100** | **0 / 100** | 🔴 Scam | 2 signals: Law Enforcement Impersonation (+25), Time-pressure demand (+25) |
+| **Fake internship** | scam | **13 / 100** | **0 / 100** | 🔴 Scam | 3 signals: Telegram-only HR (+20), Upfront registration fee (+25), Exaggerated earnings (+20) |
+| **Investment group** | scam | **25 / 100** | **0 / 100** | 🔴 Scam | 3 signals: Guaranteed daily returns (+25), Advance tax demand (+20), Secret group trading (+15) |
+| **Genuine offer** | genuine | **97 / 100** | **97 / 100** | 🟢 Safe | 0 signals: Legitimacy signals reduce risk to floor of 3 (Trust 97) |
+
+<!-- EVAL-TABLES-END -->
+
+---
+
 ## 🧪 Judge's 90-Second Demo
 
-> ⚠️ **Evaluation Caveat:** The four sample texts below were authored during initial rule construction to test specific pattern triggers. They reflect idealized textbook examples and are **not representative** of the variety and evasiveness of real-world Indian messaging scams. For rigorous benchmark numbers on a held-out dataset, see [Measured Limitations](#️-limitations) and [eval/baseline_dev.json](eval/baseline_dev.json).
+> ⚠️ **Evaluation Caveat:** The four sample texts below were authored during initial rule construction to test specific pattern triggers. They reflect idealized textbook examples and are **not representative** of the variety and evasiveness of real-world Indian messaging scams. For rigorous benchmark numbers on held-out and development datasets, see [Benchmark Evaluation](#-benchmark-evaluation--empirical-results) above.
 
 ### Empirical Sample Scores (Measured)
 
-| Sample | Rules Only (Degraded Mode) | With AI (Live) | Risk Band | Notes |
+| Sample | Rules Only (Degraded Mode) | With AI (Live / Cached) | Risk Band | Notes |
 |---|---|---|---|---|
-| **Digital arrest** | **20 / 100** | Pending re-measure | 🔴 Scam | 5 matching rules (risk 80: authority, kyc-threat, transfer, urgency, secrecy). |
-| **Fake internship** | **13 / 100** | Pending re-measure | 🔴 Scam | Rules risk 87. AI-layer contribution not yet measured. |
-| **Investment group** | **25 / 100** | Pending re-measure | 🟠 High risk* | Rules risk 75. *\*Sits right at the boundary of the High Risk band (Trust 25).* |
-| **Genuine offer** | **97 / 100** | Pending re-measure | 🟢 Safe | Legitimacy signals reduce risk to floor of 3 (Trust 97). Mock-verified with AI; live AI pending re-measure. |
-
-> *Note on Sample Scores:* These four sample scores were produced against early development test samples. They demonstrate individual rule mechanics but do not represent performance on evasive in-the-wild messages.
+| **Digital arrest** | **20 / 100** | **0 / 100** | 🔴 Scam | 5 matching rules (authority, kyc-threat, transfer, urgency, secrecy). AI adds Law Enforcement Impersonation (+25) and Time-pressure demand (+25). |
+| **Fake internship** | **13 / 100** | **0 / 100** | 🔴 Scam | Rules risk 87. AI adds Telegram-only HR (+20), Upfront registration fee (+25), Exaggerated earnings (+20). |
+| **Investment group** | **25 / 100** | **0 / 100** | 🔴 Scam | Rules risk 75. AI adds Guaranteed daily returns (+25), Advance tax demand (+20), Secret group trading (+15). |
+| **Genuine offer** | **97 / 100** | **97 / 100** | 🟢 Safe | Legitimacy signals reduce risk to floor of 3 (Trust 97). 0 AI threat signals. |
 
 1. **Digital arrest** (Hinglish pressure tactics):
    > "This is Inspector Rajesh Verma, Cyber Cell Mumbai… to avoid digital arrest, transfer ₹2,40,000 to the RBI verification account within 30 minutes. Do not share this with anyone."
-   → 🔴 **Trust 20/100** — authority, urgency, secrecy, transfer all flagged with quoted evidence.
+   → 🔴 **Trust 20/100 (Rules) → 0/100 (Rules + AI)** — authority, urgency, secrecy, transfer all flagged with quoted evidence and AI threat forensics.
 
 2. **Fake internship** (the student scam):
    > "Selected! ₹5,000/day WFH. Pay ₹499 registration fee via UPI to quickjobs@ybl. Only 2 slots left. HR only on Telegram."
-   → 🔴 **Trust 13/100** (rules-only; live AI pending re-measure) — fee, personal UPI, false urgency, channel mismatch, salary mismatch.
+   → 🔴 **Trust 13/100 (Rules) → 0/100 (Rules + AI)** — fee, personal UPI, false urgency, channel mismatch, salary mismatch.
 
 3. **Investment group**:
    > Guaranteed returns, upfront fee, personal UPI handle.
-   → 🟠 **Trust 25/100** — sits at the edge of the High risk band.
+   → 🔴 **Trust 25/100 (Rules) → 0/100 (Rules + AI)** — high risk under rules, pushed to maximum risk by AI layer.
 
 4. **Genuine offer** →
-   🟢 **Trust 97/100** with green legitimacy signals (no-fee, formal interview, corporate email; mock-verified with AI, live AI pending re-measure; not a live API result).
+   🟢 **Trust 97/100** with green legitimacy signals (no-fee, formal interview, corporate email; verified under rules and multimodal AI layer).
 
 5. **The live moment:** paste any link from your spam folder → "Domain registered 6 days ago."
 
@@ -276,7 +368,7 @@ npm run dev                   # → http://localhost:3000
 
 ## 😤 Challenges & Learnings
 
-- **LLM inconsistency:** identical messages scored differently across runs → solved with `responseSchema` structured output + deterministic rules as the backbone.
+- **LLM inconsistency:** outputs vary across runs → mitigated with `responseSchema` structured output + deterministic rules as the backbone.
 - **Hinglish is its own language:** English lexicons miss "registration fee do" → built a custom Hinglish lexicon.
 - **False positives destroy trust:** legitimacy signals (no-fee, formal process, corporate domain) are weighted against risk rules so genuine offers stay green.
 
@@ -297,16 +389,18 @@ npm run dev                   # → http://localhost:3000
 
 ## ⚠️ Limitations
 
-- **Measured Empirical Baseline Limitations:** On the blind development evaluation split (`eval/dataset/dev.json`, n = 70, evaluated via `eval/run.ts`, data recorded in [`eval/baseline_dev.json`](eval/baseline_dev.json)):
-  - **Rules-only Recall at Trust < 50 (primary warning boundary, at the pre-specified threshold, before tuning):** 0 / 35 (0.0%, 95% CI: [0.0%, 9.9%]) ([eval/baseline_dev.json](eval/baseline_dev.json)).
-  - **Rules-only Recall at Trust < 75 (secondary screening boundary, before tuning):** 7 / 35 (20.0%, 95% CI: [10.0%, 35.9%]) ([eval/baseline_dev.json](eval/baseline_dev.json)).
-  - **False Positives (before tuning):** 1 / 35 (2.9%, specificity 97.1%, 95% CI: [85.5%, 99.5%]) ([eval/baseline_dev.json](eval/baseline_dev.json)).
-  - **Threshold-Free Discrimination (ROC AUC on Risk Score, before tuning):** 0.6624 ([eval/baseline_dev.json](eval/baseline_dev.json)).
-  *Note on Demo Samples:* The four sample texts in the 90-second demo were authored during initial rule construction to test specific pattern triggers. They reflect idealized textbook examples and are **not representative** of the variety and evasiveness of real-world Indian messaging scams.
+- **Measured Empirical Benchmark Progression:** On held-out test and dev splits (see [Benchmark Evaluation](#-benchmark-evaluation--empirical-results) for full paired tables):
+  - **Rules-only Recall at Trust < 50 (before tuning):** 0 / 35 (0.0%, 95% CI: [0.0%, 9.9%]) on dev; 3 / 33 (9.1%, 95% CI: [3.1%, 23.6%]) on corrected test.
+  - **Rules + AI Full Mode Recall at Trust < 50:** 25 / 35 (71.4%, 95% CI: [54.9%, 83.7%]) on dev; 26 / 33 (78.8%, 95% CI: [62.2%, 89.3%]) on corrected test.
+  - **Rules + AI Full Mode Recall at Trust < 75:** 35 / 35 (100.0%, 95% CI: [90.1%, 100.0%]) on dev; 32 / 33 (97.0%, 95% CI: [84.7%, 99.5%]) on corrected test.
+- **Thin Genuine Sample Size (Test Split):** The held-out test set contains 17 genuine items, yielding a 95% Wilson confidence upper bound of 18.4% on the false-positive rate (0/17 observed false alarms, 95% CI: [0.0%, 18.4%]).
+- **Supplementary Evaluation Sets:** Supplementary genuine and real-scam sets: not run (files not provided). The runner is preserved at [`eval/run-supp.ts`](eval/run-supp.ts) (executable via `npm run eval:supp`), supporting dataset dry-run verification.
+- **`dev-036` Scoring Mechanics:** On dev item `dev-036`, raw risk = rules 0 + AI 35 = 35; risk = clamp(35, 3, 100) = 35; Trust = 65. The 3-point floor applies to the rules-only score (97).
+- **Deliberately Seeded Stress Tests & Failure Modes:** Stress tests v1 ([`eval/results/smoke-v1-full-2026-10-19.json`](eval/results/smoke-v1-full-2026-10-19.json)) and v2 ([`eval/results/smoke-full-2026-10-18.json`](eval/results/smoke-full-2026-10-18.json)) evaluate difficult edge cases. The AI layer and the rules both raise suspicion on legitimate urgent, money-related, or remote-support messages (such as installing AnyDesk for router troubleshooting, urgent UPI transfers to relatives, or apartment maintenance dues).
 - **Adversarial & Evasive Text:** Novel scam phrasing or heavily obfuscated characters may evade regex keywords and rely solely on the LLM layer.
 - **API Rate Limits & Quotas:** The free Gemini tier enforces a quota of ~20 requests per day per project/model (and 5 requests/minute). Under high traffic, text requests gracefully degrade to rules-only mode, and voice requests report service busy. For a public demo or sustained testing, active billing or a spare API key is required.
 - **Audio Verification & Transcription Status:** WAV is currently the only live-verified audio format. MP3 and OGG/OPUS are expected to work, pending live verification (AAC has been removed; FLAC and AIFF are untested). Romanized-Hinglish transcription prompt instructions and the `speech_detected` gating are mock-verified only, pending live quota verification.
-- **Genuine Sample Scoring Status:** The genuine sample result (`raw_risk: -19`, `risk: 3`, `trust: 97` with `degraded: []`) is verified deterministically for rules and mock AI injection. It is pending live quota re-measure with Gemini and must not be described as a live API result.
+- **Genuine Sample Scoring Status:** The genuine sample result (`raw_risk: -19`, `risk: 3`, `trust: 97` with `degraded: []`) was verified with deterministic rules and live Gemini analysis (`gemini-3.5-flash-lite`, cached under `eval/cache/`), with zero AI threat signals and risk clamped to the 3-point floor.
 - **Audio Hallucination on Silence & Very-Short Speech Limitation:** Audio foundation models can invent text for pure digital silence or background static; during empirical testing with 0-amplitude audio, hallucinated text ("Can you hear me?") was observed before speech-presence gating. Consequently, audio clips containing fewer than 5 Unicode letters and combining marks (e.g. monosyllabic words like "Hi", "And", "No", "Bye") deliberately trigger the no-speech guard (`noSpeech: true`) by design to prevent acting on noise hallucinations.
 - **Audio File Size Constraints:** Audio uploads are limited to 3 MB raw file size due to Vercel serverless request body constraints (~4.5 MB request limit with base64 encoding).
 - **Domain Age Registry Coverage:** RDAP queries depend on authoritative TLD registry availability; unsupported or rate-limited TLDs produce no domain-age signal.
@@ -331,7 +425,7 @@ ScamShield is a risk-assistance and educational tool, not a legal authority. A h
 
 ## 🐛 Issues
 
-Report issues and feature requests: [https://github.com/Himanshu-GenAI/Hackday-1.0/issues](https://github.com/Himanshu-GenAI/Hackday-1.0/issues)
+Report issues and feature requests: [https://github.com/Himanshu-GenAI/Phish_Gaurd/issues](https://github.com/Himanshu-GenAI/Phish_Gaurd/issues)
 
 ---
 

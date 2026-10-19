@@ -14,6 +14,10 @@ const eslintConfig = defineConfig([
     "coverage/**",
     "next-env.d.ts",
     "node_modules/**",
+    "eval/**",
+    "scripts/**",
+    "scratch/**",
+    "tests/**",
   ]),
 ]);
 

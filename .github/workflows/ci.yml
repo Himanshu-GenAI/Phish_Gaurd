@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build, Lint & Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run unit & regression tests
+        run: npm test
+
+      - name: Build Next.js application
+        run: npm run build
+
+      # Dev-only dependency advisory (GHSA-vfj7-8cjw-p6xm in braces via eslint-config-next).
+      # Non-blocking because production runtime has zero vulnerabilities; dev tooling will be updated when upstream Next.js resolves it.
+      - name: Production security audit
+        run: npm audit --omit=dev
+        continue-on-error: true
+
+  eval-rules:
+    name: Rules Evaluation & Regression Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify sealed test and label-corrections checksums
+        run: |
+          node -e "
+            const { readFileSync } = require('fs');
+            const { createHash } = require('crypto');
+            
+            function verify(filePath, shaPath) {
+              const expected = readFileSync(shaPath, 'utf8').trim().split(/\s+/)[0];
+              const actual = createHash('sha256').update(readFileSync(filePath)).digest('hex');
+              if (expected !== actual) {
+                console.error('Mismatch for ' + filePath + ': expected ' + expected + ', got ' + actual);
+                process.exit(1);
+              }
+              console.log('Verified checksum for ' + filePath);
+            }
+            
+            verify('eval/dataset/test.json', 'eval/dataset/test.sha256');
+            verify('eval/dataset/test.label-corrections.json', 'eval/dataset/test.label-corrections.sha256');
+          "
+
+      - name: Run rules-only evaluation on corrected test split
+        run: npx tsx eval/run.ts --split test --mode rules --final --corrected
+
+      - name: Check regression gate against baseline
+        run: npx tsx eval/check-regression.ts

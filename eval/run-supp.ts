@@ -3,7 +3,8 @@ import { resolve } from "path";
 import { createHash } from "crypto";
 import { loadEnvConfig } from "@next/env";
 import { runRules } from "../lib/rules/engine";
-import { analyzeWithGemini, geminiSignalsToHits, GEMINI_MODEL, RuleHit, GeminiServiceError } from "../lib/ai/gemini";
+import type { RuleHit } from "../lib/rules/types";
+import { analyzeWithGemini, geminiSignalsToHits, GEMINI_MODEL, GeminiServiceError } from "../lib/ai/gemini";
 import { analyzeText } from "../lib/analyze/pipeline";
 import { wilsonScoreInterval, bootstrapRocAuc } from "./run";
 

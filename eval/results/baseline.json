@@ -1,0 +1,700 @@
+{
+  "split": "test",
+  "mode": "rules",
+  "corrected": true,
+  "evalDate": "2026-10-19",
+  "testSha256": "409b0a0cc207a55b922c39249d951ea0dd56ec8bd51b7cdcb0f1b5633874290c",
+  "evaluatedCount": 50,
+  "scamsCount": 33,
+  "genuineCount": 17,
+  "metrics": {
+    "recall50": "3/33 (9.1%)",
+    "recall75": "13/33 (39.4%)",
+    "fpCount": "0/17 (0.0%)",
+    "rocAuc": 0.8458,
+    "recall50Val": 9.1,
+    "recall75Val": 39.4,
+    "fpRate50Val": 0,
+    "fpRate75Val": 0
+  },
+  "primary": {
+    "tp": 3,
+    "fp": 0,
+    "tn": 17,
+    "fn": 30,
+    "prec": {
+      "value": 100,
+      "ciLower": 43.8,
+      "ciUpper": 100
+    },
+    "rec": {
+      "value": 9.1,
+      "ciLower": 3.1,
+      "ciUpper": 23.6
+    },
+    "spec": {
+      "value": 100,
+      "ciLower": 81.6,
+      "ciUpper": 100
+    },
+    "acc": {
+      "value": 40,
+      "ciLower": 27.6,
+      "ciUpper": 53.8
+    },
+    "f1": 0.1667
+  },
+  "secondary": {
+    "tp": 13,
+    "fp": 0,
+    "tn": 17,
+    "fn": 20,
+    "prec": {
+      "value": 100,
+      "ciLower": 77.2,
+      "ciUpper": 100
+    },
+    "rec": {
+      "value": 39.4,
+      "ciLower": 24.7,
+      "ciUpper": 56.3
+    },
+    "spec": {
+      "value": 100,
+      "ciLower": 81.6,
+      "ciUpper": 100
+    },
+    "acc": {
+      "value": 60,
+      "ciLower": 46.2,
+      "ciUpper": 72.4
+    },
+    "f1": 0.5652
+  },
+  "evaluated": [
+    {
+      "id": "test-001",
+      "label": "scam",
+      "scam_type": "digital_arrest",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "flags": [
+        "authority"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-002",
+      "label": "scam",
+      "scam_type": "digital_arrest",
+      "trust": 67,
+      "risk": 33,
+      "band": "suspicious",
+      "flags": [
+        "kyc-threat",
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-003",
+      "label": "scam",
+      "scam_type": "fake_job",
+      "trust": 55,
+      "risk": 45,
+      "band": "suspicious",
+      "flags": [
+        "fee",
+        "pay-upi"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-004",
+      "label": "scam",
+      "scam_type": "fake_job",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-005",
+      "label": "scam",
+      "scam_type": "fake_job",
+      "trust": 73,
+      "risk": 27,
+      "band": "suspicious",
+      "flags": [
+        "channel-mismatch",
+        "too-good-job"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-006",
+      "label": "scam",
+      "scam_type": "task_prepayment",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-007",
+      "label": "scam",
+      "scam_type": "task_prepayment",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-008",
+      "label": "scam",
+      "scam_type": "investment",
+      "trust": 65,
+      "risk": 35,
+      "band": "suspicious",
+      "flags": [
+        "pay-upi",
+        "guaranteed"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-009",
+      "label": "scam",
+      "scam_type": "investment",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-010",
+      "label": "scam",
+      "scam_type": "kyc_utility_courier",
+      "trust": 67,
+      "risk": 33,
+      "band": "suspicious",
+      "flags": [
+        "kyc-threat",
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-011",
+      "label": "scam",
+      "scam_type": "kyc_utility_courier",
+      "trust": 62,
+      "risk": 38,
+      "band": "suspicious",
+      "flags": [
+        "authority",
+        "kyc-threat"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-012",
+      "label": "scam",
+      "scam_type": "upi_collect",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "flags": [
+        "pay-upi"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-013",
+      "label": "scam",
+      "scam_type": "upi_collect",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-014",
+      "label": "scam",
+      "scam_type": "loan_app",
+      "trust": 65,
+      "risk": 35,
+      "band": "suspicious",
+      "flags": [
+        "apk",
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-015",
+      "label": "scam",
+      "scam_type": "loan_app",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "flags": [
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-016",
+      "label": "scam",
+      "scam_type": "voice_clone_emergency",
+      "trust": 65,
+      "risk": 35,
+      "band": "suspicious",
+      "flags": [
+        "pay-upi",
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-017",
+      "label": "scam",
+      "scam_type": "voice_clone_emergency",
+      "trust": 73,
+      "risk": 27,
+      "band": "suspicious",
+      "flags": [
+        "urgency",
+        "secrecy"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-018",
+      "label": "scam",
+      "scam_type": "fake_customer_care",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-019",
+      "label": "scam",
+      "scam_type": "fake_customer_care",
+      "trust": 75,
+      "risk": 25,
+      "band": "safe",
+      "flags": [
+        "remote-app"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-020",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "flags": [
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-021",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "flags": [
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-022",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "flags": [
+        "authority"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-023",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "flags": [
+        "apk"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-024",
+      "label": "scam",
+      "scam_type": "kyc_utility_courier",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-025",
+      "label": "scam",
+      "scam_type": "loan_app",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "flags": [
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-026",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-027",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "flags": [
+        "authority"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-028",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-029",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-030",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-031",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-032",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-033",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-034",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-035",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-036",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-037",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-038",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-039",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-040",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [
+        "corporate-email"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-USER-01",
+      "label": "scam",
+      "scam_type": "digital_arrest",
+      "trust": 48,
+      "risk": 52,
+      "band": "high_risk",
+      "flags": [
+        "pay-upi",
+        "authority",
+        "secrecy"
+      ],
+      "predPrimary": "scam",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-USER-02",
+      "label": "scam",
+      "scam_type": "fake_job",
+      "trust": 25,
+      "risk": 75,
+      "band": "high_risk",
+      "flags": [
+        "fee",
+        "pay-upi",
+        "urgency",
+        "guaranteed"
+      ],
+      "predPrimary": "scam",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-USER-03",
+      "label": "scam",
+      "scam_type": "task_prepayment",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "flags": [
+        "pay-upi"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-USER-04",
+      "label": "scam",
+      "scam_type": "investment",
+      "trust": 40,
+      "risk": 60,
+      "band": "high_risk",
+      "flags": [
+        "fee",
+        "pay-upi",
+        "guaranteed"
+      ],
+      "predPrimary": "scam",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-USER-05",
+      "label": "scam",
+      "scam_type": "kyc_utility_courier",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "flags": [
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-USER-06",
+      "label": "scam",
+      "scam_type": "loan_app",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-USER-07",
+      "label": "scam",
+      "scam_type": "voice_clone_emergency",
+      "trust": 80,
+      "risk": 20,
+      "band": "safe",
+      "flags": [
+        "pay-upi"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-USER-08",
+      "label": "scam",
+      "scam_type": "phishing_apk",
+      "trust": 71,
+      "risk": 29,
+      "band": "suspicious",
+      "flags": [
+        "pay-upi",
+        "urgency",
+        "formal-process"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "scam"
+    },
+    {
+      "id": "test-USER-09",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 85,
+      "risk": 15,
+      "band": "safe",
+      "flags": [
+        "urgency"
+      ],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    },
+    {
+      "id": "test-USER-10",
+      "label": "genuine",
+      "scam_type": "none",
+      "trust": 97,
+      "risk": 3,
+      "band": "safe",
+      "flags": [],
+      "predPrimary": "genuine",
+      "predSecondary": "genuine"
+    }
+  ]
+}

@@ -35,9 +35,16 @@ export default function FlagCard({ flag, index }: FlagCardProps) {
         )}
       </div>
       {flag.evidence && (
-        <p className="text-xs text-slate-400 italic pl-1">
-          &ldquo;{flag.evidence}&rdquo;
-        </p>
+        flag.category === "ai" ? (
+          <p className="text-xs text-slate-400 italic pl-1">
+            <span className="not-italic font-semibold text-slate-400">AI rationale: </span>
+            {flag.evidence}
+          </p>
+        ) : (
+          <p className="text-xs text-slate-400 italic pl-1">
+            &ldquo;{flag.evidence}&rdquo;
+          </p>
+        )
       )}
     </div>
   );
