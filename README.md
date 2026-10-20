@@ -298,12 +298,48 @@ npm run dev                   # → http://localhost:3000
 
 | Sample | Ground Truth | Rules Only (Degraded Mode) | With AI (Full Mode) | Risk Band | AI Threat Signals |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Digital arrest** | scam | **20 / 100** | **0 / 100** | 🔴 Scam | 2 signals: Law Enforcement Impersonation (+25), Time-pressure demand (+25) |
-| **Fake internship** | scam | **13 / 100** | **0 / 100** | 🔴 Scam | 3 signals: Telegram-only HR (+20), Upfront registration fee (+25), Exaggerated earnings (+20) |
-| **Investment group** | scam | **25 / 100** | **0 / 100** | 🔴 Scam | 3 signals: Guaranteed daily returns (+25), Advance tax demand (+20), Secret group trading (+15) |
+| **Digital arrest** | scam | **20 / 100** | **0 / 100** | 🔴 Scam | 2 signals: Fear Tactic / Coercion (+25), Demand for Secrecy (+20) |
+| **Fake internship** | scam | **13 / 100** | **0 / 100** | 🔴 Scam | 3 signals: External Messaging App (+20), Unrealistic Earnings (+25), Upfront Payment Demand (+25) |
+| **Investment group** | scam | **25 / 100** | **0 / 100** | 🔴 Scam | 3 signals: Guaranteed daily profit claims (+25), Artificial time pressure (+20), Upfront payment demand via UPI (+20) |
 | **Genuine offer** | genuine | **97 / 100** | **97 / 100** | 🟢 Safe | 0 signals: Legitimacy signals reduce risk to floor of 3 (Trust 97) |
 
 <!-- EVAL-TABLES-END -->
+
+### 8. How to Verify the Numbers
+
+Every evaluation metric in this report can be verified independently and offline without making live API calls:
+
+1. **Verify dataset checksums**:
+   ```bash
+   node -e "
+     const { readFileSync } = require('fs');
+     const { createHash } = require('crypto');
+     const check = (f, s) => {
+       const exp = readFileSync(s, 'utf8').trim().split(/\\s+/)[0];
+       const act = createHash('sha256').update(readFileSync(f)).digest('hex');
+       if (exp !== act) throw new Error('Mismatch on ' + f);
+       console.log('OK: ' + f + ' matches ' + s);
+     };
+     check('eval/dataset/test.json', 'eval/dataset/test.sha256');
+     check('eval/dataset/test.label-corrections.json', 'eval/dataset/test.label-corrections.sha256');
+   "
+   ```
+
+2. **Run test suite**:
+   ```bash
+   npm test
+   ```
+
+3. **Run rules-only evaluation on the corrected test split**:
+   ```bash
+   npm run eval:rules -- --split test --final --corrected
+   ```
+
+4. **Run full-mode evaluation with committed cache (100% offline, zero API keys or network required)**:
+   ```bash
+   npm run eval:full -- --split test --final --corrected
+   ```
+   *(All 50 test items and 4 demo samples resolve from committed cache hits in `eval/cache/`; no `GEMINI_API_KEY` and no network connectivity are needed.)*
 
 ---
 
@@ -315,9 +351,9 @@ npm run dev                   # → http://localhost:3000
 
 | Sample | Rules Only (Degraded Mode) | With AI (Live / Cached) | Risk Band | Notes |
 |---|---|---|---|---|
-| **Digital arrest** | **20 / 100** | **0 / 100** | 🔴 Scam | 5 matching rules (authority, kyc-threat, transfer, urgency, secrecy). AI adds Law Enforcement Impersonation (+25) and Time-pressure demand (+25). |
-| **Fake internship** | **13 / 100** | **0 / 100** | 🔴 Scam | Rules risk 87. AI adds Telegram-only HR (+20), Upfront registration fee (+25), Exaggerated earnings (+20). |
-| **Investment group** | **25 / 100** | **0 / 100** | 🔴 Scam | Rules risk 75. AI adds Guaranteed daily returns (+25), Advance tax demand (+20), Secret group trading (+15). |
+| **Digital arrest** | **20 / 100** | **0 / 100** | 🔴 Scam | 5 matching rules (authority, kyc-threat, transfer, urgency, secrecy). AI adds Fear Tactic / Coercion (+25) and Demand for Secrecy (+20). |
+| **Fake internship** | **13 / 100** | **0 / 100** | 🔴 Scam | Rules risk 87. AI adds External Messaging App (+20), Unrealistic Earnings (+25), Upfront Payment Demand (+25). |
+| **Investment group** | **25 / 100** | **0 / 100** | 🔴 Scam | Rules risk 75. AI adds Guaranteed daily profit claims (+25), Artificial time pressure (+20), Upfront payment demand via UPI (+20). |
 | **Genuine offer** | **97 / 100** | **97 / 100** | 🟢 Safe | Legitimacy signals reduce risk to floor of 3 (Trust 97). 0 AI threat signals. |
 
 1. **Digital arrest** (Hinglish pressure tactics):

@@ -38,6 +38,10 @@ jobs:
         run: npm audit --omit=dev
         continue-on-error: true
 
+      - name: Type-check evaluation scripts and tests
+        run: npx tsc --noEmit -p tsconfig.eval.json
+        continue-on-error: true
+
   eval-rules:
     name: Rules Evaluation & Regression Gate
     runs-on: ubuntu-latest

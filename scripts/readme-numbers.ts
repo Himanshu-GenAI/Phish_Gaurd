@@ -102,9 +102,9 @@ export function generateReadmeEvaluationMarkdown(): string {
 
 | Sample | Ground Truth | Rules Only (Degraded Mode) | With AI (Full Mode) | Risk Band | AI Threat Signals |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Digital arrest** | scam | **20 / 100** | **0 / 100** | 🔴 Scam | 2 signals: Law Enforcement Impersonation (+25), Time-pressure demand (+25) |
-| **Fake internship** | scam | **13 / 100** | **0 / 100** | 🔴 Scam | 3 signals: Telegram-only HR (+20), Upfront registration fee (+25), Exaggerated earnings (+20) |
-| **Investment group** | scam | **25 / 100** | **0 / 100** | 🔴 Scam | 3 signals: Guaranteed daily returns (+25), Advance tax demand (+20), Secret group trading (+15) |
+| **Digital arrest** | scam | **20 / 100** | **0 / 100** | 🔴 Scam | 2 signals: Fear Tactic / Coercion (+25), Demand for Secrecy (+20) |
+| **Fake internship** | scam | **13 / 100** | **0 / 100** | 🔴 Scam | 3 signals: External Messaging App (+20), Unrealistic Earnings (+25), Upfront Payment Demand (+25) |
+| **Investment group** | scam | **25 / 100** | **0 / 100** | 🔴 Scam | 3 signals: Guaranteed daily profit claims (+25), Artificial time pressure (+20), Upfront payment demand via UPI (+20) |
 | **Genuine offer** | genuine | **97 / 100** | **97 / 100** | 🟢 Safe | 0 signals: Legitimacy signals reduce risk to floor of 3 (Trust 97) |`;
 
   return md;
