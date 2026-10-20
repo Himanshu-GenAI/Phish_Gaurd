@@ -1,608 +1,486 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { SAMPLES } from "@/lib/samples";
-import ScoreGauge from "@/components/ScoreGauge";
-import FlagCard from "@/components/FlagCard";
-import StepsCard from "@/components/StepsCard";
-import FamilyNote from "@/components/FamilyNote";
-import TranscriptCard from "@/components/TranscriptCard";
-import type { RuleHit } from "@/lib/rules/types";
+import { useCallback, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  AlertTriangle,
+  AudioLines,
+  FileAudio,
+  Loader2,
+  MessageSquare,
+  Mic,
+  Search,
+  ShieldCheck,
+  Text as TextIcon,
+  X,
+} from "lucide-react";
 
-interface AnalysisResult {
-  trust: number | null;
-  band: string | null;
-  scam_type: string;
-  flags: RuleHit[];
-  verdict: string;
-  next_steps: string[];
-  family_note: string;
+import { CORPUS, SAMPLE_CHIP_IDS, type Channel } from "@/lib/scam/corpus";
+import { PatternCard } from "@/components/scam/pattern-card";
+import { ResultView } from "@/components/scam/result-view";
+import type { AnalyzeResult, VerdictBand, FlagLayer, ScamFlag } from "@/lib/scam/types";
+
+type Tab = "text" | "voice";
+type FeedFilter = "all" | Channel;
+
+const SAMPLES = SAMPLE_CHIP_IDS.map((id) => CORPUS.find((c) => c.id === id)!).filter(Boolean);
+
+const CHANNEL_FILTERS: { id: FeedFilter; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "whatsapp", label: "WhatsApp" },
+  { id: "sms", label: "SMS" },
+  { id: "email", label: "Email" },
+];
+
+interface ApiFlag {
+  id?: string;
+  label?: string;
+  category?: string;
+  weight?: number;
+  evidence?: string;
+  reason?: string;
+}
+
+interface ApiResponse {
+  trust?: number;
+  band?: string;
+  scam_type?: string;
+  flags?: ApiFlag[];
+  verdict?: string;
+  family_note?: string;
   transcript?: string;
   degraded?: string[];
   noSpeech?: boolean;
   message?: string;
-  entities: { upi: string[]; amounts: string[] };
+  entities?: {
+    upi?: string[];
+    amounts?: string[];
+  };
   breakdown?: {
-    rules: number;
-    rdap: number;
-    ai: number;
-    raw_risk: number;
-    risk: number;
-    degraded: string[];
+    rules?: number;
+    rdap?: number;
+    ai?: number;
+    raw_risk?: number;
+    risk?: number;
+    degraded?: string[];
   };
 }
 
-const BAND_LABELS: Record<string, string> = {
-  safe: "Likely Genuine",
-  suspicious: "Suspicious",
-  high_risk: "High Risk",
-  scam: "Almost Certainly a Scam",
-};
+function mapToAnalyzeResult(d: ApiResponse, latencyMs = 0): AnalyzeResult {
+  const trust = typeof d.trust === "number" ? d.trust : 50;
 
-const BAND_COLORS: Record<string, string> = {
-  safe: "text-green-500",
-  suspicious: "text-yellow-500",
-  high_risk: "text-orange-500",
-  scam: "text-red-500",
-};
+  const bandMap: Record<string, VerdictBand> = {
+    safe: "genuine",
+    suspicious: "suspicious",
+    high_risk: "risky",
+    scam: "scam",
+  };
+  const band: VerdictBand =
+    (d.band && bandMap[d.band]) || (trust >= 75 ? "genuine" : trust >= 50 ? "suspicious" : trust >= 25 ? "risky" : "scam");
+
+  const flags: ScamFlag[] = (d.flags ?? []).map((f: ApiFlag) => {
+    let layer: FlagLayer = "rules";
+    if (f.category === "ai") layer = "ai";
+    else if (f.category === "rdap") layer = "live";
+
+    return {
+      layer,
+      id: f.id || "flag",
+      label: f.label || "Flag",
+      weight: typeof f.weight === "number" ? f.weight : 0,
+      evidence: f.evidence || "",
+      reason: f.reason,
+    };
+  });
+
+  return {
+    trustScore: trust,
+    riskScore: 100 - trust,
+    band,
+    scamType: d.scam_type && d.scam_type !== "unknown" && d.scam_type !== "none" ? d.scam_type : null,
+    flags,
+    entities: {
+      urls: [],
+      upiHandles: Array.isArray(d.entities?.upi) ? d.entities.upi : [],
+      amounts: Array.isArray(d.entities?.amounts) ? d.entities.amounts : [],
+      emails: [],
+    },
+    breakdown: {
+      rules: d.breakdown?.rules ?? 0,
+      live: d.breakdown?.rdap ?? 0,
+      ai: d.breakdown?.ai ?? 0,
+    },
+    aiAvailable: !(d.degraded ?? []).includes("ai-analysis"),
+    transcript: d.transcript || null,
+    familyNote: d.family_note || d.verdict || "",
+    latencyMs,
+  };
+}
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"text" | "audio">("text");
+  const [tab, setTab] = useState<Tab>("text");
   const [text, setText] = useState("");
-  const [audioFile, setAudioFile] = useState<File | null>(null);
-  const [audioBase64, setAudioBase64] = useState<string | null>(null);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileB64, setFileB64] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [result, setResult] = useState<AnalyzeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<FeedFilter>("all");
 
-  const handleFileSelect = (file: File | undefined) => {
-    setError(null);
-    if (!file) return;
+  const resultRef = useRef<HTMLDivElement>(null);
 
-    // Validate type matching supported formats: WAV is verified; MP3 and OGG/OPUS are expected to work, pending live verification; AIFF and FLAC untested
-    const validTypes = [
-      "audio/ogg",
-      "audio/oga",
-      "audio/opus",
-      "audio/mp3",
-      "audio/mpeg",
-      "audio/wav",
-      "audio/wave",
-      "audio/x-wav",
-      "audio/aiff",
-      "audio/x-aiff",
-      "audio/flac",
-      "audio/x-flac",
-    ];
-    const ext = file.name.split(".").pop()?.toLowerCase();
-    const validExts = ["ogg", "oga", "opus", "mp3", "wav", "aiff", "flac"];
+  const analyze = useCallback(
+    async (textOverride?: string, audioB64Override?: string | null) => {
+      setError(null);
+      const t = (textOverride ?? text).trim();
+      const audio = audioB64Override ?? (tab === "voice" ? fileB64 : null);
 
-    if (
-      !validTypes.includes(file.type) &&
-      (!ext || !validExts.includes(ext))
-    ) {
-      setError(
-        "Please upload a supported audio format: WAV is verified; MP3 and OGG/OPUS are expected to work, pending live verification (AIFF and FLAC untested)."
-      );
-      return;
-    }
-
-    // Validate size: 3 MB limit (Vercel payload constraint)
-    const maxBytes = 3 * 1024 * 1024;
-    if (file.size > maxBytes) {
-      setError(
-        `File is too large (${(file.size / (1024 * 1024)).toFixed(1)} MB). Maximum audio file size is 3 MB (Vercel serverless request limit is ~4.5 MB, and base64 encoding adds ~33%).`
-      );
-      return;
-    }
-
-    setAudioFile(file);
-    if (audioUrl) {
-      URL.revokeObjectURL(audioUrl);
-    }
-    setAudioUrl(URL.createObjectURL(file));
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const res = reader.result as string;
-      const base64 = res.includes("base64,") ? res.split("base64,")[1] : res;
-      setAudioBase64(base64);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const removeAudio = () => {
-    setAudioFile(null);
-    setAudioBase64(null);
-    if (audioUrl) {
-      URL.revokeObjectURL(audioUrl);
-      setAudioUrl(null);
-    }
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const analyze = async () => {
-    if (activeTab === "text" && !text.trim()) return;
-    if (activeTab === "audio" && !audioBase64) return;
-
-    setLoading(true);
-    setResult(null);
-    setError(null);
-
-    try {
-      const payload =
-        activeTab === "audio"
-          ? {
-              audio: audioBase64,
-              mimeType: audioFile?.type || "audio/ogg",
-            }
-          : { text };
-
-      const res = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setError(data.error ?? "Analysis failed");
+      if (!t && !audio) {
+        setError("Paste a suspicious message first — or switch to the voice tab.");
         return;
       }
+      if (loading) return;
 
-      const data: AnalysisResult = await res.json();
-      setResult(data);
-    } catch {
-      setError("Network error — please try again.");
-    } finally {
-      setLoading(false);
-    }
+      setLoading(true);
+      setResult(null);
+      try {
+        const t0 = performance.now();
+        const payload =
+          audio && !t
+            ? { audio: audio, mimeType: file?.type || "audio/wav" }
+            : { text: t };
+
+        const res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error || "Analysis failed.");
+
+        if (data.noSpeech) {
+          setError(data.message || "No intelligible speech detected in the audio file.");
+          return;
+        }
+
+        const mapped = mapToAnalyzeResult(data, Math.round(performance.now() - t0));
+        setResult(mapped);
+        setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Something went wrong. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [text, tab, file, fileB64, loading]
+  );
+
+  const runSample = useCallback(
+    (sampleText: string) => {
+      setTab("text");
+      setText(sampleText);
+      analyze(sampleText, null);
+    },
+    [analyze]
+  );
+
+  const onPickFile = (f: File | null) => {
+    setFile(f);
+    setFileB64(null);
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = String(reader.result ?? "");
+      setFileB64(dataUrl.includes(",") ? dataUrl.split(",")[1] : null);
+    };
+    reader.readAsDataURL(f);
   };
 
-  const loadSample = (sampleText: string) => {
-    setActiveTab("text");
-    setText(sampleText);
-    setResult(null);
-    setError(null);
-    textareaRef.current?.focus();
-  };
-
-  const riskFlags = result?.flags.filter((f) => f.weight > 0) ?? [];
-  const legitimacyFlags = result?.flags.filter((f) => f.weight < 0) ?? [];
+  const filtered = CORPUS.filter((c) => {
+    if (filter !== "all" && c.channel !== filter) return false;
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return (
+      c.scamType.toLowerCase().includes(q) ||
+      c.signals.toLowerCase().includes(q) ||
+      c.text.toLowerCase().includes(q)
+    );
+  });
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 relative overflow-x-hidden">
-      {/* Violet glow background */}
-      <div
-        className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] opacity-20"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(124,58,237,0.5) 0%, transparent 70%)",
-        }}
-      />
+    <div className="flex min-h-screen flex-col bg-[#FAF8F5] text-neutral-900">
+      {/* ── Sticky header ─────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-40 border-b border-black/5 bg-[#FAF8F5]/80 backdrop-blur-md">
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
+          <a href="#" className="flex items-center gap-2.5" aria-label="ScamShield AI home">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-red-600">
+              <ShieldCheck className="h-5 w-5 text-white" aria-hidden />
+            </span>
+            <span className="text-lg font-extrabold tracking-tight">ScamShield</span>
+            <span className="rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+              AI
+            </span>
+          </a>
+          <a
+            href="tel:1930"
+            className="inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700"
+          >
+            <AlertTriangle className="h-4 w-4" aria-hidden />
+            Scammed? Call 1930
+          </a>
+        </div>
+      </header>
 
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-10">
-        {/* ── Header ──────────────────────────────────────────── */}
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold tracking-tight mb-2">
-            🛡️ ScamShield
-          </h1>
-          <p className="text-slate-400 text-base mb-3">
-            Paste any suspicious message. Get an explainable Trust Score.
-          </p>
-          <span className="inline-flex items-center gap-1.5 text-xs text-slate-500 bg-slate-900 border border-slate-800 rounded-full px-3 py-1">
-            Explainable AI · Privacy-first · Not persisted by the app
+      <main className="flex-1">
+        {/* ── Hero ────────────────────────────────────────────────────── */}
+        <section className="mx-auto w-full max-w-3xl px-4 pt-12 text-center md:pt-16">
+          <span className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white px-4 py-1.5 text-xs font-semibold text-neutral-600 shadow-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
+            Real-time fraud forensics · India-first · Privacy by design
           </span>
-        </header>
+          <h1 className="mt-5 text-4xl font-extrabold leading-[1.08] tracking-tight md:text-[3.4rem]">
+            Every scam has a pattern.
+            <br />
+            Paste it. Get the <span className="text-red-600">verdict.</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-neutral-500 md:text-base">
+            A fraud analyst in everyone&apos;s pocket — one paste away. Explainable Trust Score with every red flag
+            quoted from <em>your own message</em>. Nothing stored, ever.
+          </p>
+        </section>
 
-        {/* ── Sample chips ────────────────────────────────────── */}
-        <div className="flex flex-wrap gap-2 justify-center mb-6">
-          {SAMPLES.map((s) => (
-            <button
-              key={s.label}
-              onClick={() => loadSample(s.text)}
-              className="text-xs px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-400 transition-colors cursor-pointer"
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
+        {/* ── Analyze panel ───────────────────────────────────────────── */}
+        <section className="mx-auto mt-8 w-full max-w-3xl px-4" aria-label="Analyze a message">
+          <div className="rounded-[32px] border border-black/[0.04] bg-white p-4 shadow-[0_6px_28px_rgba(0,0,0,0.07)] md:p-5">
+            <div className="flex items-center justify-center gap-1 rounded-full bg-neutral-100 p-1 md:inline-flex">
+              {(
+                [
+                  { id: "text", label: "Paste message", icon: TextIcon },
+                  { id: "voice", label: "Voice note", icon: Mic },
+                ] as const
+              ).map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setTab(id)}
+                  aria-pressed={tab === id}
+                  className={`inline-flex flex-1 items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition-all md:flex-none ${
+                    tab === id ? "bg-white text-neutral-900 shadow-sm" : "text-neutral-500 hover:text-neutral-800"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" aria-hidden />
+                  {label}
+                </button>
+              ))}
+            </div>
 
-        {/* ── Segmented Tab Control ───────────────────────────── */}
-        <div
-          role="tablist"
-          aria-label="Input mode"
-          className="flex p-1 bg-slate-900 border border-slate-800 rounded-xl mb-4 w-full max-w-xs mx-auto"
-        >
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === "text"}
-            onClick={() => setActiveTab("text")}
-            className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center ${
-              activeTab === "text"
-                ? "bg-violet-600 text-white shadow-sm"
-                : "text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            📝 Paste text
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === "audio"}
-            onClick={() => setActiveTab("audio")}
-            className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center ${
-              activeTab === "audio"
-                ? "bg-violet-600 text-white shadow-sm"
-                : "text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            🎙️ Voice note
-          </button>
-        </div>
-
-        {/* ── Input card ──────────────────────────────────────── */}
-        <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 mb-6">
-          {activeTab === "text" ? (
-            <>
-              <label htmlFor="message-input" className="sr-only">
-                Paste suspicious message
-              </label>
-              <div className="relative">
+            {tab === "text" ? (
+              <div className="mt-3">
+                <label htmlFor="scam-input" className="sr-only">
+                  Suspicious message
+                </label>
                 <textarea
-                  id="message-input"
-                  ref={textareaRef}
-                  rows={7}
-                  maxLength={5000}
-                  placeholder="Paste the WhatsApp forward, job offer, email, or SMS here…"
+                  id="scam-input"
                   value={text}
                   onChange={(e) => setText(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-sm text-slate-100 placeholder:text-slate-500 resize-none focus:outline-none focus:border-violet-500 transition-colors"
+                  maxLength={4000}
+                  rows={5}
+                  placeholder="Paste any suspicious message, job offer, UPI request or link here…"
+                  className="w-full resize-none rounded-2xl bg-neutral-50 p-4 text-[15px] leading-relaxed text-neutral-800 outline-none ring-red-600/20 transition placeholder:text-neutral-400 focus:bg-white focus:ring-4"
                 />
-                <span className="absolute bottom-3 right-3 text-xs text-slate-600">
-                  {text.length.toLocaleString()} / 5,000
-                </span>
-              </div>
-            </>
-          ) : (
-            <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-slate-700/80 rounded-xl bg-slate-950/40 text-center">
-              <input
-                id="voice-file-input"
-                ref={fileInputRef}
-                type="file"
-                accept="audio/*,.ogg,.oga,.opus,.mp3,.wav,.aiff,.flac"
-                className="sr-only"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  handleFileSelect(file);
-                }}
-              />
-              {!audioFile ? (
-                <>
-                  <label
-                    htmlFor="voice-file-input"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold border-2 border-violet-500 text-violet-400 hover:bg-violet-500/10 hover:border-violet-400 transition-colors cursor-pointer"
+                <div className="mt-3 flex items-center justify-between px-1">
+                  <span className="text-xs tabular-nums text-neutral-400">{text.length}/4000</span>
+                  <button
+                    type="button"
+                    onClick={() => analyze()}
+                    disabled={loading}
+                    className="inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-red-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <span>🎙️</span> Choose audio file
-                  </label>
-                  <p className="text-xs text-slate-400 mt-3 max-w-sm leading-relaxed">
-                    Forward the WhatsApp voice note to yourself, save it, upload here (WAV verified; MP3 and OGG/OPUS expected to work, pending live verification — max 3 MB; AIFF/FLAC untested)
-                  </p>
-                </>
-              ) : (
-                <div className="w-full">
-                  <div className="inline-flex items-center gap-2 max-w-full bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-full text-xs text-slate-200">
-                    <span className="truncate">
-                      🎙️ {audioFile.name} · {(audioFile.size / (1024 * 1024)).toFixed(1)} MB
-                    </span>
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <ShieldCheck className="h-4 w-4" aria-hidden />}
+                    {loading ? "Analyzing…" : "Analyze"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-3">
+                <label
+                  htmlFor="voice-input"
+                  className="flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-neutral-200 bg-neutral-50 px-6 py-10 text-center transition-colors hover:border-red-300 hover:bg-red-50/40"
+                >
+                  <input
+                    id="voice-input"
+                    type="file"
+                    accept=".ogg,.oga,.m4a,.mp3,.wav,audio/*"
+                    className="sr-only"
+                    onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
+                  />
+                  {file ? (
+                    <>
+                      <FileAudio className="h-8 w-8 text-red-600" aria-hidden />
+                      <p className="mt-3 max-w-full truncate text-sm font-semibold text-neutral-800">{file.name}</p>
+                      <p className="mt-1 text-xs text-neutral-400">
+                        {(file.size / 1024 / 1024).toFixed(1)} MB · tap to replace
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <AudioLines className="h-8 w-8 text-neutral-400" aria-hidden />
+                      <p className="mt-3 text-sm font-semibold text-neutral-700">
+                        Upload a WhatsApp voice note (.ogg, .wav, .mp3)
+                      </p>
+                      <p className="mt-1 text-xs text-neutral-400">
+                        Transcribed verbatim in memory · never written to disk · wav, ogg, mp3
+                      </p>
+                    </>
+                  )}
+                </label>
+                <div className="mt-3 flex items-center justify-between px-1">
+                  {file ? (
                     <button
                       type="button"
-                      onClick={removeAudio}
-                      aria-label="Remove audio file"
-                      className="text-slate-400 hover:text-red-400 font-bold ml-1 cursor-pointer"
+                      onClick={() => onPickFile(null)}
+                      className="inline-flex items-center gap-1 text-xs font-medium text-neutral-400 hover:text-neutral-600"
                     >
-                      ✕
+                      <X className="h-3.5 w-3.5" aria-hidden /> Remove file
                     </button>
-                  </div>
-                  {audioUrl && (
-                    <audio
-                      controls
-                      src={audioUrl}
-                      className="w-full mt-3 h-9 rounded-lg"
-                      preload="metadata"
-                    />
+                  ) : (
+                    <span />
                   )}
+                  <button
+                    type="button"
+                    onClick={() => analyze()}
+                    disabled={loading || !fileB64}
+                    className="inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-red-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Mic className="h-4 w-4" aria-hidden />}
+                    {loading ? "Transcribing…" : "Analyze voice note"}
+                  </button>
                 </div>
-              )}
-            </div>
-          )}
-
-          <button
-            onClick={analyze}
-            disabled={
-              loading ||
-              (activeTab === "text" && !text.trim()) ||
-              (activeTab === "audio" && !audioBase64)
-            }
-            className="mt-3 w-full py-2.5 rounded-xl font-semibold text-sm bg-violet-600 hover:bg-violet-500 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
-          >
-            {loading ? (
-              <span className="inline-flex items-center gap-2">
-                <svg
-                  className="animate-spin h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
-                </svg>
-                {activeTab === "audio" ? "Transcribing & analyzing…" : "Analyzing…"}
-              </span>
-            ) : (
-              activeTab === "audio" ? "Analyze voice note" : "Analyze message"
+              </div>
             )}
-          </button>
+          </div>
+
+          {error ? (
+            <div
+              role="alert"
+              className="mt-4 flex items-center gap-2.5 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+            >
+              <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden />
+              {error}
+            </div>
+          ) : null}
+
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Try a sample</span>
+            {SAMPLES.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => runSample(s.text)}
+                disabled={loading}
+                className="rounded-full bg-[#E9E7E3] px-4 py-2 text-xs font-semibold text-neutral-700 transition-all hover:bg-[#DEDBD5] hover:shadow-sm disabled:opacity-50"
+              >
+                {s.scamType}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Result ──────────────────────────────────────────────────── */}
+        <div ref={resultRef} className="scroll-mt-24 px-4 pt-12">
+          <AnimatePresence>
+            {result ? (
+              <motion.div
+                key="result"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="mx-auto w-full max-w-5xl"
+              >
+                <ResultView result={result} />
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
 
-        {/* ── Error ───────────────────────────────────────────── */}
-        {error && (
-          <div
-            role="alert"
-            className="rounded-2xl bg-red-950/50 border border-red-800/50 p-4 mb-6 text-sm text-red-300 flex items-start justify-between gap-3 animate-fade-in-up"
-          >
-            <div className="flex items-center gap-2">
-              <span>⚠️</span>
-              <span>{error}</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setError(null)}
-              aria-label="Dismiss error"
-              className="text-red-400 hover:text-red-200 text-xs px-2 py-0.5 rounded cursor-pointer"
-            >
-              ✕
-            </button>
+        {/* ── Scam pattern library (masonry feed) ─────────────────────── */}
+        <section className="mx-auto mt-16 w-full max-w-6xl px-4 pb-20 md:mt-20" aria-label="Scam pattern library">
+          <div className="text-center">
+            <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">Scam pattern library</h2>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-neutral-500">
+              Real scam patterns hitting Indian inboxes right now — researched from NCRP complaint trends and
+              government advisories. Tap any card to run it through the engine.
+            </p>
           </div>
-        )}
 
-        {/* ── Skeleton loading ────────────────────────────────── */}
-        {loading && (
-          <div className="space-y-4 animate-pulse">
-            <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6 flex flex-col sm:flex-row items-center gap-6">
-              <div className="w-[130px] h-[130px] rounded-full bg-slate-800" />
-              <div className="flex-1 space-y-3 w-full">
-                <div className="h-6 bg-slate-800 rounded w-3/4" />
-                <div className="h-4 bg-slate-800 rounded w-1/2" />
-                <div className="h-3 bg-slate-800 rounded w-1/3" />
-              </div>
-            </div>
-            <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
-              <div className="h-4 bg-slate-800 rounded w-full" />
-              <div className="h-4 bg-slate-800 rounded w-5/6" />
-            </div>
-            <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
-              <div className="h-4 bg-slate-800 rounded w-2/3" />
-              <div className="h-4 bg-slate-800 rounded w-1/2" />
+          <div className="mx-auto mt-6 flex max-w-xl items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" aria-hidden />
+              <label htmlFor="feed-search" className="sr-only">
+                Search patterns
+              </label>
+              <input
+                id="feed-search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search patterns… digital arrest, UPI, OTP"
+                className="h-11 w-full rounded-full border border-black/5 bg-white pl-11 pr-4 text-sm text-neutral-800 outline-none ring-red-600/20 transition placeholder:text-neutral-400 focus:ring-4"
+              />
             </div>
           </div>
-        )}
 
-        {/* ── Results ─────────────────────────────────────────── */}
-        {result && (
-          <div className="space-y-4">
-            {/* Transcript card */}
-            {result.transcript && (
-              <TranscriptCard transcript={result.transcript} />
-            )}
-
-            {/* Degradation notice */}
-            {result.degraded && result.degraded.length > 0 && (
-              <div
-                role="status"
-                aria-live="polite"
-                className="rounded-2xl bg-amber-950/40 border border-amber-800/60 p-4 text-xs text-amber-300 flex items-start gap-2.5 opacity-0 animate-fade-in-up"
-              >
-                <span className="text-base leading-none">⚠️</span>
-                <div>
-                  <p className="font-semibold text-amber-200">
-                    Partial Analysis (Degraded Mode)
-                  </p>
-                  <p className="text-amber-300/90 mt-0.5">
-                    Some verification layers were temporarily unavailable (
-                    {result.degraded
-                      .map((d) => (d === "ai-analysis" ? "AI Semantic Forensics" : "RDAP Domain Age Check"))
-                      .join(", ")}
-                    ). Deterministic rule engine checks remain fully active.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {result.noSpeech ? (
-              <div
-                role="status"
-                aria-live="polite"
-                className="rounded-2xl bg-slate-900 border border-slate-800 p-8 flex flex-col items-center text-center gap-3 animate-fade-in-up"
-              >
-                <span className="text-4xl">🔇</span>
-                <h3 className="text-lg font-semibold text-slate-200">
-                  No Speech Detected
-                </h3>
-                <p className="text-sm text-slate-400 max-w-md">
-                  {result.message || "No intelligible speech detected in the audio file."}
-                </p>
-              </div>
-            ) : (
-              <>
-                {/* Verdict card */}
-                <div
-                  className="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex flex-col sm:flex-row items-center gap-5 opacity-0 animate-fade-in-up"
-                >
-              <ScoreGauge trust={result.trust ?? 0} band={result.band ?? "CRITICAL"} />
-              <div className="flex-1 text-center sm:text-left">
-                <p
-                  className={`text-2xl font-bold ${result.band ? BAND_COLORS[result.band] ?? "text-red-500" : "text-red-500"}`}
-                >
-                  {result.band ? BAND_LABELS[result.band] ?? result.band : ""}
-                </p>
-                <p className="text-sm text-slate-400 mt-1">
-                  Detected type:{" "}
-                  <span className="text-slate-200 font-medium">
-                    {result.scam_type.replace(/_/g, " ")}
-                  </span>
-                </p>
-                {/* Entity chips */}
-                {(result.entities.upi.length > 0 ||
-                  result.entities.amounts.length > 0) && (
-                  <div className="flex flex-wrap gap-1.5 mt-3 justify-center sm:justify-start">
-                    {result.entities.upi.map((u) => (
-                      <span
-                        key={u}
-                        className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700"
-                      >
-                        UPI: {u}
-                      </span>
-                    ))}
-                    {result.entities.amounts.map((a) => (
-                      <span
-                        key={a}
-                        className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700"
-                      >
-                        Amount: {a}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Flags card */}
-            {(riskFlags.length > 0 || legitimacyFlags.length > 0) && (
-              <div
-                className="rounded-2xl bg-slate-900 border border-slate-800 p-5 opacity-0 animate-fade-in-up"
-                style={{ animationDelay: "80ms" }}
-              >
-                <h3 className="text-lg font-semibold text-slate-100 mb-3">
-                  🚩 Red flags ({riskFlags.length}) — every deduction explained
-                </h3>
-                <div className="space-y-2">
-                  {riskFlags.map((flag, i) => (
-                    <FlagCard key={`${flag.id}-${i}`} flag={flag} index={i} />
-                  ))}
-                </div>
-
-                {legitimacyFlags.length > 0 && (
-                  <>
-                    <h4 className="text-sm font-semibold text-green-400 mt-4 mb-2">
-                      ✅ Legitimacy signals
-                    </h4>
-                    <div className="space-y-2">
-                      {legitimacyFlags.map((flag, i) => (
-                        <FlagCard
-                          key={`${flag.id}-${i}`}
-                          flag={flag}
-                          index={riskFlags.length + i}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-
-            {/* Steps card */}
-            <StepsCard
-              steps={result.next_steps}
-              verdict={result.verdict}
-            />
-
-            {/* Family note */}
-            <FamilyNote note={result.family_note} />
-
-            {/* ── Phase 2 bonus: Copy report + WhatsApp share ── */}
-            <div className="flex flex-col sm:flex-row gap-2">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Filter by channel">
+            {CHANNEL_FILTERS.map((f) => (
               <button
-                onClick={() => {
-                  const report = [
-                    `ScamShield Trust Score: ${result.trust ?? "N/A"}/100 (${result.band ? BAND_LABELS[result.band] ?? result.band : "N/A"})`,
-                    `Type: ${result.scam_type.replace(/_/g, " ")}`,
-                    ...(result.transcript
-                      ? ["", `Transcript: "${result.transcript}"`]
-                      : []),
-                    "",
-                    "Red flags:",
-                    ...result.flags
-                      .filter((f) => f.weight > 0)
-                      .map((f) => `  [+${f.weight}] ${f.label}: "${f.evidence}"`),
-                    ...(legitimacyFlags.length > 0
-                      ? [
-                          "",
-                          "Legitimacy signals:",
-                          ...legitimacyFlags.map(
-                            (f) => `  [${f.weight}] ${f.label}: "${f.evidence}"`
-                          ),
-                        ]
-                      : []),
-                    "",
-                    result.verdict,
-                  ].join("\n");
-                  navigator.clipboard.writeText(report);
-                }}
-                className="flex-1 py-2 rounded-xl text-sm font-medium bg-slate-800 border border-slate-700 text-slate-300 hover:border-violet-500 hover:text-violet-400 transition-colors cursor-pointer"
+                key={f.id}
+                type="button"
+                onClick={() => setFilter(f.id)}
+                aria-pressed={filter === f.id}
+                className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${
+                  filter === f.id
+                    ? "bg-neutral-900 text-white shadow-sm"
+                    : "bg-[#E9E7E3] text-neutral-600 hover:bg-[#DEDBD5]"
+                }`}
               >
-                📋 Copy report
+                {f.label}
               </button>
-              {result.family_note && (
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(
-                    `🛡️ ScamShield Alert (Trust: ${result.trust}/100)\n\n${result.family_note}`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-2 rounded-xl text-sm font-medium bg-green-900/40 border border-green-700/50 text-green-400 hover:bg-green-900/60 transition-colors text-center"
-                >
-                  💬 Share on WhatsApp
-                </a>
-              )}
-            </div>
-              </>
-            )}
+            ))}
           </div>
-        )}
 
-        {/* ── Footer ──────────────────────────────────────────── */}
-        <footer className="mt-12 text-center text-xs text-slate-500 border-t border-slate-800 pt-6">
-          ⚠️ ScamShield is a risk-assistance tool, not a legal authority.
-          Scammed? Call{" "}
-          <span className="text-slate-300 font-semibold">1930</span> or visit{" "}
-          <a
-            href="https://cybercrime.gov.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-violet-400 hover:underline"
-          >
-            cybercrime.gov.in
-          </a>{" "}
-          immediately.
-        </footer>
-      </div>
-    </main>
+          {filtered.length > 0 ? (
+            <div className="mt-8 columns-1 gap-5 sm:columns-2 xl:columns-3">
+              {filtered.map((entry) => (
+                <PatternCard key={entry.id} entry={entry} onAnalyze={(t) => runSample(t)} />
+              ))}
+            </div>
+          ) : (
+            <div className="mx-auto mt-8 max-w-sm rounded-3xl bg-white p-8 text-center shadow-sm">
+              <MessageSquare className="mx-auto h-6 w-6 text-neutral-300" aria-hidden />
+              <p className="mt-3 text-sm font-medium text-neutral-500">No patterns match your search.</p>
+            </div>
+          )}
+        </section>
+      </main>
+
+      {/* ── Footer ──────────────────────────────────────────────────── */}
+      <footer className="mt-auto border-t border-black/5 bg-white/70">
+        <div className="mx-auto w-full max-w-6xl px-4 py-8 text-center">
+          <p className="text-sm font-bold tracking-tight text-neutral-800">
+            Hybrid engine · 18 deterministic rules + live RDAP forensics + capped AI semantic layer
+          </p>
+          <p className="mx-auto mt-2 max-w-2xl text-xs leading-relaxed text-neutral-400">
+            ScamShield is a risk-assistance and educational tool, not a legal authority. A high score is not proof of
+            fraud; a green score is not a guarantee. If you&apos;ve been scammed, call{" "}
+            <a href="tel:1930" className="font-semibold text-red-600 hover:underline">
+              1930
+            </a>{" "}
+            or report at cybercrime.gov.in — contacting your bank within the golden hour maximizes recovery. Messages
+            are analyzed in memory and never stored.
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 }
