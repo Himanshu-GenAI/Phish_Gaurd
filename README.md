@@ -36,7 +36,13 @@ The tomorrow we're building is one where a parent hangs up on a "digital arrest"
 [Tech for a Better Tomorrow](#-tech-for-a-better-tomorrow) · [The Problem](#-the-problem) · [Why Existing Tools Fail](#-why-existing-tools-fail) ·
 [Our Solution](#-our-solution) · [How the Trust Score Works](#-how-the-trust-score-works--the-innovation) ·
 [Scam Taxonomy](#-scam-taxonomy-we-detect) · [Architecture](#️-architecture) ·
-[Tech Stack](#️-tech-stack---why) · [Getting Started](#-getting-started) ·
+[Tech Stack](#️-tech-stack---why) · [Getting Started](#-getting-started) · [Configuration](#️-configuration) ·
+[Usage Instructions](#-usage-instructions--examples) · [Project Structure](#-project-structure) ·
+[Benchmark Evaluation](#-benchmark-evaluation--empirical-results) · [Judge's 90-Second Demo](#-judges-90-second-demo) ·
+[Roadmap](#️-roadmap) · [Limitations](#-limitations) · [Recent Changes](#️-recent-changes--engineering-improvements-made-in-this-chat) ·
+[Evaluation Criteria](#-hackday-10--evaluation-criteria-mapping-weighted) · [Sources](#-research-sources) · [Contributing & License](#-contributing--license)
+
+---why) · [Getting Started](#-getting-started) ·
 [Benchmark Evaluation](#-benchmark-evaluation--empirical-results) · [Judge's 90-Second Demo](#-judges-90-second-demo) ·
 [Roadmap](#️-roadmap) · [Limitations](#-limitations) ·
 [Evaluation Criteria](#-hackday-10--evaluation-criteria-mapping-weighted) · [Sources](#-research-sources)
@@ -192,28 +198,200 @@ flowchart TD
 
 ## 🚀 Getting Started
 
+### Prerequisites
+- Node.js 22.x (enforced via `.nvmrc` and `package.json` engines)
+- npm 10+
+- A Google Gemini API key (free tier available at [Google AI Studio](https://aistudio.google.com))
+
+### Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Himanshu-GenAI/Phish_Gaurd.git
+   cd Phish_Gaurd
+   ```
+
+2. **Install project dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables:**
+   ```bash
+   cp .env.example .env.local
+   ```
+   Add your Gemini API key in `.env.local` (see [Configuration](#️-configuration)).
+
+4. **Start the local development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+5. **Run test suites and build verification:**
+   ```bash
+   npm test          # Runs 155 unit & integration tests via Vitest
+   npm run lint      # Runs ESLint with Next.js core vitest/typescript config
+   npm run build     # Verifies production Next.js build and TypeScript type-checking
+   ```
+
+---
+
+## ⚙️ Configuration
+
+ScamShield uses environment variables for AI model access and evaluation harnesses. Sensitive variables are kept in `.env.local` and never committed:
+
+| Variable | Required | Default | Purpose |
+|---|---|---|---|
+| `GEMINI_API_KEY` | Yes (for live AI calls) | *None* | Google Gemini API key for structured text forensics and voice transcription. |
+| `GEMINI_MODEL` | Optional | `gemini-3.5-flash-lite` | Model identifier used by `lib/ai/gemini.ts` for structured analysis. |
+
+> 🔒 **Offline Note:** Running benchmark evaluations (`npm run eval:full -- --split test --final --corrected`) and test suites (`npm test`) reads from committed cache entries and requires **zero network connectivity and no `GEMINI_API_KEY`**.
+
+---
+
+## 💻 Usage Instructions & Examples
+
+### 1. Web Dashboard (Interactive)
+1. **Text Analysis Tab**: Paste suspicious SMS, WhatsApp, or email text directly into the text area. Select from the 4 preloaded test sample chips (Digital arrest, Fake internship, Investment group, Genuine offer) for instant verification. Click **"Analyze Message"**.
+2. **Voice Note Tab**: Select or drag-and-drop an audio file (e.g., WhatsApp voice note or call recording in `.wav` format). Click **"Analyze Audio"** to generate an automated verbatim transcript, Trust Score, and evidence breakdown.
+
+### 2. API Endpoint (`POST /api/analyze`)
+
+#### **Text Request Example:**
 ```bash
-git clone https://github.com/Himanshu-GenAI/Phish_Gaurd.git
-cd Phish_Gaurd
-npm install
-cp .env.example .env.local   # add your GEMINI_API_KEY (free: aistudio.google.com)
-npm run dev                   # → http://localhost:3000
+curl -X POST http://localhost:3000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Selected! Earn Rs 5,000/day. Pay Rs 499 registration fee via UPI to quickjobs@ybl. Contact HR on Telegram."}'
 ```
 
-**Project structure:**
-
+#### **Voice Note Request Example:**
+```bash
+curl -X POST http://localhost:3000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"audio": "<base64_encoded_audio>", "mimeType": "audio/wav"}'
 ```
-├── app/api/analyze/route.ts   # 3-layer fusion pipeline (text + audio)
-├── app/page.tsx               # single-page dark UI with text/voice tabs
-├── components/                # ScoreGauge · FlagCard · StepsCard · FamilyNote · TranscriptCard
-├── lib/rules/                 # lexicon (18 rules) · engine
-├── lib/checks/                # entity extraction · RDAP domain age
-├── lib/ai/gemini.ts           # structured-output client (text + audio inline_data)
-├── lib/samples.ts             # one-click demo messages
-└── samples/                   # sample texts (test corpus)
+
+#### **Response Structure (`200 OK`):**
+```json
+{
+  "trust": 0,
+  "risk": 100,
+  "band": "scam",
+  "scam_type": "fake_job",
+  "flags": [
+    {
+      "id": "fee",
+      "label": "Upfront Fee Demand",
+      "category": "financial",
+      "weight": 25,
+      "evidence": "Pay Rs 499 registration fee"
+    },
+    {
+      "id": "unrealistic_earnings",
+      "label": "Unrealistic Earnings",
+      "category": "ai",
+      "weight": 25,
+      "evidence": "Earn Rs 5,000/day"
+    }
+  ],
+  "verdict": "Almost certainly a scam.",
+  "next_steps": [
+    "Verify the sender through official channels before acting.",
+    "Never pay any fee to receive a job, prize, or refund.",
+    "Report scams: call 1930 or visit cybercrime.gov.in"
+  ],
+  "family_note": "Ye message fraud lag raha hai. Koi bhi genuine company job dene ke liye registration fee nahi mangti.",
+  "transcript": "",
+  "entities": {
+    "upi": ["quickjobs@ybl"],
+    "amounts": ["Rs 5,000", "Rs 499"]
+  },
+  "breakdown": {
+    "rules": 45,
+    "rdap": 0,
+    "ai": 55,
+    "raw_risk": 100,
+    "risk": 100,
+    "degraded": []
+  }
+}
 ```
 
 ---
+
+## 📁 Project Structure
+
+Cleaned, modular architecture with strict separation between runtime engine, UI dashboard, evaluation harnesses, and test suites:
+
+```
+Phish_Gaurd/
+├── app/                           # Next.js App Router
+│   ├── api/analyze/route.ts       # Unified 3-layer REST analysis endpoint (text + audio)
+│   ├── globals.css                # Global styles, dark theme, and Tailwind utilities
+│   ├── layout.tsx                 # Root layout, HTML metadata, and viewport definitions
+│   └── page.tsx                   # Interactive single-page dark UI with text & voice note tabs
+├── components/                    # Reusable React UI components
+│   ├── FamilyNote.tsx             # Jargon-free Hinglish explainer card for family members
+│   ├── FlagCard.tsx               # Evidence-quoted red flag cards with category badges
+│   ├── ScoreGauge.tsx             # Animated circular Trust Score gauge (0–100)
+│   ├── StepsCard.tsx              # Concrete actionable next steps and helpline resources (1930)
+│   └── TranscriptCard.tsx         # Multimodal voice note verbatim transcript display
+├── lib/                           # Core fraud detection engine & logic (frozen runtime)
+│   ├── ai/gemini.ts               # Gemini structured-output client (text schema + audio inline_data)
+│   ├── analyze/pipeline.ts        # Pure 3-layer fusion pipeline (rules + domain checks + AI)
+│   ├── checks/entities.ts         # RegEx-based entity extraction (UPI IDs, amounts, URLs)
+│   ├── checks/rdap.ts             # Authoritative RDAP domain age & registration checks
+│   ├── rules/engine.ts            # Deterministic rule engine with negation & context guards
+│   ├── rules/lexicon.ts           # 18 curated detection rules with Hinglish keywords & weights
+│   ├── rules/types.ts             # TypeScript definitions for rules, rule hits, and categories
+│   ├── samples.ts                 # Pre-configured textbook demonstration samples
+│   ├── scoring/fuse.ts            # Mathematical risk-to-trust scoring & clamp fusion logic
+│   └── validation.ts              # Input validation guards (text length, audio size, speech detection)
+├── eval/                          # Offline benchmark evaluation framework & datasets
+│   ├── dataset/                   # Curated evaluation corpora (dev.json, test.json, corrections)
+│   ├── results/                   # Versioned evaluation benchmark reports & JSON artifacts
+│   ├── cache/                     # Offline cache directory with committed Gemini responses
+│   ├── check-regression.ts        # Automated regression gate ensuring metrics meet baseline
+│   ├── fill-owner-slots.ts        # Script for populating owner-authored test slots
+│   ├── measure-dev.ts             # Quick development set measurement tool
+│   ├── run.ts                     # Main evaluation runner supporting rules and full modes
+│   ├── run-supp.ts                # Supplementary evaluation set runner
+│   └── seal.ts                    # Cryptographic SHA256 sealing script for datasets
+├── scripts/                       # Engineering verification, stress testing & benchmark scripts
+│   ├── adversarial-full-check.ts  # End-to-end engine performance check on adversarial generators
+│   ├── gemini-check.mjs           # Standalone Gemini API connection & audio transcription check
+│   ├── generate_stats.ts          # Generates dataset distribution statistics (eval/dataset/STATS.md)
+│   ├── live-batch.ts              # Local HTTP batch verification harness against dev server
+│   ├── readme-numbers.ts          # Generates verified evaluation tables for README.md
+│   ├── regex-check.ts             # ReDoS benchmark verifying linear time execution on all regexes
+│   ├── run-smoke-full.ts          # Runner for Stress Test v2 (deliberately seeded genuine edge cases)
+│   └── run-smoke-v1.ts            # Runner for Stress Test v1 (deliberately seeded genuine edge cases)
+├── tests/                         # Automated Vitest test suite (14 files, 155 tests)
+│   ├── ai.test.ts                 # Unit tests for Gemini prompt construction & response parsing
+│   ├── cache_logging.test.ts      # Tests verifying cache key invariance and score consistency
+│   ├── checks.test.ts             # Tests for entity extraction and RDAP domain checks
+│   ├── eval.test.ts               # Unit tests for Wilson intervals, ROC AUC, and cache hashing
+│   ├── flagcard.test.tsx          # Component tests for FlagCard rendering
+│   ├── fuse.test.ts               # Tests for score fusion, clamping, and legitimacy deductions
+│   ├── owner_slots.test.ts        # Tests for owner slot validation and dataset integrity
+│   ├── pipeline.test.ts           # End-to-end pipeline integration tests
+│   ├── readme_tables.test.ts      # Enforces README evaluation tables match scripts/readme-numbers.ts
+│   ├── route.test.ts              # Next.js route integration tests (mocked AI, RDAP, privacy guards)
+│   ├── rules.test.ts              # Comprehensive tests for all 18 rules and regex lexicons
+│   ├── validation.test.ts         # Input validation, audio file constraints, and speech guards
+│   ├── wilson.test.ts             # Mathematical validation of Wilson score interval computations
+│   └── wilson_results.test.ts     # Validates stored result intervals match shared Wilson logic
+├── samples/                       # Raw sample text files for testing
+├── public/screenshots/            # UI screenshots for documentation
+├── tsconfig.json                  # Next.js TypeScript configuration
+├── tsconfig.eval.json             # Secondary TypeScript configuration covering eval, scripts & tests
+├── eslint.config.mjs              # ESLint configuration with Next.js Core Web Vitals
+├── vitest.config.ts               # Vitest test framework configuration
+└── package.json                   # Project dependencies and npm lifecycle scripts
+```
+
+> 🌿 **Archived UI Port**: The in-progress Pinterest-style UI redesign components (`components/scam/`, `lib/scam/`, `PORTING.md`) are safely preserved in the dedicated Git branch [`archive/ui-port`](https://github.com/Himanshu-GenAI/Phish_Gaurd/tree/archive/ui-port).
 
 ---
 
@@ -444,6 +622,31 @@ Every evaluation metric in this report can be verified independently and offline
 
 ---
 
+## 🛠️ Recent Changes & Engineering Improvements Made in This Chat
+
+1. **Held-Out Test Set Label Correction & Re-evaluation**:
+   - Re-evaluated the test benchmark against post-hoc corrected ground truth (33 scams / 17 genuine) after identifying that 8 owner-authored scams were initially misassigned as genuine by the automated slot-filling script.
+   - Formalized corrections in [`eval/dataset/test.label-corrections.json`](eval/dataset/test.label-corrections.json) with cryptographic SHA256 checksum tracking, without modifying the immutable sealed dataset.
+   - Updated all benchmark reports and tables with by-author recall breakdowns (Assistant-written vs. Owner-written).
+2. **Unified Wilson Score Confidence Intervals**:
+   - Replaced hand-typed and divergent interval representations across all evaluation reports and scripts with a single shared mathematical implementation ([`eval/run.ts`](eval/run.ts)).
+   - Added automated regression unit tests ([`tests/wilson.test.ts`](tests/wilson.test.ts), [`tests/wilson_results.test.ts`](tests/wilson_results.test.ts)) enforcing exact interval consistency across all stored JSON results.
+3. **100% Offline Benchmark Reproducibility**:
+   - Verified that the full evaluation pipeline (`npm run eval:full -- --split test --final --corrected`) runs completely offline against committed response caches with 0 live network calls and no `GEMINI_API_KEY` required.
+4. **ReDoS Verification & Adversarial Stress Testing**:
+   - Built [`scripts/regex-check.ts`](scripts/regex-check.ts) and [`scripts/adversarial-full-check.ts`](scripts/adversarial-full-check.ts) to benchmark regex execution against pathological input strings, confirming strictly linear performance under worst-case inputs.
+5. **Secondary TypeScript Compilation Gate**:
+   - Introduced [`tsconfig.eval.json`](tsconfig.eval.json) covering `eval/`, `scripts/`, and `tests/` directories, preventing type drifts in evaluation and benchmarking harnesses without polluting the Next.js production build path.
+6. **Repository Audit & File Cleanup**:
+   - Audited the workspace for temporary and dead files: removed obsolete scratchpad scripts (`scratch/`), empty fallback directories (`nonexistent-cache-dir/`), and 16 legacy `gemini-3.8-flash` cache entries superseded by `gemini-3.5-flash-lite`.
+   - Verified that secrets (`.env.local`) and private test corpora (`eval/private/`) remain strictly gitignored and uncommitted.
+7. **Archival of In-Progress UI Port**:
+   - Preserved all components and porting documentation for the modern Pinterest-style UI in a dedicated Git branch (`archive/ui-port`), ensuring `npm run build` and `npm run dev` compile cleanly on `main`.
+8. **155 Automated Tests Passing & Clean Builds**:
+   - Verified that all 155 unit, integration, route, and evaluation tests across 14 test files pass with 100% success rate in Vitest, 0 ESLint warnings, and a clean production Next.js build.
+
+---
+
 ## ⚠️ Disclaimer
 
 ScamShield is a risk-assistance and educational tool, not a legal authority. A high score is not proof of fraud; a green score is not a guarantee. If you've been scammed, act fast: **call 1930** or report at **cybercrime.gov.in** — contacting your bank within the golden hour maximizes recovery chances.
@@ -471,8 +674,15 @@ Built for HACKDAY 1.0 by DECODEP. AI by Google Gemini · Hosted on Vercel.
 
 ---
 
-## 📄 License
+## 🤝 Contributing & License
 
-MIT — see [LICENSE](LICENSE).
+Contributions are welcome! Please check open issues or file a feature request on [GitHub Issues](https://github.com/Himanshu-GenAI/Phish_Gaurd/issues). Before submitting pull requests, ensure that:
+1. `npm test` passes all 155 unit and integration tests.
+2. `npm run lint` completes with zero errors.
+3. `npm run build` completes cleanly.
+4. `npm run eval:full -- --split test --final --corrected` succeeds offline without regressions.
+
+### License
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 <div align="center"><sub>⭐ If ScamShield saves even one person from losing their savings, this was worth building.</sub></div>
