@@ -10,9 +10,9 @@ Every scam message has a pattern.
 
 **Paste any suspicious message → Get a Trust Score with evidence-quoted red flags (or AI rationale), scam classification, and a family-friendly Hinglish explainer**
 
-[Live Demo](<PASTE_VERCEL_URL>) · [GitHub Repo](https://github.com/Himanshu-GenAI/Phish_Gaurd) · [Issues](https://github.com/Himanshu-GenAI/Phish_Gaurd/issues) · [How It Works](#-how-the-trust-score-works--the-innovation) · [Evaluation](#-benchmark-evaluation--empirical-results) · [Try the Samples](#-judges-90-second-demo)
+[Live Demo](<PASTE_VERCEL_URL>) · [GitHub Repo](https://github.com/Himanshu-GenAI/ScamShield_AI) · [Issues](https://github.com/Himanshu-GenAI/ScamShield_AI/issues) · [How It Works](#-how-the-trust-score-works--the-innovation) · [Evaluation](#-benchmark-evaluation--empirical-results) · [Try the Samples](#-judges-90-second-demo)
 
-[![CI](https://github.com/Himanshu-GenAI/Phish_Gaurd/actions/workflows/ci.yml/badge.svg)](https://github.com/Himanshu-GenAI/Phish_Gaurd/actions/workflows/ci.yml)
+[![CI](https://github.com/Himanshu-GenAI/ScamShield_AI/actions/workflows/ci.yml/badge.svg)](https://github.com/Himanshu-GenAI/ScamShield_AI/actions/workflows/ci.yml)
 ![HACKDAY 1.0](https://img.shields.io/badge/HACKDAY_1.0-Tech_for_a_Better_Tomorrow-22C55E)
 ![Next.js](https://img.shields.io/badge/Next.js-App_Router-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript)
@@ -190,6 +190,7 @@ flowchart TD
 | Live checks | RDAP (rdap.org) | Free, keyless, authoritative registration data |
 | Rules | Pure TypeScript + regex lexicons | Deterministic, unit-testable, zero cost |
 | Hosting | Vercel | Live demo link, zero-config |
+| UI & Motion | Framer Motion + Lucide React | Pinterest-style masonry feed, fluid spring physics, modern iconography |
 
 > 📌 **Note:** As of 2026-10-18 no shutdown date was listed for gemini-3.5-flash-lite on Google's deprecations page; model availability should be rechecked before use, because Gemini shutdown dates change frequently.
 
@@ -207,8 +208,8 @@ flowchart TD
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Himanshu-GenAI/Phish_Gaurd.git
-   cd Phish_Gaurd
+   git clone https://github.com/Himanshu-GenAI/ScamShield_AI.git
+   cd ScamShield_AI
    ```
 
 2. **Install project dependencies:**
@@ -325,17 +326,22 @@ curl -X POST http://localhost:3000/api/analyze \
 Cleaned, modular architecture with strict separation between runtime engine, UI dashboard, evaluation harnesses, and test suites:
 
 ```
-Phish_Gaurd/
+ScamShield_AI/
 ├── app/                           # Next.js App Router
 │   ├── api/analyze/route.ts       # Unified 3-layer REST analysis endpoint (text + audio)
 │   ├── globals.css                # Global styles, dark theme, and Tailwind utilities
 │   ├── layout.tsx                 # Root layout, HTML metadata, and viewport definitions
-│   └── page.tsx                   # Interactive single-page dark UI with text & voice note tabs
-├── components/                    # Reusable React UI components
-│   ├── FamilyNote.tsx             # Jargon-free Hinglish explainer card for family members
-│   ├── FlagCard.tsx               # Evidence-quoted red flag cards with category badges
-│   ├── ScoreGauge.tsx             # Animated circular Trust Score gauge (0–100)
-│   ├── StepsCard.tsx              # Concrete actionable next steps and helpline resources (1930)
+│   └── page.tsx                   # Primary Pinterest-style masonry dashboard with text & voice tabs
+├── components/                    # React UI components
+│   ├── scam/                      # Modern Pinterest-Style Masonry UI components
+│   │   ├── flag-card.tsx          # Evidence-quoted red flag cards with point weights
+│   │   ├── pattern-card.tsx       # Masonry pin cards for the scam pattern feed
+│   │   ├── result-view.tsx        # Comprehensive analysis view (gauge, flags, family note, next steps)
+│   │   └── score-gauge.tsx        # Smooth animated circular Trust Score SVG gauge
+│   ├── FamilyNote.tsx             # Legacy Hinglish explainer card component
+│   ├── FlagCard.tsx               # Evidence flag card component
+│   ├── ScoreGauge.tsx             # Circular score gauge component
+│   ├── StepsCard.tsx              # Actionable next steps card component
 │   └── TranscriptCard.tsx         # Multimodal voice note verbatim transcript display
 ├── lib/                           # Core fraud detection engine & logic (frozen runtime)
 │   ├── ai/gemini.ts               # Gemini structured-output client (text schema + audio inline_data)
@@ -346,6 +352,10 @@ Phish_Gaurd/
 │   ├── rules/lexicon.ts           # 18 curated detection rules with Hinglish keywords & weights
 │   ├── rules/types.ts             # TypeScript definitions for rules, rule hits, and categories
 │   ├── samples.ts                 # Pre-configured textbook demonstration samples
+│   ├── scam/                      # Scam Pattern Library feed & UI state definitions
+│   │   ├── corpus.ts              # 10 curated Indian scam pattern feed items & filter tags
+│   │   ├── fusion.ts              # UI verdict band styling metadata and label configurations
+│   │   └── types.ts               # UI data contracts & analysis result interfaces
 │   ├── scoring/fuse.ts            # Mathematical risk-to-trust scoring & clamp fusion logic
 │   └── validation.ts              # Input validation guards (text length, audio size, speech detection)
 ├── eval/                          # Offline benchmark evaluation framework & datasets
@@ -391,7 +401,7 @@ Phish_Gaurd/
 └── package.json                   # Project dependencies and npm lifecycle scripts
 ```
 
-> 🌿 **Archived UI Port**: The in-progress Pinterest-style UI redesign components (`components/scam/`, `lib/scam/`, `PORTING.md`) are safely preserved in the dedicated Git branch [`archive/ui-port`](https://github.com/Himanshu-GenAI/Phish_Gaurd/tree/archive/ui-port).
+> 🎨 **Pinterest-Style UI**: The modern Pinterest-style masonry frontend is active as the primary dashboard in `app/page.tsx` with Framer Motion animations, Lucide icons, and interactive channel filtering.
 
 ---
 
@@ -644,6 +654,8 @@ Every evaluation metric in this report can be verified independently and offline
    - Preserved all components and porting documentation for the modern Pinterest-style UI in a dedicated Git branch (`archive/ui-port`), ensuring `npm run build` and `npm run dev` compile cleanly on `main`.
 8. **155 Automated Tests Passing & Clean Builds**:
    - Verified that all 155 unit, integration, route, and evaluation tests across 14 test files pass with 100% success rate in Vitest, 0 ESLint warnings, and a clean production Next.js build.
+9. **Full Pinterest-Style Masonry UI Activation**:
+   - Activated the modern Pinterest-style masonry UI as the primary dashboard in [`app/page.tsx`](app/page.tsx), featuring dynamic feed filtering, fluid Framer Motion transitions, Lucide React icons, and a typed adapter function (`mapToAnalyzeResult`) seamlessly connecting to the 3-layer analysis engine.
 
 ---
 
@@ -664,7 +676,7 @@ ScamShield is a risk-assistance and educational tool, not a legal authority. A h
 
 ## 🐛 Issues
 
-Report issues and feature requests: [https://github.com/Himanshu-GenAI/Phish_Gaurd/issues](https://github.com/Himanshu-GenAI/Phish_Gaurd/issues)
+Report issues and feature requests: [https://github.com/Himanshu-GenAI/ScamShield_AI/issues](https://github.com/Himanshu-GenAI/ScamShield_AI/issues)
 
 ---
 
@@ -676,7 +688,7 @@ Built for HACKDAY 1.0 by DECODEP. AI by Google Gemini · Hosted on Vercel.
 
 ## 🤝 Contributing & License
 
-Contributions are welcome! Please check open issues or file a feature request on [GitHub Issues](https://github.com/Himanshu-GenAI/Phish_Gaurd/issues). Before submitting pull requests, ensure that:
+Contributions are welcome! Please check open issues or file a feature request on [GitHub Issues](https://github.com/Himanshu-GenAI/ScamShield_AI/issues). Before submitting pull requests, ensure that:
 1. `npm test` passes all 155 unit and integration tests.
 2. `npm run lint` completes with zero errors.
 3. `npm run build` completes cleanly.
